@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "name": "src",
+  "version": "1.0.0",
+  "main": "script.js",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "scripts": {
+    "start": "live-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

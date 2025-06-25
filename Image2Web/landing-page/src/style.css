@@ -6,6 +6,7 @@ body {
   color: #fff;
 }
 
+
 header {
   display: flex;
   justify-content: space-between;
@@ -125,4 +126,23 @@ main {
   line-height: 2;
   margin: 0;
   padding-left: 1.5rem;
+}
+
+.github-btn {
+  background: #24292f;
+  color: #fff;
+  border: none;
+  padding: 0.7em 1.5em;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.github-btn:hover {
+  background: #57606a;
 }
