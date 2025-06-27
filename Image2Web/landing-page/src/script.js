@@ -1,6 +1,24 @@
 // This file contains the JavaScript code for the landing page. 
 // It handles user interactions, dynamic content updates, and other client-side logic.
 
+function openSignup(){
+  document.getElementById('signupModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSignup(){
+  document.getElementById('signupModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+// Close the modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('signupModal');
+  if(event.target === modal){
+    closeSignup();
+  }
+}
+
 function navigate(page) {
     const content = document.getElementById('content');
     let html = '';
