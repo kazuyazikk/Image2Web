@@ -94,3 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial load
     navigate('home');
 });
+
+function openAbout() {
+  document.getElementById('aboutModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeAbout() {
+  document.getElementById('aboutModal').classList.remove('active');
+  document.body.style.overflow = '';
+}

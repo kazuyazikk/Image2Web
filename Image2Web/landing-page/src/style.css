@@ -92,10 +92,25 @@ header {
 }
 
 .slogan {
-  font-size: 0.85rem;
-  color: #94a3b8;
-  letter-spacing: 1px;
-  margin-top: 2px;
+  font-family: 'Russo One', Arial, sans-serif;
+  font-size: 1.35rem;
+  color: #38bdf8;
+  letter-spacing: 2px;
+  margin-top: -0.3em;    
+  text-shadow: 0 2px 12px rgba(56,189,248,0.15), 0 1px 0 #fff;
+  font-weight: bold;
+  background: linear-gradient(90deg, #38bdf8 30%, #0ea5e9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  animation: sloganPop 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+@keyframes sloganPop {
+  0% { transform: scale(0.7) rotate(-5deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); }
 }
 
 nav ul {
@@ -109,8 +124,14 @@ nav ul {
   cursor: pointer;
   position: relative;
   color: #fff;
-  transition: color 0.2s;
+  transition: color 0.2s, border 0.2s, background 0.2s;
   overflow: hidden;
+  padding: 0.5em 1.5em;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  margin: 0 0.25em;
+  font-family: 'Russo One', Arial, sans-serif;
+  letter-spacing: 1px;
 }
 
 .nav-item.active,
@@ -118,6 +139,9 @@ nav ul {
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
   transform: translateY(-2px);
+  border: 2px solid #38bdf8;
+  color: #38bdf8;
+  box-shadow: 0 2px 12px 0 rgba(56,189,248,0.10);
 }
 
 /* From Sarge
@@ -198,19 +222,27 @@ main {
 
 .hero-label{
   display: inline-block;
-  padding: 0.5rem 1.5rem;
+  padding: 0.7rem 2rem;
   background: var(--glass-bg);
-  border: 1px solid var(--glass-bg);
-  border-radius: 25px;
-  font-size: 0.9rem;
+  border: 2px solid #38bdf8;
+  border-radius: 30px;
+  font-size: 1.3rem;
+  font-family: 'Russo One', Arial, sans-serif;
+  color: #38bdf8;
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px 0 rgba(56,189,248,0.10);
   backdrop-filter: blur(10px);
   animation: pulse 2s ease-in-out infinite;
+  transition: background 0.3s, color 0.3s, border 0.3s;
 }
 
-@keyframes pulse{
-  0%, 100% {transform: scale(1);}
-  50% {transform: sclae(1.05);}
+.hero-label:hover {
+  background: var(--glass-bg);
+  color: #38bdf8;
+  border-color: #38bdf8;
 }
+
 /*
 .hero-title {
   font-size: 2.8rem;
@@ -483,6 +515,37 @@ footer{
   color: var(--text-secondary);
 }
 
+/* Uniform font for footer */
+.footer-title,
+.footer-link,
+.footer-text,
+.footer-bottom p {
+  font-family: 'Russo One', Arial, sans-serif;
+  letter-spacing: 1px;
+}
+
+.footer-link {
+  display: block;
+  color: var(--text-secondary, #334155);
+  text-decoration: none;
+  margin-bottom: 0.5em;
+  font-size: 1em;
+  transition: color 0.2s;
+}
+.footer-link:hover {
+  color: #0ea5e9;
+}
+
+.footer-title {
+  font-size: 1.1em;
+  margin-bottom: 0.5em;
+}
+
+.footer-text {
+  font-size: 1em;
+  margin: 0.2em 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px){
   .header-context{
@@ -523,4 +586,57 @@ footer{
 @keyframes successPulse{
   0% { transform: scale(0.9); opacity: 0;}
   100% { transform: scale(1); opacity: 1;}
+}
+
+/* About Modal Styles */
+.about-modal {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+}
+.about-modal.active {
+  display: flex;
+}
+.about-content {
+  background: var(--card-bg, #181e2a);
+  color: var(--text-primary, #fff);
+  border-radius: 18px;
+  padding: 2.5rem 2rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  position: relative;
+  font-family: 'Russo One', Arial, sans-serif;
+  text-align: center;
+}
+.about-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.about-text {
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  color: var(--text-secondary, #b8c4e6);
+}
+.about-content .close-btn {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary, #b8c4e6);
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.about-content .close-btn:hover {
+  color: var(--text-primary, #fff);
 }
