@@ -46,6 +46,7 @@
           <li class="nav-item active" data-page="home" onclick="navigate('home')">Home</li>
           <li class="nav-item" onclick="window.location.href='contributors.html'">Contributors</li>
           <li class="nav-item" data-page="subscribe" onclick="navigate('subscribe')">Subscribe</li>
+          <li class="nav-item" onclick="openLogin()">Login</li>
         </ul>
       </nav>
     </div>
@@ -81,19 +82,19 @@
    <div class ="signup-modal" id="signupModal">
     <div class="signup-content">
       <button class="close-brn" onclick="closeSignup()">&times;</button>
-      <form class="signup-form" id="signupForm">
+      <form id="signupForm" class="signup-form">
         <h2>Join Image2Web</h2>
         <div class ="form-group">
           <label for="username">username</label>
-          <input type="text" id="username" name="username" placeholder="Enter your username" required>
+          <input id="signup-username" name="username" type="text" placeholder="Enter your username" required>
         </div>
         <div class="form-group">
           <label for ="email">Email</label>
-          <input type="email" id="email" name ="email" placeholder="Enter your email" required>
+          <input id="signup-email" name ="email" type="email" placeholder="Enter your email" required>
         </div>
         <div class ="form-group">
           <label for ="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          <input id="signup-password" name="password" type="password" placeholder="Enter your password" required>
         </div>
         <button type ="submit" class="signup-btn" style ="width: 100%; margin: 0;">
           Create Account
@@ -105,6 +106,27 @@
       </form>
     </div>
    </div>
+
+   <!-- Login Modal -->
+<div class="login-modal" id="loginModal">
+  <div class="login-content">
+    <button class="close-btn" onclick="closeLogin()">&times;</button>
+    <form class="login-form" id="loginForm">
+      <h2 class="login-title">Login to Image2Web</h2>
+      <div class="form-group">
+        <label for="login-username">Username or Email</label>
+        <input type="text" id="login-username" name="login-username" placeholder="Enter your username or email" required>
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="login-password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="login-btn" style="width: 100%; margin: 0;">
+        Login
+      </button>
+    </form>
+  </div>
+</div>
 
    <!-- About Modal -->
    <div class="about-modal" id="aboutModal">

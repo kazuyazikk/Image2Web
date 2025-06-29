@@ -640,3 +640,95 @@ footer{
 .about-content .close-btn:hover {
   color: var(--text-primary, #fff);
 }
+
+/* Login Modal Styles */
+.login-modal {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  justify-content: center;
+  align-items: center;
+}
+.login-modal.active {
+  display: flex;
+}
+.login-content {
+  background: #181e2a;
+  color: #fff;
+  border-radius: 18px;
+  padding: 2.5rem 2rem;
+  max-width: 370px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  position: relative;
+  font-family: 'Russo One', Arial, sans-serif;
+  text-align: center;
+}
+.login-title {
+  font-size: 2rem;
+  color: #7c3aed;
+  margin-bottom: 1.5rem;
+  letter-spacing: 2px;
+}
+.login-form .form-group {
+  margin-bottom: 1.1rem;
+  text-align: left;
+}
+.login-form label {
+  font-size: 1rem;
+  color: #b8c4e6;
+  margin-bottom: 0.2em;
+  letter-spacing: 1px;
+  display: block;
+}
+.login-form input {
+  padding: 0.7em 1em;
+  border-radius: 8px;
+  border: 1.5px solid #333;
+  background: #222;
+  color: #fff;
+  font-size: 1em;
+  font-family: 'Russo One', Arial, sans-serif;
+  outline: none;
+  transition: border 0.2s;
+  width: 100%;
+  margin-top: 0.2em;
+}
+.login-form input:focus {
+  border: 1.5px solid #7c3aed;
+}
+.login-btn {
+  background: linear-gradient(90deg, #7c3aed 30%, #f472b6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8em 0;
+  font-size: 1.1em;
+  font-family: 'Russo One', Arial, sans-serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+  margin-top: 0.5em;
+  transition: background 0.2s;
+  font-weight: bold;
+  box-shadow: 0 2px 12px 0 rgba(124,58,237,0.10);
+  width: 100%;
+}
+.login-btn:hover {
+  background: linear-gradient(90deg, #f472b6 30%, #7c3aed 100%);
+}
+.close-btn {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: none;
+  border: none;
+  color: #b8c4e6;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-btn:hover {
+  color: #fff;
+}

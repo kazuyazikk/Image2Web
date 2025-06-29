@@ -93,6 +93,16 @@ window.navigate = navigate; // Make it available globally
 document.addEventListener('DOMContentLoaded', () => {
     // Initial load
     navigate('home');
+
+    // Signup form handler
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+      signupForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Account created! (No backend, demo only)');
+        closeSignup();
+      });
+    }
 });
 
 function openAbout() {
@@ -101,5 +111,13 @@ function openAbout() {
 }
 function closeAbout() {
   document.getElementById('aboutModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+function openLogin() {
+  document.getElementById('loginModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLogin() {
+  document.getElementById('loginModal').classList.remove('active');
   document.body.style.overflow = '';
 }
