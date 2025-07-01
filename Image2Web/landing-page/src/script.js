@@ -90,13 +90,14 @@ function navigate(page) {
 
 // Function to handle user logout
 function logout() {
- firebase.auth().signOut().then(() => {
+  firebase.auth().signOut().then(() => {
     console.log("User logged out");
-    // Update UI to reflect logged out state (e.g., show login/signup buttons)
     alert("Logged out successfully!");
- }).catch((error) => {
+  }).catch((error) => {
     console.error("Error logging out:", error);
- });
+  });
+}
+
 window.navigate = navigate; // Make it available globally
 
 document.addEventListener('DOMContentLoaded', () => {
