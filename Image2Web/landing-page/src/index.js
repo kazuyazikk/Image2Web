@@ -1,11 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { 
-  getAuth, 
-  onAuthStateChanged, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut 
+import { getFirestore, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut
 } from "firebase/auth";
 import { getAnalytics, logEvent } from "firebase/analytics";
 
@@ -36,14 +36,16 @@ const profileDiv = document.getElementById("profile");
 // Sign up
 signupBtn.addEventListener("click", async (e) => {
   e.preventDefault();
+  const email = emailInput.value;
+  const password = passwordInput.value;
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await setDoc(doc(db, "users", userCredential.user.uid), {
       email: userCredential.user.email,
-      createdAt: new Date()
+      createdAt: serverTimestamp()
     });
     logEvent(analytics, 'sign_up', { method: 'password' });
-    messageDiv.textContent = "Account created and logged in!";
+    messageDiv.textContent = "Account created!";
   } catch (err) {
     messageDiv.textContent = err.message;
   }
@@ -52,8 +54,10 @@ signupBtn.addEventListener("click", async (e) => {
 // Log in
 loginBtn.addEventListener("click", async (e) => {
   e.preventDefault();
+  const email = emailInput.value;
+  const password = passwordInput.value;
   try {
-    await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+    await signInWithEmailAndPassword(auth, email, password);
     logEvent(analytics, 'login', { method: 'password' });
     messageDiv.textContent = "Logged in!";
   } catch (err) {
@@ -68,7 +72,7 @@ logoutBtn.addEventListener("click", async (e) => {
   messageDiv.textContent = "Logged out!";
 });
 
-// Show user profile
+// Show user profile and toggle logout button
 onAuthStateChanged(auth, (user) => {
   if (user) {
     profileDiv.textContent = `Logged in as: ${user.email}`;
