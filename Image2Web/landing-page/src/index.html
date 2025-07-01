@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Image2Web Auth Demo</title>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CODE4WEB</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -46,7 +46,12 @@
           <li class="nav-item active" data-page="home" onclick="navigate('home')">Home</li>
           <li class="nav-item" onclick="window.location.href='contributors.html'">Contributors</li>
           <li class="nav-item" data-page="subscribe" onclick="navigate('subscribe')">Subscribe</li>
-          <li class="nav-item" onclick="openLogin()">Login</li>
+          <div id="auth-links">
+            <li class="nav-item" onclick="openLogin()">Login</li>
+          </div>
+          <div id="user-links" style="display: none;">
+            <li class="nav-item" onclick="logout()">Logout</li>
+          </div>
         </ul>
       </nav>
     </div>
@@ -189,7 +194,7 @@
       </div>
       <div class="footer-section">
         <h3 class="footer-title">Contact</h3>
-        <p class="footer-text">📧 Our Email</p>
+        <p class="footer-text">📧 our email</p>
         <p class="footer-text">📍 A Wireframe to Website Generator</p>
       </div>
     </div>
@@ -197,24 +202,6 @@
       <p class="footer-text">&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
     </div>
    </footer>
-  <!-- Firebase App (core) -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <!-- Firebase Auth -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script>
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyD9ATT-iCH51H6S3y-4zJkTJtZAOU7m60",
-      authDomain: "image2web-1a6c0.firebaseapp.com",
-      projectId: "image2web-1a6c0",
-      storageBucket: "image2web-1a6c0.appspot.com",
-      messagingSenderId: "167811907825",
-      appId: "1:167811907825:web:809c410fefc52de3542950",
-      measurementId: "G-LF3Y1S5M47"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-  </script>
   <script src="script.js"></script>
 </body>
 </html>

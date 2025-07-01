@@ -88,6 +88,15 @@ function navigate(page) {
     if (nav) nav.classList.add('active');
 }
 
+// Function to handle user logout
+function logout() {
+ firebase.auth().signOut().then(() => {
+    console.log("User logged out");
+    // Update UI to reflect logged out state (e.g., show login/signup buttons)
+    alert("Logged out successfully!");
+ }).catch((error) => {
+    console.error("Error logging out:", error);
+ });
 window.navigate = navigate; // Make it available globally
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -95,19 +104,52 @@ document.addEventListener('DOMContentLoaded', () => {
     navigate('home');
 
     // Signup form handler
+    
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
       signupForm.addEventListener('submit', function(e) {
         e.preventDefault();
+
+        const username = document.getElementById('signup-username').value;
         const email = document.getElementById('signup-email').value;
         const password = document.getElementById('signup-password').value;
+
+        // Create user with Firebase Authentication
         firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(() => {
-            alert('Account created!');
-            closeSignup();
+          .then((userCredential) => {
+            // Signed in successfully
+            const user = userCredential.user;
+
+            // Save username to Firestore (assuming you have Firestore initialized)
+            firebase.firestore().collection('users').doc(user.uid).set({
+              username: username,
+              email: user.email
+            })
+            .then(() => {
+              console.log("User profile saved to Firestore!");
+              // Display success message and close modal
+              document.getElementById('successMessage').style.display = 'block';
+              // You might want to automatically log in the user after signup
+              // Log signup event to Firebase Analytics
+ firebase.analytics().logEvent('sign_up', { method: 'email_password' });
+              // and redirect them to a different page or update the UI
+              // For now, let's just close the modal after a delay
+              setTimeout(() => {
+                closeSignup();
+              }, 3000); // Close after 3 seconds
+            })
+            .catch((error) => {
+              console.error("Error saving user profile:", error);
+              // Display an error message to the user
+              alert("Error saving user profile: " + error.message);
+            });
           })
-          .catch(error => {
-            alert(error.message);
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Firebase Authentication Error:", errorCode, errorMessage);
+            // Display an error message to the user
+            alert("Signup Error: " + errorMessage);
           });
       });
     }
@@ -117,15 +159,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
       loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        const email = document.getElementById('login-username').value;
-        const password = document.getElementById('login-password').value;
-        firebase.auth().signInWithEmailAndPassword(email, password)
-          .then(() => {
-            alert('Login successful!');
+
+        const loginUsernameOrEmail = document.getElementById('login-username').value;
+        const loginPassword = document.getElementById('login-password').value;
+
+        // Sign in user with Firebase Authentication
+        firebase.auth().signInWithEmailAndPassword(loginUsernameOrEmail, loginPassword)
+          .then((userCredential) => {
+            // Signed in successfully
+            const user = userCredential.user;
+            console.log("User logged in:", user);
+            // Close login modal
             closeLogin();
+            // You can update the UI here to show logged-in state
+            // and potentially redirect the user
+            // Log login event to Firebase Analytics
+ firebase.analytics().logEvent('login', { method: 'email_password' });
+            alert("Logged in successfully!");
           })
-          .catch(error => {
-            alert(error.message);
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Firebase Authentication Error:", errorCode, errorMessage);
+            // Display an error message to the user
+            alert("Login Error: " + errorMessage);
           });
       });
     }
@@ -144,6 +201,25 @@ function openLogin() {
   document.body.style.overflow = 'hidden';
 }
 function closeLogin() {
-  document.getElementById('loginModal').classList.remove('active');
-  document.body.style.overflow = '';
+ document.getElementById('loginModal').classList.remove('active');
+ document.body.style.overflow = '';
 }
+
+// Listen for authentication state changes
+firebase.auth().onAuthStateChanged((user) => {
+  const authLinks = document.getElementById('auth-links');
+  const userLinks = document.getElementById('user-links');
+
+  if (user) {
+    // User is signed in
+    if (authLinks) authLinks.style.display = 'none';
+    if (userLinks) userLinks.style.display = 'block';
+    console.log('User is signed in:', user);
+    // You can also update the UI to show the user's name or other info
+  } else {
+    // User is signed out
+    if (authLinks) authLinks.style.display = 'block';
+    if (userLinks) userLinks.style.display = 'none';
+    console.log('User is signed out');
+  }
+});
