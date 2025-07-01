@@ -206,21 +206,61 @@ function closeLogin() {
  document.body.style.overflow = '';
 }
 
-// Listen for authentication state changes
-firebase.auth().onAuthStateChanged((user) => {
-  const authLinks = document.getElementById('auth-links');
-  const userLinks = document.getElementById('user-links');
+// --- Modal UI logic (keep your existing open/close functions) ---
 
+// --- SIGN UP ---
+document.getElementById("signupForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const email = document.getElementById("signup-email").value;
+  const password = document.getElementById("signup-password").value;
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      document.getElementById("successMessage").style.display = "block";
+      // Optionally, store user profile in Firestore
+      firebase.firestore().collection("users").doc(userCredential.user.uid).set({
+        email: email,
+        createdAt: new Date()
+      });
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+});
+
+// --- LOGIN ---
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const emailOrUsername = document.getElementById("login-username").value;
+  const password = document.getElementById("login-password").value;
+  // For demo, treat input as email
+  firebase.auth().signInWithEmailAndPassword(emailOrUsername, password)
+    .then(() => {
+      alert("Logged in!");
+      closeLogin();
+      document.getElementById("auth-links").style.display = "none";
+      document.getElementById("user-links").style.display = "block";
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+});
+
+// --- LOGOUT ---
+function logout() {
+  firebase.auth().signOut().then(() => {
+    alert("Logged out!");
+    document.getElementById("auth-links").style.display = "block";
+    document.getElementById("user-links").style.display = "none";
+  });
+}
+
+// --- Show/hide nav links based on auth state ---
+firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    // User is signed in
-    if (authLinks) authLinks.style.display = 'none';
-    if (userLinks) userLinks.style.display = 'block';
-    console.log('User is signed in:', user);
-    // You can also update the UI to show the user's name or other info
+    document.getElementById("auth-links").style.display = "none";
+    document.getElementById("user-links").style.display = "block";
   } else {
-    // User is signed out
-    if (authLinks) authLinks.style.display = 'block';
-    if (userLinks) userLinks.style.display = 'none';
-    console.log('User is signed out');
+    document.getElementById("auth-links").style.display = "block";
+    document.getElementById("user-links").style.display = "none";
   }
 });
