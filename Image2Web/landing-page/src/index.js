@@ -33,9 +33,9 @@ const logoutBtn = document.getElementById("logout-btn");
 const messageDiv = document.getElementById("message");
 const profileDiv = document.getElementById("profile");
 
-// Sign up
-signupBtn.addEventListener("click", async (e) => {
-  e.preventDefault();
+// Handle form submit for Sign Up
+document.getElementById("auth-form").addEventListener("submit", async (e) => {
+  e.preventDefault(); // Prevents page reload and URL change
   const email = emailInput.value;
   const password = passwordInput.value;
   try {
