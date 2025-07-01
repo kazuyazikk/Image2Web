@@ -189,24 +189,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function openAbout() {
-  document.getElementById('aboutModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
+// --- Modal UI logic ---
+function openSignup() {
+  document.getElementById("signupModal").style.display = "block";
 }
-function closeAbout() {
-  document.getElementById('aboutModal').classList.remove('active');
-  document.body.style.overflow = '';
+function closeSignup() {
+  document.getElementById("signupModal").style.display = "none";
+  document.getElementById("successMessage").style.display = "none";
 }
 function openLogin() {
-  document.getElementById('loginModal').classList.add('active');
-  document.body.style.overflow = 'hidden';
+  document.getElementById("loginModal").style.display = "block";
 }
 function closeLogin() {
- document.getElementById('loginModal').classList.remove('active');
- document.body.style.overflow = '';
+  document.getElementById("loginModal").style.display = "none";
 }
-
-// --- Modal UI logic (keep your existing open/close functions) ---
+function openAbout() {
+  document.getElementById("aboutModal").style.display = "block";
+}
+function closeAbout() {
+  document.getElementById("aboutModal").style.display = "none";
+}
 
 // --- SIGN UP ---
 document.getElementById("signupForm").addEventListener("submit", function(e) {
@@ -264,3 +266,10 @@ firebase.auth().onAuthStateChanged(function(user) {
     document.getElementById("user-links").style.display = "none";
   }
 });
+
+// Optional: Close modals when clicking outside of them
+window.onclick = function(event) {
+  if (event.target.classList.contains("signup-modal")) closeSignup();
+  if (event.target.classList.contains("login-modal")) closeLogin();
+  if (event.target.classList.contains("about-modal")) closeAbout();
+};
