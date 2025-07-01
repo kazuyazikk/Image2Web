@@ -215,7 +215,28 @@
     <div id="profile"></div>
     <div id="message"></div>
   </div>
-  <script src="script.js"></script>
+  <!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<!-- Firebase Auth -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<!-- Firebase Firestore -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!-- Firebase Analytics -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDA9TT-iCH515H63y-4zJkTJ1tZAOU7m60",
+    authDomain: "image2web-1a6c0.firebaseapp.com",
+    projectId: "image2web-1a6c0",
+    storageBucket: "image2web-1a6c0.firebasestorage.app",
+    messagingSenderId: "167811907825",
+    appId: "1:167811907825:web:809c410fefc52de3542950",
+    measurementId: "G-LF3Y1S5M47"
+  };
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+<script src="script.js"></script>
   <script type="module" src="./index.js"></script>
 </body>
 </html>
