@@ -99,8 +99,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (signupForm) {
       signupForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        alert('Account created! (No backend, demo only)');
-        closeSignup();
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then(() => {
+            alert('Account created!');
+            closeSignup();
+          })
+          .catch(error => {
+            alert(error.message);
+          });
+      });
+    }
+
+    // Login form handler
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then(() => {
+            alert('Login successful!');
+            closeLogin();
+          })
+          .catch(error => {
+            alert(error.message);
+          });
       });
     }
 });
