@@ -252,19 +252,6 @@ function navigate(page) {
         </section>
       `;
       break;
-    case 'subscribe':
-      html = `
-        <section class="hero">
-          <div class="hero-content">
-            <div class="hero-label">Subscribe</div>
-            <form class="subscribe-form" onsubmit="event.preventDefault();alert('Thank you for subscribing!');">
-              <input type="email" placeholder="Your email" required />
-              <button type="submit">Subscribe</button>
-            </form>
-          </div>
-        </section>
-      `;
-      break;
     case 'get-started':
       html = `
         <section class="hero">
