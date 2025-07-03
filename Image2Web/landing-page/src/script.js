@@ -369,12 +369,13 @@ function logout() {
 firebase.auth().onAuthStateChanged(function(user) {
   const greetingDiv = document.getElementById("user-greeting");
   const nameSpan = document.getElementById("user-name");
+  console.log("Auth state changed. User:", user);
   if (user) {
     document.getElementById("auth-links").style.display = "none";
     document.getElementById("user-links").style.display = "block";
-    // Fetch username from Firestore
     firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
       let username = doc.exists && doc.data().username ? doc.data().username : user.email;
+      console.log("Fetched username:", username);
       if (nameSpan) nameSpan.textContent = username;
       if (greetingDiv) greetingDiv.style.display = "block";
     });
