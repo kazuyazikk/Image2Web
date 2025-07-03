@@ -213,13 +213,15 @@ function closeAbout() {
 // --- SIGN UP ---
 document.getElementById("signupForm").addEventListener("submit", function(e) {
   e.preventDefault();
+  const username = document.getElementById("signup-username").value;
   const email = document.getElementById("signup-email").value;
   const password = document.getElementById("signup-password").value;
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
       document.getElementById("successMessage").style.display = "block";
-      // Optionally, store user profile in Firestore
+      // Store user profile in Firestore
       firebase.firestore().collection("users").doc(userCredential.user.uid).set({
+        username: username,
         email: email,
         createdAt: new Date()
       });
@@ -256,14 +258,23 @@ function logout() {
   });
 }
 
-// --- Show/hide nav links based on auth state ---
+// --- Show/hide nav links and user greeting based on auth state ---
 firebase.auth().onAuthStateChanged(function(user) {
+  const greetingDiv = document.getElementById("user-greeting");
+  const nameSpan = document.getElementById("user-name");
   if (user) {
     document.getElementById("auth-links").style.display = "none";
     document.getElementById("user-links").style.display = "block";
+    // Fetch username from Firestore
+    firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
+      let username = doc.exists && doc.data().username ? doc.data().username : user.email;
+      nameSpan.textContent = username;
+      greetingDiv.style.display = "block";
+    });
   } else {
     document.getElementById("auth-links").style.display = "block";
     document.getElementById("user-links").style.display = "none";
+    greetingDiv.style.display = "none";
   }
 });
 
