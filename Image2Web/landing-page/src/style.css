@@ -144,13 +144,36 @@ nav ul {
   box-shadow: 0 2px 12px 0 rgba(56,189,248,0.10);
 }
 
+/* Remove border/background from .nav-item.active */
+.nav-item.active {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Only the button inside .nav-item.active gets the border */
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: #0ea5e9;
+  font-family: 'Russo One', Arial, sans-serif;
+  font-weight: bold;
+  font-size: 1.1em;
+  border-radius: 1.5em;
+  padding: 0.4em 1.5em;
+  margin-left: 1em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  outline: none;
+  box-shadow: none;
+}
+
 .nav-item.active .nav-btn {
   border: 2px solid #0ea5e9;
   background: transparent;
   color: #0ea5e9;
 }
 
-/* Keep this for hover effect on all nav buttons */
 .nav-btn:hover {
   background: #0ea5e9;
   color: #fff;
@@ -807,32 +830,4 @@ footer{
     right: 2rem;
     z-index: 1003;
   }
-}
-
-.nav-btn {
-  background: transparent;
-  border: none;
-  color: #0ea5e9;
-  font-family: 'Russo One', Arial, sans-serif;
-  font-weight: bold;
-  font-size: 1.1em;
-  border-radius: 1.5em;
-  padding: 0.4em 1.5em;
-  margin-left: 1em;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, border 0.2s;
-  outline: none;
-  box-shadow: none;
-}
-
-.nav-btn:hover,
-.nav-item.active .nav-btn {
-  background: #0ea5e9;
-  color: #fff;
-  border: 2px solid #0ea5e9;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg);}
-  100% { transform: rotate(360deg);}
 }
