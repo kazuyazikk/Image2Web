@@ -110,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (signupForm) {
       signupForm.addEventListener('submit', function(e) {
         e.preventDefault();
-
         const username = document.getElementById('signup-username').value;
         const email = document.getElementById('signup-email').value;
         const password = document.getElementById('signup-password').value;
@@ -124,7 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Save username to Firestore (assuming you have Firestore initialized)
             firebase.firestore().collection('users').doc(user.uid).set({
               username: username,
-              email: user.email
+              email: email,
+              createdAt: new Date()
             })
             .then(() => {
               console.log("User profile saved to Firestore!");
@@ -310,21 +310,17 @@ document.addEventListener('DOMContentLoaded', () => {
         .then((userCredential) => {
           const user = userCredential.user;
           // Save username to Firestore
-          firebase.firestore().collection('users').doc(user.uid).set({
+          return firebase.firestore().collection('users').doc(user.uid).set({
             username: username,
-            email: user.email,
+            email: email,
             createdAt: new Date()
-          })
-          .then(() => {
-            document.getElementById('successMessage').style.display = 'block';
-            firebase.analytics().logEvent('sign_up', { method: 'email_password' });
-            setTimeout(() => {
-              closeSignup();
-            }, 2000);
-          })
-          .catch((error) => {
-            alert("Error saving user profile: " + error.message);
           });
+        })
+        .then(() => {
+          document.getElementById('successMessage').style.display = 'block';
+          setTimeout(() => {
+            closeSignup();
+          }, 2000);
         })
         .catch((error) => {
           alert("Signup Error: " + error.message);
@@ -369,14 +365,20 @@ function logout() {
 firebase.auth().onAuthStateChanged(function(user) {
   const greetingDiv = document.getElementById("user-greeting");
   const nameSpan = document.getElementById("user-name");
-  console.log("Auth state changed. User:", user);
   if (user) {
     document.getElementById("auth-links").style.display = "none";
     document.getElementById("user-links").style.display = "block";
+    // Always fetch username from Firestore
     firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
-      let username = doc.exists && doc.data().username ? doc.data().username : user.email;
-      console.log("Fetched username:", username);
+      let username = user.email;
+      if (doc.exists && doc.data().username) {
+        username = doc.data().username;
+      }
       if (nameSpan) nameSpan.textContent = username;
+      if (greetingDiv) greetingDiv.style.display = "block";
+    }).catch(() => {
+      // fallback to email if Firestore fails
+      if (nameSpan) nameSpan.textContent = user.email;
       if (greetingDiv) greetingDiv.style.display = "block";
     });
   } else {
