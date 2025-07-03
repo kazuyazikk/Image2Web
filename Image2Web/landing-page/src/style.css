@@ -812,6 +812,7 @@ footer{
   background: transparent;
   border: 2px solid #0ea5e9;
   color: #0ea5e9;
+  font-family: 'Russo One', Arial, sans-serif; /* Match your nav font */
   font-weight: bold;
   font-size: 1.1em;
   border-radius: 1.5em;
@@ -819,6 +820,7 @@ footer{
   margin-left: 1em;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
+  outline: none;
 }
 .nav-btn:hover {
   background: #0ea5e9;
