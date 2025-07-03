@@ -360,11 +360,11 @@ firebase.auth().onAuthStateChanged(function(user) {
       if (doc.exists && doc.data().username) {
         nameSpan.textContent = doc.data().username;
       } else {
-        nameSpan.textContent = ""; // or fallback to something else
+        nameSpan.textContent = "User"; // fallback if username missing
       }
       greetingDiv.style.display = "block";
     }).catch(() => {
-      nameSpan.textContent = "";
+      nameSpan.textContent = "User";
       greetingDiv.style.display = "block";
     });
   } else {
