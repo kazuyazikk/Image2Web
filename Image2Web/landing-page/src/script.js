@@ -368,7 +368,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     document.getElementById("auth-links").style.display = "none";
     document.getElementById("user-links").style.display = "block";
-    // Always fetch username from Firestore
+    // Always fetch username from Firestore and display it
     firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
       let username = user.email;
       if (doc.exists && doc.data().username) {
