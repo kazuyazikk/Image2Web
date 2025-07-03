@@ -746,3 +746,29 @@ footer{
 .close-btn:hover {
   color: #fff;
 }
+
+/* Add this at the end of your CSS file for a standout user greeting */
+#user-greeting {
+  display: none;
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-weight: bold;
+  font-size: 1.15em;
+  color: #fff;
+  background: linear-gradient(90deg, #0ea5e9 60%, #38bdf8 100%);
+  padding: 0.5em 1.2em;
+  border-radius: 2em;
+  box-shadow: 0 2px 12px rgba(14,165,233,0.15);
+  letter-spacing: 0.03em;
+  border: 2px solid #38bdf8;
+  z-index: 1001;
+  transition: background 0.3s, color 0.3s;
+}
+
+#user-greeting #user-name {
+  color: #ffe066;
+  margin-left: 0.3em;
+  font-weight: 900;
+  text-shadow: 0 1px 4px #0ea5e9;
+}
