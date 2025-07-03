@@ -357,20 +357,19 @@ firebase.auth().onAuthStateChanged(function(user) {
     document.getElementById("user-links").style.display = "block";
     // Always fetch username from Firestore and display it
     firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
-      let username = user.email;
       if (doc.exists && doc.data().username) {
-        username = doc.data().username;
+        nameSpan.textContent = doc.data().username;
+      } else {
+        nameSpan.textContent = ""; // or fallback to something else
       }
-      if (nameSpan) nameSpan.textContent = username;
-      if (greetingDiv) greetingDiv.style.display = "block";
+      greetingDiv.style.display = "block";
     }).catch(() => {
-      // fallback to email if Firestore fails
-      if (nameSpan) nameSpan.textContent = user.email;
-      if (greetingDiv) greetingDiv.style.display = "block";
+      nameSpan.textContent = "";
+      greetingDiv.style.display = "block";
     });
   } else {
     document.getElementById("auth-links").style.display = "block";
     document.getElementById("user-links").style.display = "none";
-    if (greetingDiv) greetingDiv.style.display = "none";
+    greetingDiv.style.display = "none";
   }
 });
