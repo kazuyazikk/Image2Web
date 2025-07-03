@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CODE4WEB</title>
+  <meta name="description" content="Image2Web lets you turn images into beautiful, responsive websites instantly. Designed by SeroTech.">
+  <title>CODE4WEB - Image2Web</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
@@ -45,12 +46,8 @@
         <ul>
           <li class="nav-item active" data-page="home" onclick="navigate('home')">Home</li>
           <li class="nav-item" onclick="window.location.href='contributors.html'">Contributors</li>
-          <div id="auth-links">
-            <li class="nav-item" onclick="openLogin()">Login</li>
-          </div>
-          <div id="user-links" style="display: none;">
-            <li class="nav-item" onclick="logout()">Logout</li>
-          </div>
+          <li class="nav-item" id="login-link" onclick="openLogin()">Login</li>
+          <li class="nav-item" id="logout-link" style="display:none;" onclick="logout()">Logout</li>
         </ul>
       </nav>
       <div id="user-greeting">
@@ -68,8 +65,8 @@
           Upload Images and convert them into beautiful, responsive websites with ease.
         </p>
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem">
-          <button class="hero-btn" onclick="openSignup()">Get Started</button>
-          <button class="github-btn" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')">
+          <button class="hero-btn" onclick="openSignup()" aria-label="Get Started">Get Started</button>
+          <button class="github-btn" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')" aria-label="View us on Github">
             <svg height="22" width="22" viewBox="0 0 16 16" fill="currentColor" style="vertical-align:middle; margin-right:8px;">
               <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
               0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
@@ -153,7 +150,9 @@
     <div class="footer-content">
       <div class="footer-section">
         <h3 class="footer-title">About Image2Web</h3>
-        <p class="footer-text">Insert About us right here</p>
+        <p class="footer-text">
+          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds. Built for developers and designers by SeroTech.
+        </p>
         <div class="social-links">
           <!-- Social Links SVGs here -->
         </div>
@@ -179,6 +178,11 @@
     </div>
   </footer>
 
+  <!-- Loading Spinner -->
+  <div id="loading-spinner" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">
+    <div style="border:8px solid #eee;border-top:8px solid #0ea5e9;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;"></div>
+  </div>
+
   <!-- Firebase App (the core Firebase SDK) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -197,6 +201,9 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
   </script>
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
+  <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
+    &#9776;
+  </button>
 </body>
 </html>

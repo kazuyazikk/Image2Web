@@ -310,6 +310,12 @@ main {
   box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
 }
 
+.hero-btn:hover, .github-btn:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 16px rgba(14,165,233,0.18);
+}
+
 .github-btn:hover, .hero-btn:hover, .signup-btn:hover{
   transform: translateY(-3px);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
@@ -773,4 +779,36 @@ footer{
   text-shadow: 0 1px 4px #0ea5e9;
   font-size: 1.15em;
   display: inline;
+}
+
+@media (max-width: 700px) {
+  nav ul {
+    display: none;
+    flex-direction: column;
+    background: #222;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    z-index: 1002;
+  }
+  nav ul.open {
+    display: flex;
+  }
+  #nav-toggle {
+    display: block;
+    background: none;
+    border: none;
+    color: #0ea5e9;
+    font-size: 2em;
+    position: absolute;
+    top: 1.2rem;
+    right: 2rem;
+    z-index: 1003;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
 }

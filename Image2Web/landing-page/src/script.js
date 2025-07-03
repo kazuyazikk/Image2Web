@@ -350,11 +350,9 @@ function logout() {
 
 // --- Show/hide nav links and user greeting based on auth state ---
 firebase.auth().onAuthStateChanged(function(user) {
-  const greetingDiv = document.getElementById("user-greeting");
-  const nameSpan = document.getElementById("user-name");
   if (user) {
-    document.getElementById("auth-links").style.display = "none";
-    document.getElementById("user-links").style.display = "block";
+    document.getElementById("login-link").style.display = "none";
+    document.getElementById("logout-link").style.display = "inline-block";
     // Always fetch username from Firestore and display it
     firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
       if (doc.exists && doc.data().username) {
@@ -368,8 +366,19 @@ firebase.auth().onAuthStateChanged(function(user) {
       greetingDiv.style.display = "block";
     });
   } else {
-    document.getElementById("auth-links").style.display = "block";
-    document.getElementById("user-links").style.display = "none";
+    document.getElementById("login-link").style.display = "inline-block";
+    document.getElementById("logout-link").style.display = "none";
     greetingDiv.style.display = "none";
   }
 });
+
+document.getElementById('nav-toggle').onclick = function() {
+  document.querySelector('nav ul').classList.toggle('open');
+};
+
+function showSpinner() {
+  document.getElementById('loading-spinner').style.display = 'flex';
+}
+function hideSpinner() {
+  document.getElementById('loading-spinner').style.display = 'none';
+}
