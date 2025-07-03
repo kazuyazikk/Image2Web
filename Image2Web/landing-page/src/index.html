@@ -46,9 +46,13 @@
         <ul>
           <li class="nav-item active" data-page="home" onclick="navigate('home')">Home</li>
           <li class="nav-item" onclick="window.location.href='contributors.html'">Contributors</li>
-          <li class="nav-item" id="login-link" onclick="openLogin()">Login</li>
-          <li class="nav-item" id="logout-link" style="display:none;" onclick="logout()">Logout</li>
         </ul>
+        <div id="auth-links">
+          <button class="nav-btn" onclick="openLogin()">Login</button>
+        </div>
+        <div id="user-links" style="display: none;">
+          <button class="nav-btn" onclick="logout()">Logout</button>
+        </div>
       </nav>
       <div id="user-greeting">
         Hi, <span id="user-name"></span>
