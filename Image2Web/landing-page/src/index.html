@@ -59,8 +59,12 @@
       </div>
       <nav>
         <ul>
-          <li class="nav-item active" data-page="home" onclick="navigate('home')">Home</li>
-          <li class="nav-item" onclick="window.location.href='contributors.html'">Contributors</li>
+          <li class="nav-item active" data-page="home" onclick="navigate('home')">
+            <button class="nav-btn">Home</button>
+          </li>
+          <li class="nav-item" onclick="window.location.href='contributors.html'">
+            <button class="nav-btn">Contributors</button>
+          </li>
           <li class="nav-item" id="auth-links">
             <button class="nav-btn" onclick="openLogin()">Login</button>
           </li>
