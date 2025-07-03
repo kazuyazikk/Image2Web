@@ -771,4 +771,6 @@ footer{
   margin-left: 0.3em;
   font-weight: 900;
   text-shadow: 0 1px 4px #0ea5e9;
+  font-size: 1.15em;
+  display: inline;
 }
