@@ -1,79 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Image2Web - Workspace</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image2Web - Workspace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Paste mo dito yung CSS mo (yung original mo na maayos na UI) */
+        body {
+            background: linear-gradient(135deg, #1c1e4f, #6f2dbd);
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+        .workspace-container { max-width: 1200px; margin: auto; padding: 2rem; }
+        .workspace-header { text-align: center; }
+        .workspace-title { font-size: 2.5rem; font-family: 'Russo One'; }
+        .workspace-content { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+        .upload-area, .config-section { flex: 1; background: rgba(255,255,255,0.05); border-radius: 10px; padding: 2rem; }
+        .upload-area { cursor: pointer; text-align: center; border: 2px dashed rgba(255,255,255,0.2); }
+        .upload-area:hover { border-color: #38bdf8; }
+        .generate-btn { padding: 1rem 2rem; border: none; border-radius: 50px; background: linear-gradient(90deg, #ff6a00, #ee0979); color: white; font-size: 1.1rem; cursor: pointer; width: 100%; margin-top: 1rem; }
+        .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .uploaded-file { margin-top: 1rem; text-align: left; }
+        .file-preview { max-width: 100%; border-radius: 8px; margin-top: 1rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; }
+        .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border-radius: 8px; border: none; }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="header-content">
-      <div class="logo">
-        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8"/>
-          <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9"/>
-          <rect x="20" y="32" width="16" height="16" rx="4" fill="#06B6D4"/>
-          <rect x="20" y="20" width="16" height="16" rx="4" fill="#1E293B"/>
-        </svg>
-        <div>
-          <span class="brand">CODE4WEB</span>
-          <div class="slogan">Workspace</div>
+
+<div class="workspace-container">
+    <div class="workspace-header">
+        <h1 class="workspace-title">Workspace</h1>
+        <p>Transform your wireframes into beautiful, functional code</p>
+    </div>
+
+    <div class="workspace-content">
+        <!-- Upload Section -->
+        <div class="upload-area" id="uploadArea">
+            <div>📁 Upload Wireframe Here</div>
+            <p>Drag and drop your wireframe image or click to browse</p>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            <div class="uploaded-file" id="uploadedFile" style="display: none;">
+                <strong id="fileName">Filename</strong>
+                <p id="fileSize">Size</p>
+                <img id="filePreview" class="file-preview" src="" alt="Preview">
+            </div>
         </div>
-      </div>
-      <nav>
-        <ul>
-          <li class="nav-item" onclick="window.location.href='index.html'"><button class="nav-btn">Home</button></li>
-          <li class="nav-item" onclick="window.location.href='contributors.html'"><button class="nav-btn">Contributors</button></li>
-          <li class="nav-item active"><button class="nav-btn">Workspace</button></li>
-          <li class="nav-item" id="auth-links"><button class="nav-btn" onclick="openLogin()">Login</button></li>
-          <li class="nav-item" id="user-links" style="display: none;"><button class="nav-btn" onclick="logout()">Logout</button></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-content">
-        <div class="hero-label">Workspace</div>
-        <h1 class="hero-title">Transform Your Wireframes</h1>
-        <p style="font-size: 1.2rem; margin-bottom: 2rem; color: var(--text-secondary);">
-          Upload your wireframe image below and turn it into beautiful, responsive code.
-        </p>
-        <form id="upload-form" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-          <input type="file" id="file-input" accept="image/*" style="padding: 1rem; border: 2px dashed #38bdf8; border-radius: 10px; background: var(--glass-bg); color: var(--text-primary); cursor: pointer;">
-          <textarea placeholder="Describe your website’s purpose..." style="width: 100%; max-width: 500px; height: 120px; padding: 1rem; border-radius: 10px; border: none; background: var(--glass-bg); color: var(--text-primary);"></textarea>
-          <button type="submit" class="hero-btn">Generate Code</button>
-        </form>
-      </div>
-    </section>
-  </main>
+        <!-- Config Section -->
+        <div class="config-section">
+            <div class="form-group">
+                <label for="modelSelect">Select Model</label>
+                <select id="modelSelect">
+                    <option value="gemini">Gemini Google</option>
+                    <option value="claude">Claude AI</option>
+                    <option value="gpt4">GPT-4</option>
+                    <option value="gpt3">GPT-3.5</option>
+                </select>
+            </div>
 
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>About Image2Web</h3>
-        <p>Transform your wireframes and images into real, responsive websites in seconds.</p>
-      </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <a href="index.html">Home</a>
-        <a href="#" onclick="openAbout(); return false;">About</a>
-        <a href="#">Documentation</a>
-      </div>
-      <div class="footer-section">
-        <h3>Contact</h3>
-        <p>📧 our email</p>
-        <p>📍 A Wireframe to Website Generator</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
-    </div>
-  </footer>
+            <div class="form-group">
+                <label for="description">Description of your website</label>
+                <textarea id="description" rows="5" placeholder="Describe your website..."></textarea>
+            </div>
 
-  <script src="script.js" defer></script>
+            <button class="generate-btn" id="generateBtn" disabled>Generate Code!</button>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import { getFirestore, collection, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ✅ Your Firebase Config
+const firebaseConfig = {
+    apiKey: "AIzaSyDA9TT-iCH515H63y-4zJkTJ1tZAOU7m60",
+    authDomain: "image2web-1a6c0.firebaseapp.com",
+    projectId: "image2web-1a6c0",
+    storageBucket: "image2web-1a6c0.firebasestorage.app",
+    messagingSenderId: "167811907825",
+    appId: "1:167811907825:web:809c410fefc52de3542950"
+};
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+const db = getFirestore(app);
+
+const uploadArea = document.getElementById("uploadArea");
+const fileInput = document.getElementById("fileInput");
+const uploadedFile = document.getElementById("uploadedFile");
+const fileName = document.getElementById("fileName");
+const fileSize = document.getElementById("fileSize");
+const filePreview = document.getElementById("filePreview");
+const generateBtn = document.getElementById("generateBtn");
+const description = document.getElementById("description");
+const modelSelect = document.getElementById("modelSelect");
+
+let currentFile = null;
+
+uploadArea.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) handleFile(file);
+});
+
+uploadArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    uploadArea.style.borderColor = "#00f2fe";
+});
+
+uploadArea.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    uploadArea.style.borderColor = "rgba(255,255,255,0.2)";
+});
+
+uploadArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) handleFile(file);
+    uploadArea.style.borderColor = "rgba(255,255,255,0.2)";
+});
+
+function handleFile(file) {
+    currentFile = file;
+    fileName.textContent = file.name;
+    fileSize.textContent = formatSize(file.size);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        filePreview.src = e.target.result;
+        uploadedFile.style.display = "block";
+    };
+    reader.readAsDataURL(file);
+    updateButtonState();
+}
+
+description.addEventListener("input", updateButtonState);
+
+function updateButtonState() {
+    generateBtn.disabled = !currentFile || !description.value.trim();
+}
+
+generateBtn.addEventListener("click", async () => {
+    if (!currentFile || !description.value.trim()) return;
+
+    generateBtn.textContent = "Uploading...";
+    generateBtn.disabled = true;
+
+    try {
+        // Upload to storage
+        const storageRef = ref(storage, `wireframes/${Date.now()}_${currentFile.name}`);
+        const snapshot = await uploadBytes(storageRef, currentFile);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        // Save to Firestore
+        await addDoc(collection(db, "wireframes"), {
+            description: description.value.trim(),
+            model: modelSelect.value,
+            fileURL: downloadURL,
+            createdAt: Timestamp.now(),
+            status: "pending"
+        });
+
+        alert("Upload successful! Firestore updated. ✅");
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error uploading file or saving document.");
+    }
+
+    generateBtn.textContent = "Generate Code!";
+    generateBtn.disabled = false;
+});
+
+function formatSize(bytes) {
+    if (bytes < 1024) return bytes + " B";
+    else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + " KB";
+    else return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
+</script>
+
 </body>
 </html>
