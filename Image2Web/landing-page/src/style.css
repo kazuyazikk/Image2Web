@@ -85,7 +85,7 @@ header {
 
 .slogan {
   font-family: 'Russo One', Arial, sans-serif;
-  font-size: 1.35rem;
+  font-size: 1.35rem; 
   color: #38bdf8;
   letter-spacing: 2px;
   margin-top: -0.3em;    
@@ -103,11 +103,22 @@ header {
   100% { transform: scale(1) rotate(0); }
 }
 
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative; /* For user-greeting absolute positioning */
+}
+
 /* Navbar */
 nav ul {
   list-style: none;
   display: flex;
   gap: 32px;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-item {
@@ -133,11 +144,14 @@ nav ul {
   box-shadow: 0 2px 12px rgba(56, 189, 248, 0.10);
 }
 
+/* Remove this block to keep active nav styling consistent */
+/*
 .nav-item.active {
   border: none !important;
   background: none !important;
   box-shadow: none !important;
 }
+*/
 
 .nav-item::before {
   content: '';
@@ -216,7 +230,7 @@ main {
   align-items: center;
   justify-content: center;
   padding: 1rem 2rem;
-  margin: 1rem;
+  margin: 0.5rem;
   border: none;
   border-radius: 50px;
   font-family: 'Inter', sans-serif;
@@ -323,7 +337,7 @@ footer {
 
 /* Additional media queries remain as you had them */
 
-/* User greeting styling remains unchanged */
+/* User greeting styling */
 #user-greeting {
   display: none;
   position: absolute;

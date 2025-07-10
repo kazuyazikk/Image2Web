@@ -16,101 +16,23 @@ function closeLogin() {
   document.getElementById("loginModal").style.display = "none";
   document.body.style.overflow = "auto";
 }
-function openAbout() {
-  document.getElementById("aboutModal").style.display = "block";
-}
-function closeAbout() {
-  document.getElementById("aboutModal").style.display = "none";
-}
 window.onclick = function (event) {
   if (event.target.classList.contains("signup-modal")) closeSignup();
   if (event.target.classList.contains("login-modal")) closeLogin();
-  if (event.target.classList.contains("about-modal")) closeAbout();
 };
-
-// --- Navigation logic ---
-function navigate(page) {
-  const content = document.getElementById('content');
-  if (!content) return;
-
-  let html = '';
-  switch (page) {
-    case 'home':
-      html = `
-        <section class="hero">
-          <div class="hero-content">
-            <div class="hero-label">Digital Insights</div>
-            <h1 class="hero-title">The Future<br>of Technology</h1>
-            <button class="hero-btn" onclick="navigate('get-started')">Get started</button>
-          </div>
-        </section>
-      `;
-      break;
-    case 'contributors':
-      html = `
-        <section class="hero">
-          <div class="hero-content">
-            <div class="hero-label">Contributors</div>
-            <ul class="contributors-list">
-              <li>Moyano, Sarge Dave M.</li>
-              <li>Mallari, Merick Joshua</li>
-              <li>Quiambao, Christian Joshua</li>
-              <li>Dizon, Robby</li>
-            </ul>
-          </div>
-        </section>
-      `;
-      break;
-    case 'get-started':
-      html = `
-        <section class="hero">
-          <div class="hero-content">
-            <div class="hero-label">Get Started</div>
-            <p>Welcome! Explore our resources and join our community.</p>
-          </div>
-        </section>
-      `;
-      break;
-    default:
-      html = `
-        <section>
-          <h2>Page Not Found</h2>
-          <p>The page you are looking for does not exist.</p>
-        </section>
-      `;
-  }
-  content.innerHTML = html;
-
-  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-  const nav = document.querySelector(`.nav-item[data-page="${page}"]`);
-  if (nav) nav.classList.add('active');
-}
-window.navigate = navigate;
 
 // --- Auth logic ---
 document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('content')) navigate('home');
-
   const signupForm = document.getElementById('signupForm');
   if (signupForm) {
     signupForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const username = document.getElementById('signup-username').value;
       const email = document.getElementById('signup-email').value;
       const password = document.getElementById('signup-password').value;
 
       firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          return firebase.firestore().collection('users').doc(user.uid).set({
-            username: username,
-            email: email,
-            createdAt: new Date()
-          });
-        })
         .then(() => {
           document.getElementById('successMessage').style.display = 'block';
-          firebase.analytics().logEvent('sign_up', { method: 'email_password' });
           setTimeout(() => {
             closeSignup();
             signupForm.reset();
@@ -131,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(() => {
-          firebase.analytics().logEvent('login', { method: 'email_password' });
           closeLogin();
           alert("Logged in successfully!");
         })
@@ -150,7 +71,7 @@ function logout() {
     document.getElementById("user-links").style.display = "none";
     document.getElementById("user-greeting").style.display = "none";
 
-    const workspaceLink = document.querySelector('.hero-btn[href="workspace.html"], a.hero-btn[href="workspace.html"]');
+    const workspaceLink = document.getElementById("workspace-link");
     if (workspaceLink) {
       workspaceLink.classList.add('disabled');
       workspaceLink.href = "#";
@@ -166,22 +87,14 @@ function logout() {
 firebase.auth().onAuthStateChanged(function (user) {
   const greetingDiv = document.getElementById("user-greeting");
   const nameSpan = document.getElementById("user-name");
-  const workspaceLink = document.querySelector('a[href="workspace.html"]');
+  const workspaceLink = document.getElementById("workspace-link");
 
   if (user) {
     document.getElementById("auth-links").style.display = "none";
     document.getElementById("user-links").style.display = "list-item";
     greetingDiv.style.display = "block";
 
-    firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
-      if (doc.exists && doc.data().username) {
-        nameSpan.textContent = doc.data().username;
-      } else {
-        nameSpan.textContent = "User";
-      }
-    }).catch(() => {
-      nameSpan.textContent = "User";
-    });
+    nameSpan.textContent = user.email.split('@')[0];
 
     if (workspaceLink) {
       workspaceLink.classList.remove('disabled');
