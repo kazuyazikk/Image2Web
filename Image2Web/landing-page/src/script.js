@@ -1,194 +1,3 @@
-// This file contains the JavaScript code for the landing page. 
-// It handles user interactions, dynamic content updates, and other client-side logic.
-
-function openSignup(){
-  document.getElementById('signupModal').style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeSignup(){
-  document.getElementById('signupModal').style.display = 'none';
-  document.body.style.overflow = 'auto';
-}
-
-// Close the modal when clicking outside
-window.onclick = function(event) {
-  const modal = document.getElementById('signupModal');
-  if(event.target === modal){
-    closeSignup();
-  }
-}
-
-function navigate(page) {
-    const content = document.getElementById('content');
-    let html = '';
-    switch (page) {
-        case 'home':
-            html = `
-                <section class="hero">
-                  <div class="hero-content">
-                    <div class="hero-label">Digital Insights</div>
-                    <h1 class="hero-title">The Future<br>of Technology</h1>
-                    <button class="hero-btn" onclick="navigate('get-started')">Get started</button>
-                  </div>
-                </section>
-            `;
-            break;
-        case 'contributors':
-            html = `
-                <section class="hero">
-                  <div class="hero-content">
-                    <div class="hero-label">Contributors</div>
-                    <ul class="contributors-list">
-                      <li>Moyano, Sarge Dave M.</li>
-                      <li>Mallari, Merick Joshua</li>
-                      <li>Quiambao, Christian Joshua</li>
-                      <li>DIzon, Robby</li>
-                    </ul>
-                  </div>
-                </section>
-            `;
-            break;
-        case 'subscribe':
-            html = `
-                <section class="hero">
-                  <div class="hero-content">
-                    <div class="hero-label">Subscribe</div>
-                    <form class="subscribe-form" onsubmit="event.preventDefault();alert('Thank you for subscribing!');">
-                      <input type="email" placeholder="Your email" required />
-                      <button type="submit">Subscribe</button>
-                    </form>
-                  </div>
-                </section>
-            `;
-            break;
-        case 'get-started':
-            html = `
-                <section class="hero">
-                  <div class="hero-content">
-                    <div class="hero-label">Get Started</div>
-                    <p>Welcome! Explore our resources and join our community.</p>
-                  </div>
-                </section>
-            `;
-            break;
-        default:
-            html = `
-                <section>
-                  <h2>Page Not Found</h2>
-                  <p>The page you are looking for does not exist.</p>
-                </section>
-            `;
-    }
-    content.innerHTML = html;
-
-    // Update active nav item
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    const nav = document.querySelector(`.nav-item[data-page="${page}"]`);
-    if (nav) nav.classList.add('active');
-}
-
-// Function to handle user logout
-function logout() {
-  firebase.auth().signOut().then(() => {
-    console.log("User logged out");
-    alert("Logged out successfully!");
-  }).catch((error) => {
-    console.error("Error logging out:", error);
-  });
-}
-
-window.navigate = navigate; // Make it available globally
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Initial load
-    navigate('home');
-
-    // Signup form handler
-    
-    const signupForm = document.getElementById('signupForm');
-    if (signupForm) {
-      signupForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const username = document.getElementById('signup-username').value;
-        const email = document.getElementById('signup-email').value;
-        const password = document.getElementById('signup-password').value;
-
-        // Create user with Firebase Authentication
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then((userCredential) => {
-            // Signed in successfully
-            const user = userCredential.user;
-
-            // Save username to Firestore (assuming you have Firestore initialized)
-            firebase.firestore().collection('users').doc(user.uid).set({
-              username: username,
-              email: email,
-              createdAt: new Date()
-            })
-            .then(() => {
-              console.log("User profile saved to Firestore!");
-              // Display success message and close modal
-              document.getElementById('successMessage').style.display = 'block';
-              // You might want to automatically log in the user after signup
-              // Log signup event to Firebase Analytics
- firebase.analytics().logEvent('sign_up', { method: 'email_password' });
-              // and redirect them to a different page or update the UI
-              // For now, let's just close the modal after a delay
-              setTimeout(() => {
-                closeSignup();
-              }, 3000); // Close after 3 seconds
-            })
-            .catch((error) => {
-              console.error("Error saving user profile:", error);
-              // Display an error message to the user
-              alert("Error saving user profile: " + error.message);
-            });
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("Firebase Authentication Error:", errorCode, errorMessage);
-            // Display an error message to the user
-            alert("Signup Error: " + errorMessage);
-          });
-      });
-    }
-
-    // Login form handler
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-      loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const loginUsernameOrEmail = document.getElementById('login-username').value;
-        const loginPassword = document.getElementById('login-password').value;
-
-        // Sign in user with Firebase Authentication
-        firebase.auth().signInWithEmailAndPassword(loginUsernameOrEmail, loginPassword)
-          .then((userCredential) => {
-            // Signed in successfully
-            const user = userCredential.user;
-            console.log("User logged in:", user);
-            // Close login modal
-            closeLogin();
-            // You can update the UI here to show logged-in state
-            // and potentially redirect the user
-            // Log login event to Firebase Analytics
- firebase.analytics().logEvent('login', { method: 'email_password' });
-            alert("Logged in successfully!");
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error("Firebase Authentication Error:", errorCode, errorMessage);
-            // Display an error message to the user
-            alert("Login Error: " + errorMessage);
-          });
-      });
-    }
-});
-
 // --- Modal UI logic ---
 function openSignup() {
   document.getElementById("signupModal").style.display = "block";
@@ -214,16 +23,18 @@ function closeAbout() {
   document.getElementById("aboutModal").style.display = "none";
 }
 
-// Optional: Close modals when clicking outside of them
-window.onclick = function(event) {
-  if (event.target.classList && event.target.classList.contains("signup-modal")) closeSignup();
-  if (event.target.classList && event.target.classList.contains("login-modal")) closeLogin();
-  if (event.target.classList && event.target.classList.contains("about-modal")) closeAbout();
+// --- Optional: Close modals when clicking outside ---
+window.onclick = function (event) {
+  if (event.target.classList.contains("signup-modal")) closeSignup();
+  if (event.target.classList.contains("login-modal")) closeLogin();
+  if (event.target.classList.contains("about-modal")) closeAbout();
 };
 
-// Navigation logic
+// --- Navigation logic ---
 function navigate(page) {
   const content = document.getElementById('content');
+  if (!content) return; // Skip if no content container
+
   let html = '';
   switch (page) {
     case 'home':
@@ -270,24 +81,22 @@ function navigate(page) {
         </section>
       `;
   }
-  if (content) content.innerHTML = html;
+  content.innerHTML = html;
 
-  // Update active nav item
   document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
   const nav = document.querySelector(`.nav-item[data-page="${page}"]`);
   if (nav) nav.classList.add('active');
 }
 window.navigate = navigate;
 
-// --- SIGN UP ---
+// --- Auth logic (signup, login, logout) ---
 document.addEventListener('DOMContentLoaded', () => {
-  // Initial load
   if (document.getElementById('content')) navigate('home');
 
-  // Signup form handler
+  // Signup form
   const signupForm = document.getElementById('signupForm');
   if (signupForm) {
-    signupForm.addEventListener('submit', function(e) {
+    signupForm.addEventListener('submit', function (e) {
       e.preventDefault();
       const username = document.getElementById('signup-username').value;
       const email = document.getElementById('signup-email').value;
@@ -296,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          // Save username to Firestore
           return firebase.firestore().collection('users').doc(user.uid).set({
             username: username,
             email: email,
@@ -305,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(() => {
           document.getElementById('successMessage').style.display = 'block';
+          firebase.analytics().logEvent('sign_up', { method: 'email_password' });
           setTimeout(() => {
             closeSignup();
           }, 2000);
@@ -315,18 +124,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Login form handler
+  // Login form
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
-    loginForm.addEventListener('submit', function(e) {
+    loginForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      const loginUsernameOrEmail = document.getElementById('login-username').value;
-      const loginPassword = document.getElementById('login-password').value;
+      const email = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
 
-      firebase.auth().signInWithEmailAndPassword(loginUsernameOrEmail, loginPassword)
-        .then((userCredential) => {
-          closeLogin();
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(() => {
           firebase.analytics().logEvent('login', { method: 'email_password' });
+          closeLogin();
           alert("Logged in successfully!");
         })
         .catch((error) => {
@@ -336,31 +145,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// --- LOGOUT ---
+// --- Logout function ---
 function logout() {
   firebase.auth().signOut().then(() => {
     alert("Logged out!");
     document.getElementById("auth-links").style.display = "block";
     document.getElementById("user-links").style.display = "none";
-    // Hide greeting
-    const greetingDiv = document.getElementById("user-greeting");
-    if (greetingDiv) greetingDiv.style.display = "none";
+    document.getElementById("user-greeting").style.display = "none";
+  }).catch((error) => {
+    console.error("Error logging out:", error);
   });
 }
 
-// --- Show/hide nav links and user greeting based on auth state ---
-firebase.auth().onAuthStateChanged(function(user) {
+// --- Auth state observer ---
+firebase.auth().onAuthStateChanged(function (user) {
   const greetingDiv = document.getElementById("user-greeting");
   const nameSpan = document.getElementById("user-name");
   if (user) {
     document.getElementById("auth-links").style.display = "none";
     document.getElementById("user-links").style.display = "list-item";
-    // Always fetch username from Firestore and display it
+
     firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
       if (doc.exists && doc.data().username) {
         nameSpan.textContent = doc.data().username;
       } else {
-        nameSpan.textContent = "User"; // fallback if username missing
+        nameSpan.textContent = "User";
       }
       greetingDiv.style.display = "block";
     }).catch(() => {
@@ -374,10 +183,15 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
-document.getElementById('nav-toggle').onclick = function() {
-  document.querySelector('nav ul').classList.toggle('open');
-};
+// --- Navbar toggle (if using) ---
+const navToggle = document.getElementById('nav-toggle');
+if (navToggle) {
+  navToggle.onclick = function () {
+    document.querySelector('nav ul').classList.toggle('open');
+  };
+}
 
+// --- Spinner utility (optional) ---
 function showSpinner() {
   document.getElementById('loading-spinner').style.display = 'flex';
 }
