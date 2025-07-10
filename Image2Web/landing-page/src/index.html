@@ -9,7 +9,6 @@
   <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
-    /* Widget Styles */
     .widget {
       background: #f8fafc;
       border-radius: 8px;
@@ -17,13 +16,8 @@
       margin: 1em 0;
       box-shadow: 0 2px 8px rgba(30,41,59,0.04);
     }
-    .widget h3 {
-      margin-top: 0;
-    }
-    #todo-list li.done {
-      text-decoration: line-through;
-      color: #888;
-    }
+    .widget h3 { margin-top: 0; }
+    #todo-list li.done { text-decoration: line-through; color: #888; }
 
     .nav-btn {
       background: transparent;
@@ -66,7 +60,7 @@
             <button class="nav-btn">Contributors</button>
           </li>
           <li class="nav-item">
-            <a href="workspace.html" class="hero-btn" style="margin
+            <a href="workspace.html" class="hero-btn" style="margin: 0;">Workspace</a>
           </li>
           <li class="nav-item" id="auth-links">
             <button class="nav-btn" onclick="openLogin()">Login</button>
@@ -108,6 +102,7 @@
       </div>
     </section>
   </main>
+
   <!-- Sign-up Modal -->
   <div class="signup-modal" id="signupModal">
     <div class="signup-content">
@@ -179,9 +174,6 @@
         <p class="footer-text">
           Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds. Built for developers and designers by SeroTech.
         </p>
-        <div class="social-links">
-          <!-- Social Links SVGs here -->
-        </div>
       </div>
       <div class="footer-section">
         <h3 class="footer-title">Quick Links</h3>
@@ -204,12 +196,7 @@
     </div>
   </footer>
 
-  <!-- Loading Spinner -->
-  <div id="loading-spinner" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">
-    <div style="border:8px solid #eee;border-top:8px solid #0ea5e9;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;"></div>
-  </div>
-
-  <!-- Firebase App (the core Firebase SDK) -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -228,8 +215,5 @@
     firebase.analytics();
   </script>
   <script src="script.js" defer></script>
-  <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
-    &#9776;
-  </button>
 </body>
 </html>
