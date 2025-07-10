@@ -1,25 +1,35 @@
 /* style.css */
 
+/* === Base Styles === */
 body {
   margin: 0;
   font-family: 'Inter', 'Russo One', sans-serif;
-  background-color: #f9fafb;
-  color: #1f2937;
+  background: radial-gradient(ellipse at 70% 20%, #4b225c 0%, #181f2a 100%);
+  color: #f3f4f6;
+  min-height: 100vh;
 }
 
+/* === Header === */
 header {
-  background-color: #fff;
-  border-bottom: 1px solid #e5e7eb;
+  background: rgba(24, 31, 42, 0.95);
+  border-bottom: 1px solid #23263a;
+  color: #f3f4f6;
   padding: 1rem 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header-content {
   display: flex;
   align-items: center;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: space-between;
 }
 
 .logo {
@@ -31,12 +41,13 @@ header {
 .brand {
   font-family: 'Russo One', sans-serif;
   font-size: 1.5rem;
-  color: #0ea5e9;
+  color: #38bdf8;
+  letter-spacing: 1px;
 }
 
 .slogan {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: #a5b4fc;
 }
 
 nav ul {
@@ -47,78 +58,116 @@ nav ul {
   padding: 0;
 }
 
-.hero-btn, .github-btn {
-  background-color: #0ea5e9;
-  color: white;
-  font-family: 'Russo One', sans-serif;
-  border: none;
-  padding: 0.6em 1.5em;
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+
+.nav-btn, .nav-item a.nav-btn {
+  background: transparent;
+  border: 2px solid #38bdf8;
+  color: #38bdf8;
+  font-family: 'Russo One', Arial, sans-serif;
+  font-weight: bold;
+  font-size: 1.1em;
   border-radius: 1.5em;
+  padding: 0.4em 1.5em;
+  margin-left: 0.5em;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  outline: none;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(56,189,248,0.04);
 }
 
-.hero-btn:hover, .github-btn:hover {
-  background-color: #0284c7;
+.nav-btn:hover, .nav-item a.nav-btn:hover {
+  background: #38bdf8;
+  color: #181f2a;
+  border-color: #38bdf8;
 }
 
+.nav-item.active .nav-btn {
+  background: #38bdf8;
+  color: #181f2a;
+}
+
+#user-greeting {
+  margin-left: 1.5em;
+  font-size: 1em;
+  color: #38bdf8;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+/* === Hero Section === */
 .hero {
   text-align: center;
-  padding: 5rem 2rem;
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-  color: white;
+  padding: 5rem 2rem 3rem 2rem;
+  background: linear-gradient(135deg, #0ea5e9 0%, #4b225c 100%);
+  color: #f3f4f6;
+}
+
+.hero-content {
+  background: rgba(24, 31, 42, 0.95);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  padding: 2.5rem 2rem;
+  margin: 2rem auto;
+  max-width: 900px;
+}
+
+.hero-label {
+  display: inline-block;
+  background: #38bdf8;
+  color: #181f2a;
+  font-weight: bold;
+  border-radius: 1em;
+  padding: 0.3em 1.2em;
+  font-size: 1.1em;
+  margin-bottom: 1.2em;
+  letter-spacing: 1px;
 }
 
 .hero-title {
   font-family: 'Russo One', sans-serif;
   font-size: 3rem;
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 1rem 0;
+  color: #a5b4fc;
 }
 
 .hero-content p {
   max-width: 600px;
-  margin: auto;
-}
-
-footer {
-  background-color: #1f2937;
-  color: #d1d5db;
-  padding: 2rem;
-}
-
-.footer-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1.5rem;
-}
-
-.footer-section {
-  flex: 1 1 200px;
-}
-
-.footer-title {
+  margin: 1.5em auto 2em auto;
+  color: #cbd5e1;
   font-size: 1.2rem;
-  margin-bottom: 0.5rem;
 }
 
-.footer-link {
-  display: block;
-  color: #93c5fd;
-  text-decoration: none;
-  margin: 0.3rem 0;
+.hero-btn, .github-btn {
+  background-color: #38bdf8;
+  color: #181f2a;
+  font-family: 'Russo One', sans-serif;
+  border: none;
+  padding: 0.7em 2em;
+  border-radius: 1.5em;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin: 0.5em 0.5em 0 0.5em;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(56,189,248,0.10);
 }
 
-.footer-link:hover {
-  text-decoration: underline;
+.hero-btn:hover, .github-btn:hover {
+  background-color: #0ea5e9;
+  color: #fff;
 }
 
-.footer-bottom {
-  text-align: center;
-  margin-top: 1rem;
-  font-size: 0.9rem;
+.github-btn svg {
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
+/* === Modals === */
 .signup-modal, .login-modal, .about-modal {
   display: none;
   position: fixed;
@@ -131,12 +180,14 @@ footer {
 }
 
 .signup-content, .login-content, .about-content {
-  background: white;
+  background: #23263a;
+  color: #f3f4f6;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 12px;
   width: 90%;
   max-width: 400px;
   position: relative;
+  box-shadow: 0 4px 32px rgba(56,189,248,0.10);
 }
 
 .close-btn {
@@ -146,6 +197,7 @@ footer {
   background: none;
   border: none;
   font-size: 1.5rem;
+  color: #38bdf8;
   cursor: pointer;
 }
 
@@ -157,22 +209,26 @@ footer {
   width: 100%;
   padding: 0.6rem;
   margin-top: 0.3rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid #334155;
   border-radius: 0.4rem;
+  background: #181f2a;
+  color: #f3f4f6;
 }
 
 .signup-btn, .login-btn {
-  background-color: #0ea5e9;
-  color: white;
+  background-color: #38bdf8;
+  color: #181f2a;
   border: none;
   padding: 0.8rem;
   border-radius: 0.4rem;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-weight: bold;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .signup-btn:hover, .login-btn:hover {
-  background-color: #0284c7;
+  background-color: #0ea5e9;
+  color: #fff;
 }
 
 .success-message {
@@ -181,28 +237,80 @@ footer {
   margin-top: 1rem;
 }
 
-#user-greeting {
-  margin-bottom: 0.3em;
-  font-size: 0.95em;
-  color: #0ea5e9;
-  font-weight: bold;
+/* === Footer === */
+footer {
+  background: #181f2a;
+  color: #f3f4f6;
+  padding: 2rem 0 0.5rem 0;
 }
 
-#workspace-link.hero-btn {
-  margin-top: 0.2em;
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
-@media (max-width: 768px) {
-  .footer-content {
+.footer-section {
+  flex: 1 1 200px;
+  min-width: 180px;
+}
+
+.footer-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #38bdf8;
+}
+
+.footer-link {
+  display: block;
+  color: #93c5fd;
+  text-decoration: none;
+  margin: 0.3rem 0;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .header-content, .footer-content {
     flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
   }
+  .hero-content {
+    padding: 2rem 1rem;
+  }
+}
 
+@media (max-width: 600px) {
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
+  .hero-content {
+    padding: 1.2rem 0.5rem;
+  }
+  .footer-content {
+    padding: 0 1rem;
+  }
+}
 
-  nav ul {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
+/* === Utility === */
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
