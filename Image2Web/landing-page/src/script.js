@@ -22,8 +22,6 @@ function openAbout() {
 function closeAbout() {
   document.getElementById("aboutModal").style.display = "none";
 }
-
-// --- Optional: Close modals when clicking outside ---
 window.onclick = function (event) {
   if (event.target.classList.contains("signup-modal")) closeSignup();
   if (event.target.classList.contains("login-modal")) closeLogin();
@@ -33,7 +31,7 @@ window.onclick = function (event) {
 // --- Navigation logic ---
 function navigate(page) {
   const content = document.getElementById('content');
-  if (!content) return; // Skip if no content container
+  if (!content) return;
 
   let html = '';
   switch (page) {
@@ -89,11 +87,10 @@ function navigate(page) {
 }
 window.navigate = navigate;
 
-// --- Auth logic (signup, login, logout) ---
+// --- Auth logic ---
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('content')) navigate('home');
 
-  // Signup form
   const signupForm = document.getElementById('signupForm');
   if (signupForm) {
     signupForm.addEventListener('submit', function (e) {
@@ -116,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
           firebase.analytics().logEvent('sign_up', { method: 'email_password' });
           setTimeout(() => {
             closeSignup();
+            signupForm.reset();
           }, 2000);
         })
         .catch((error) => {
@@ -124,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Login form
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
     loginForm.addEventListener('submit', function (e) {
@@ -152,6 +149,14 @@ function logout() {
     document.getElementById("auth-links").style.display = "block";
     document.getElementById("user-links").style.display = "none";
     document.getElementById("user-greeting").style.display = "none";
+
+    const workspaceLink = document.querySelector('.hero-btn[href="workspace.html"], a.hero-btn[href="workspace.html"]');
+    if (workspaceLink) {
+      workspaceLink.classList.add('disabled');
+      workspaceLink.href = "#";
+      workspaceLink.style.pointerEvents = 'none';
+      workspaceLink.style.opacity = '0.5';
+    }
   }).catch((error) => {
     console.error("Error logging out:", error);
   });
@@ -161,9 +166,12 @@ function logout() {
 firebase.auth().onAuthStateChanged(function (user) {
   const greetingDiv = document.getElementById("user-greeting");
   const nameSpan = document.getElementById("user-name");
+  const workspaceLink = document.querySelector('a[href="workspace.html"]');
+
   if (user) {
     document.getElementById("auth-links").style.display = "none";
     document.getElementById("user-links").style.display = "list-item";
+    greetingDiv.style.display = "block";
 
     firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
       if (doc.exists && doc.data().username) {
@@ -171,30 +179,26 @@ firebase.auth().onAuthStateChanged(function (user) {
       } else {
         nameSpan.textContent = "User";
       }
-      greetingDiv.style.display = "block";
     }).catch(() => {
       nameSpan.textContent = "User";
-      greetingDiv.style.display = "block";
     });
+
+    if (workspaceLink) {
+      workspaceLink.classList.remove('disabled');
+      workspaceLink.href = "workspace.html";
+      workspaceLink.style.pointerEvents = 'auto';
+      workspaceLink.style.opacity = '1';
+    }
   } else {
     document.getElementById("auth-links").style.display = "list-item";
     document.getElementById("user-links").style.display = "none";
     greetingDiv.style.display = "none";
+
+    if (workspaceLink) {
+      workspaceLink.classList.add('disabled');
+      workspaceLink.href = "#";
+      workspaceLink.style.pointerEvents = 'none';
+      workspaceLink.style.opacity = '0.5';
+    }
   }
 });
-
-// --- Navbar toggle (if using) ---
-const navToggle = document.getElementById('nav-toggle');
-if (navToggle) {
-  navToggle.onclick = function () {
-    document.querySelector('nav ul').classList.toggle('open');
-  };
-}
-
-// --- Spinner utility (optional) ---
-function showSpinner() {
-  document.getElementById('loading-spinner').style.display = 'flex';
-}
-function hideSpinner() {
-  document.getElementById('loading-spinner').style.display = 'none';
-}

@@ -9,16 +9,6 @@
   <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
-    .widget {
-      background: #f8fafc;
-      border-radius: 8px;
-      padding: 1em;
-      margin: 1em 0;
-      box-shadow: 0 2px 8px rgba(30,41,59,0.04);
-    }
-    .widget h3 { margin-top: 0; }
-    #todo-list li.done { text-decoration: line-through; color: #888; }
-
     .nav-btn {
       background: transparent;
       border: 2px solid #0ea5e9;
@@ -33,13 +23,16 @@
       transition: background 0.2s, color 0.2s;
       outline: none;
     }
+    .disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="header-content">
       <div class="logo">
-        <!-- SVG Logo -->
         <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8"/>
           <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9"/>
@@ -60,7 +53,7 @@
             <button class="nav-btn">Contributors</button>
           </li>
           <li class="nav-item">
-            <a href="workspace.html" class="hero-btn" style="margin: 0;">Workspace</a>
+            <a href="workspace.html" class="hero-btn">Workspace</a>
           </li>
           <li class="nav-item" id="auth-links">
             <button class="nav-btn" onclick="openLogin()">Login</button>
@@ -70,13 +63,13 @@
           </li>
         </ul>
       </nav>
-      <div id="user-greeting">
+      <div id="user-greeting" style="display: none;">
         Hi, <span id="user-name"></span>
       </div>
     </div>
   </header>
 
-  <main>
+  <main id="content">
     <section class="hero">
       <div class="hero-content">
         <div class="hero-label">Digital Insights</div>
@@ -159,7 +152,7 @@
       <button class="close-btn" onclick="closeAbout()">&times;</button>
       <h2 class="about-title">About Image2Web</h2>
       <p class="about-text">
-        Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease. Our mission is to empower developers and designers to bring their ideas to life faster and more efficiently.
+        Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease.
       </p>
       <p class="about-text">
         <strong>Team:</strong> Moyano, Sarge Dave M. • Mallari, Merick Joshua • Quiambao, Christian Joshua • Dizon, Robby
@@ -172,12 +165,12 @@
       <div class="footer-section">
         <h3 class="footer-title">About Image2Web</h3>
         <p class="footer-text">
-          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds. Built for developers and designers by SeroTech.
+          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds.
         </p>
       </div>
       <div class="footer-section">
         <h3 class="footer-title">Quick Links</h3>
-        <a href="#" class="footer-link">Home</a>
+        <a href="#" class="footer-link" onclick="navigate('home'); return false;">Home</a>
         <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
         <a href="#" class="footer-link">Blog</a>
       </div>
