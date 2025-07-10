@@ -9,6 +9,16 @@
   <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
+    .widget {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1em;
+      margin: 1em 0;
+      box-shadow: 0 2px 8px rgba(30,41,59,0.04);
+    }
+    .widget h3 { margin-top: 0; }
+    #todo-list li.done { text-decoration: line-through; color: #888; }
+
     .nav-btn {
       background: transparent;
       border: 2px solid #0ea5e9;
@@ -23,7 +33,7 @@
       transition: background 0.2s, color 0.2s;
       outline: none;
     }
-    .disabled {
+    .hero-btn.disabled {
       pointer-events: none;
       opacity: 0.5;
     }
@@ -33,6 +43,7 @@
   <header>
     <div class="header-content">
       <div class="logo">
+        <!-- SVG Logo -->
         <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8"/>
           <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9"/>
@@ -46,14 +57,14 @@
       </div>
       <nav>
         <ul>
-          <li class="nav-item active" data-page="home" onclick="navigate('home')">
+          <li class="nav-item active" data-page="home">
             <button class="nav-btn">Home</button>
           </li>
           <li class="nav-item" onclick="window.location.href='contributors.html'">
             <button class="nav-btn">Contributors</button>
           </li>
           <li class="nav-item">
-            <a href="workspace.html" class="hero-btn">Workspace</a>
+            <a id="workspace-link" href="#" class="hero-btn" style="margin: 0;">Workspace</a>
           </li>
           <li class="nav-item" id="auth-links">
             <button class="nav-btn" onclick="openLogin()">Login</button>
@@ -69,7 +80,7 @@
     </div>
   </header>
 
-  <main id="content">
+  <main>
     <section class="hero">
       <div class="hero-content">
         <div class="hero-label">Digital Insights</div>
@@ -96,7 +107,7 @@
     </section>
   </main>
 
-  <!-- Sign-up Modal -->
+  <!-- Signup Modal -->
   <div class="signup-modal" id="signupModal">
     <div class="signup-content">
       <button class="close-btn" onclick="closeSignup()">&times;</button>
@@ -114,9 +125,7 @@
           <label for="password">Password</label>
           <input id="signup-password" name="password" type="password" placeholder="Enter your password" required>
         </div>
-        <button type="submit" class="signup-btn" style="width: 100%; margin: 0;">
-          Create Account
-        </button>
+        <button type="submit" class="signup-btn" style="width: 100%; margin: 0;">Create Account</button>
         <div class="success-message" id="successMessage" style="display:none;">
           <h3>🎉 Welcome to CODE4WEB!</h3>
           <p>Your account has been created successfully.</p>
@@ -139,54 +148,74 @@
           <label for="login-password">Password</label>
           <input type="password" id="login-password" name="login-password" placeholder="Enter your password" required>
         </div>
-        <button type="submit" class="login-btn" style="width: 100%; margin: 0;">
-          Login
-        </button>
+        <button type="submit" class="login-btn" style="width: 100%; margin: 0;">Login</button>
       </form>
     </div>
   </div>
 
-  <!-- About Modal -->
-  <div class="about-modal" id="aboutModal">
-    <div class="about-content">
-      <button class="close-btn" onclick="closeAbout()">&times;</button>
-      <h2 class="about-title">About Image2Web</h2>
-      <p class="about-text">
-        Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease.
-      </p>
-      <p class="about-text">
-        <strong>Team:</strong> Moyano, Sarge Dave M. • Mallari, Merick Joshua • Quiambao, Christian Joshua • Dizon, Robby
-      </p>
-    </div>
-  </div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDA9TT-iCH515H63y-4zJkTJ1tZAOU7m60",
+      authDomain: "image2web-1a6c0.firebaseapp.com",
+      projectId: "image2web-1a6c0",
+      storageBucket: "image2web-1a6c0.appspot.com",
+      messagingSenderId: "167811907825",
+      appId: "1:167811907825:web:809c410fefc52de3542950",
+      measurementId: "G-LF3Y1S5M47"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const auth = firebase.auth();
+      const userLinks = document.getElementById('user-links');
+      const authLinks = document.getElementById('auth-links');
+      const userGreeting = document.getElementById('user-greeting');
+      const userNameSpan = document.getElementById('user-name');
+      const workspaceLink = document.getElementById('workspace-link');
 
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3 class="footer-title">About Image2Web</h3>
-        <p class="footer-text">
-          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds.
-        </p>
-      </div>
-      <div class="footer-section">
-        <h3 class="footer-title">Quick Links</h3>
-        <a href="#" class="footer-link" onclick="navigate('home'); return false;">Home</a>
-        <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
-        <a href="#" class="footer-link">Blog</a>
-      </div>
-      <div class="footer-section">
-        <a href="#" class="footer-link">Documentation</a>
-        <a href="#" class="footer-link">Tutorials</a>
-      </div>
-      <div class="footer-section">
-        <h3 class="footer-title">Contact</h3>
-        <p class="footer-text">📧 our email</p>
-        <p class="footer-text">📍 A Wireframe to Website Generator</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p class="footer-text">&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
-    </div>
-  </footer>
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          authLinks.style.display = 'none';
+          userLinks.style.display = 'inline';
+          userGreeting.style.display = 'block';
+          userNameSpan.textContent = user.email.split('@')[0];
+          workspaceLink.classList.remove('disabled');
+          workspaceLink.href = "workspace.html";
+          workspaceLink.style.pointerEvents = 'auto';
+          workspaceLink.style.opacity = '1';
+        } else {
+          authLinks.style.display = 'inline';
+          userLinks.style.display = 'none';
+          userGreeting.style.display = 'none';
+          workspaceLink.classList.add('disabled');
+          workspaceLink.href = "#";
+          workspaceLink.style.pointerEvents = 'none';
+          workspaceLink.style.opacity = '0.5';
+        }
+      });
+    });
 
-
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        alert("You have logged out successfully.");
+      });
+    }
+    function openLogin() {
+      document.getElementById('loginModal').style.display = 'flex';
+    }
+    function closeLogin() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
+    function openSignup() {
+      document.getElementById('signupModal').style.display = 'flex';
+    }
+    function closeSignup() {
+      document.getElementById('signupModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

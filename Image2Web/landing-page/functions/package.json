@@ -1,59 +1,28 @@
-const functions = require("firebase-functions");
-const admin = require("firebase-admin");
-
-admin.initializeApp();
-const db = admin.firestore();
-
-exports.generateCodeFromWireframe = functions.firestore
-  .document("wireframes/{docId}")
-  .onCreate(async (snap, context) => {
-    const data = snap.data();
-    const fileURL = data.fileURL;
-    const description = data.description;
-    const model = data.model || "mock-model";
-
-    try {
-      // ⚡ MOCK code generation (no OpenAI, Spark-friendly)
-      const generatedCode = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Demo Website</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              padding: 2rem;
-              background: #f9f9f9;
-            }
-            img {
-              max-width: 500px;
-              border-radius: 8px;
-              margin-top: 1rem;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>Sample Generated Code (Mock)</h1>
-          <p><strong>Description:</strong> ${description}</p>
-          <img src="${fileURL}" alt="Wireframe Preview">
-        </body>
-        </html>
-      `;
-
-      // Update Firestore document
-      await snap.ref.update({
-        generatedCode: generatedCode,
-        status: "completed",
-        updatedAt: new Date(),
-      });
-
-      console.log("✅ Mock code generation success for doc:", context.params.docId);
-    } catch (error) {
-      console.error("❌ Error generating code:", error);
-      await snap.ref.update({
-        status: "error",
-        errorMessage: error.message,
-      });
-    }
-  });
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^1.10.0",
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1",
+    "openai": "^5.8.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
