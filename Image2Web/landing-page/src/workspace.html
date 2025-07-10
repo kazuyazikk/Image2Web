@@ -1,79 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Image2Web - Workspace</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Workspace - Image2Web</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <div class="header-content">
-      <div class="logo">
-        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8"/>
-          <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9"/>
-          <rect x="20" y="32" width="16" height="16" rx="4" fill="#06B6D4"/>
-          <rect x="20" y="20" width="16" height="16" rx="4" fill="#1E293B"/>
-        </svg>
-        <div>
-          <span class="brand">CODE4WEB</span>
-          <div class="slogan">Workspace</div>
-        </div>
-      </div>
-      <nav>
-        <ul>
-          <li class="nav-item" onclick="window.location.href='index.html'"><button class="nav-btn">Home</button></li>
-          <li class="nav-item" onclick="window.location.href='contributors.html'"><button class="nav-btn">Contributors</button></li>
-          <li class="nav-item active"><button class="nav-btn">Workspace</button></li>
-          <li class="nav-item" id="auth-links"><button class="nav-btn" onclick="openLogin()">Login</button></li>
-          <li class="nav-item" id="user-links" style="display: none;"><button class="nav-btn" onclick="logout()">Logout</button></li>
-        </ul>
-      </nav>
-    </div>
+    <h2>Workspace</h2>
+    <a href="index.html">Back to Home</a>
   </header>
-
   <main>
-    <section class="hero">
-      <div class="hero-content">
-        <div class="hero-label">Workspace</div>
-        <h1 class="hero-title">Transform Your Wireframes</h1>
-        <p style="font-size: 1.2rem; margin-bottom: 2rem; color: var(--text-secondary);">
-          Upload your wireframe image below and turn it into beautiful, responsive code.
-        </p>
-        <form id="upload-form" style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-          <input type="file" id="file-input" accept="image/*" style="padding: 1rem; border: 2px dashed #38bdf8; border-radius: 10px; background: var(--glass-bg); color: var(--text-primary); cursor: pointer;">
-          <textarea placeholder="Describe your website’s purpose..." style="width: 100%; max-width: 500px; height: 120px; padding: 1rem; border-radius: 10px; border: none; background: var(--glass-bg); color: var(--text-primary);"></textarea>
-          <button type="submit" class="hero-btn">Generate Code</button>
-        </form>
-      </div>
-    </section>
+    <p>Welcome to your workspace. Upload or manage your files here (future feature).</p>
   </main>
-
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>About Image2Web</h3>
-        <p>Transform your wireframes and images into real, responsive websites in seconds.</p>
-      </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <a href="index.html">Home</a>
-        <a href="#" onclick="openAbout(); return false;">About</a>
-        <a href="#">Documentation</a>
-      </div>
-      <div class="footer-section">
-        <h3>Contact</h3>
-        <p>📧 our email</p>
-        <p>📍 A Wireframe to Website Generator</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
-    </div>
-  </footer>
-
-  <script src="script.js" defer></script>
 </body>
 </html>
