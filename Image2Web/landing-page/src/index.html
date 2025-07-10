@@ -9,212 +9,115 @@
   <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      background: #0ea5e9;
-      color: white;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-    .logo svg {
-      margin-right: 10px;
-    }
-    .brand {
-      font-family: 'Russo One', sans-serif;
-      font-size: 1.2rem;
-    }
-    .slogan {
-      font-size: 0.8rem;
-      color: #f0f0f0;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      margin: 0;
-      padding: 0;
-    }
-    nav ul li {
-      margin-left: 10px;
-    }
-    .nav-btn, .hero-btn, .github-btn {
+    .nav-btn {
       background: transparent;
-      border: 2px solid #fff;
-      color: #fff;
-      font-family: 'Russo One', sans-serif;
+      border: 2px solid #0ea5e9;
+      color: #0ea5e9;
+      font-family: 'Russo One', Arial, sans-serif;
+      font-weight: bold;
+      font-size: 1.1em;
       border-radius: 1.5em;
       padding: 0.4em 1.5em;
+      margin-left: 1em;
       cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      outline: none;
     }
-    .nav-btn:hover, .hero-btn:hover, .github-btn:hover {
-      background: white;
-      color: #0ea5e9;
-    }
-    .hero {
-      text-align: center;
-      padding: 4rem 1rem;
-      background: #f8fafc;
-    }
-    .hero-label {
-      font-size: 1.2rem;
-      color: #0ea5e9;
-      margin-bottom: 0.5rem;
-    }
-    .hero-title {
-      font-size: 2.5rem;
-      margin: 0;
-    }
-    .hero p {
-      color: #555;
-      margin: 1rem auto 2rem;
-      max-width: 600px;
-    }
-    .signup-modal, .login-modal {
-      display: none;
-      position: fixed;
-      z-index: 10;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      justify-content: center;
-      align-items: center;
-    }
-    .signup-content, .login-content {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
-      position: relative;
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px; right: 10px;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    .form-group {
-      margin-bottom: 1rem;
-      text-align: left;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.3rem;
-      font-weight: bold;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .signup-btn, .login-btn {
-      width: 100%;
-      padding: 10px;
-      background: #0ea5e9;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-family: 'Russo One', sans-serif;
-    }
-    .signup-btn:hover, .login-btn:hover {
-      background: #0284c7;
-    }
-    .success-message {
-      text-align: center;
-      margin-top: 1rem;
-    }
-    #user-greeting {
-      margin-left: auto;
-      font-size: 0.9rem;
-    }
-    .hero-btn.disabled {
+    .disabled {
       pointer-events: none;
       opacity: 0.5;
     }
   </style>
 </head>
 <body>
-  <header style="background: #0ea5e9; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-    <div class="logo" style="display: flex; align-items: center;">
-      <svg width="40" height="40" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px;">
-        <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8"/>
-        <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9"/>
-        <rect x="20" y="32" width="16" height="16" rx="4" fill="#06B6D4"/>
-        <rect x="20" y="20" width="16" height="16" rx="4" fill="#1E293B"/>
-      </svg>
-      <div>
-        <div class="brand" style="font-family: 'Russo One', sans-serif; font-size: 1.2rem;">CODE4WEB</div>
-        <div class="slogan" style="font-size: 0.8rem; color: #f0f0f0;">Designed by SeroTech</div>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8"/>
+          <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9"/>
+          <rect x="20" y="32" width="16" height="16" rx="4" fill="#06B6D4"/>
+          <rect x="20" y="20" width="16" height="16" rx="4" fill="#1E293B"/>
+        </svg>
+        <div>
+          <span class="brand">CODE4WEB</span>
+          <div class="slogan">Designed by SeroTech</div>
+        </div>
       </div>
-    </div>
-    <nav>
-      <ul style="list-style: none; display: flex; margin: 0; padding: 0;">
-        <li><button class="nav-btn" onclick="location.reload()">Home</button></li>
-        <li><button class="nav-btn" onclick="window.location.href='contributors.html'">Contributors</button></li>
-        <li id="auth-links"><button class="nav-btn" onclick="openLogin()">Login</button></li>
-        <li id="user-links" style="display: none;"><button class="nav-btn" onclick="logout()">Logout</button></li>
-      </ul>
-    </nav>
-    <div class="header-actions" style="display: flex; flex-direction: column; align-items: flex-end;">
-      <div id="user-greeting" style="display: none; margin-bottom: 0.3em;">
+      <nav>
+        <ul>
+          <li class="nav-item active" data-page="home" onclick="navigate('home')">
+            <button class="nav-btn">Home</button>
+          </li>
+          <li class="nav-item" onclick="window.location.href='contributors.html'">
+            <button class="nav-btn">Contributors</button>
+          </li>
+          <li class="nav-item">
+            <a href="workspace.html" class="hero-btn">Workspace</a>
+          </li>
+          <li class="nav-item" id="auth-links">
+            <button class="nav-btn" onclick="openLogin()">Login</button>
+          </li>
+          <li class="nav-item" id="user-links" style="display: none;">
+            <button class="nav-btn" onclick="logout()">Logout</button>
+          </li>
+        </ul>
+      </nav>
+      <div id="user-greeting" style="display: none;">
         Hi, <span id="user-name"></span>
       </div>
-      <a id="workspace-link" href="#" class="hero-btn disabled" style="margin-top: 0.2em;">Workspace</a>
     </div>
   </header>
 
-  <main>
+  <main id="content">
     <section class="hero">
-      <div class="hero-label">Digital Insights</div>
-      <h1 class="hero-title">The Future<br>of Technology</h1>
-      <p>Upload images and convert them into beautiful, responsive websites with ease.</p>
-      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-        <button class="hero-btn" onclick="openSignup()">Get Started</button>
-        <button class="github-btn" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')">
-          <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor" style="vertical-align:middle; margin-right:5px;">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54..."></path>
-          </svg>
-          View us on Github
-        </button>
+      <div class="hero-content">
+        <div class="hero-label">Digital Insights</div>
+        <h1 class="hero-title">The Future<br>of Technology</h1>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; color: var(--text-secondary);">
+          Upload Images and convert them into beautiful, responsive websites with ease.
+        </p>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem">
+          <button class="hero-btn" onclick="openSignup()" aria-label="Get Started">Get Started</button>
+          <button class="github-btn" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')" aria-label="View us on Github">
+            <svg height="22" width="22" viewBox="0 0 16 16" fill="currentColor" style="vertical-align:middle; margin-right:8px;">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+              -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2
+              -3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65
+              7.65 0 0 1 8 4.77c.68.003 1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
+              2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01
+              1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            View us on Github!
+          </button>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- Signup Modal -->
+  <!-- Sign-up Modal -->
   <div class="signup-modal" id="signupModal">
     <div class="signup-content">
       <button class="close-btn" onclick="closeSignup()">&times;</button>
-      <form id="signupForm">
+      <form id="signupForm" class="signup-form">
         <h2>Join Image2Web</h2>
         <div class="form-group">
-          <label for="signup-username">Username</label>
-          <input id="signup-username" type="text" required>
+          <label for="username">Username</label>
+          <input id="signup-username" name="username" type="text" placeholder="Enter your username" required>
         </div>
         <div class="form-group">
-          <label for="signup-email">Email</label>
-          <input id="signup-email" type="email" required>
+          <label for="email">Email</label>
+          <input id="signup-email" name="email" type="email" placeholder="Enter your email" required>
         </div>
         <div class="form-group">
-          <label for="signup-password">Password</label>
-          <input id="signup-password" type="password" required>
+          <label for="password">Password</label>
+          <input id="signup-password" name="password" type="password" placeholder="Enter your password" required>
         </div>
-        <button type="submit" class="signup-btn">Create Account</button>
-        <div id="successMessage" class="success-message" style="display: none;">
+        <button type="submit" class="signup-btn" style="width: 100%; margin: 0;">
+          Create Account
+        </button>
+        <div class="success-message" id="successMessage" style="display:none;">
           <h3>🎉 Welcome to CODE4WEB!</h3>
           <p>Your account has been created successfully.</p>
         </div>
@@ -226,24 +129,71 @@
   <div class="login-modal" id="loginModal">
     <div class="login-content">
       <button class="close-btn" onclick="closeLogin()">&times;</button>
-      <form id="loginForm">
-        <h2>Login to Image2Web</h2>
+      <form class="login-form" id="loginForm">
+        <h2 class="login-title">Login to Image2Web</h2>
         <div class="form-group">
           <label for="login-username">Email</label>
-          <input id="login-username" type="email" required>
+          <input type="email" id="login-username" name="login-username" placeholder="Enter your email" required>
         </div>
         <div class="form-group">
           <label for="login-password">Password</label>
-          <input id="login-password" type="password" required>
+          <input type="password" id="login-password" name="login-password" placeholder="Enter your password" required>
         </div>
-        <button type="submit" class="login-btn">Login</button>
+        <button type="submit" class="login-btn" style="width: 100%; margin: 0;">
+          Login
+        </button>
       </form>
     </div>
   </div>
 
-  <!-- Firebase -->
+  <!-- About Modal -->
+  <div class="about-modal" id="aboutModal">
+    <div class="about-content">
+      <button class="close-btn" onclick="closeAbout()">&times;</button>
+      <h2 class="about-title">About Image2Web</h2>
+      <p class="about-text">
+        Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease.
+      </p>
+      <p class="about-text">
+        <strong>Team:</strong> Moyano, Sarge Dave M. • Mallari, Merick Joshua • Quiambao, Christian Joshua • Dizon, Robby
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3 class="footer-title">About Image2Web</h3>
+        <p class="footer-text">
+          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds.
+        </p>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">Quick Links</h3>
+        <a href="#" class="footer-link" onclick="navigate('home'); return false;">Home</a>
+        <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
+        <a href="#" class="footer-link">Blog</a>
+      </div>
+      <div class="footer-section">
+        <a href="#" class="footer-link">Documentation</a>
+        <a href="#" class="footer-link">Tutorials</a>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">Contact</h3>
+        <p class="footer-text">📧 our email</p>
+        <p class="footer-text">📍 A Wireframe to Website Generator</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-text">&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics-compat.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDA9TT-iCH515H63y-4zJkTJ1tZAOU7m60",
@@ -255,47 +205,8 @@
       measurementId: "G-LF3Y1S5M47"
     };
     firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
   </script>
-  <script>
-    const auth = firebase.auth();
-    const userLinks = document.getElementById('user-links');
-    const authLinks = document.getElementById('auth-links');
-    const userGreeting = document.getElementById('user-greeting');
-    const userNameSpan = document.getElementById('user-name');
-    const workspaceLink = document.getElementById('workspace-link');
-
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        authLinks.style.display = 'none';
-        userLinks.style.display = 'inline';
-        userGreeting.style.display = 'block';
-        userNameSpan.textContent = user.email.split('@')[0];
-        workspaceLink.classList.remove('disabled');
-        workspaceLink.href = "workspace.html";
-      } else {
-        authLinks.style.display = 'inline';
-        userLinks.style.display = 'none';
-        userGreeting.style.display = 'none';
-        workspaceLink.classList.add('disabled');
-        workspaceLink.href = "#";
-      }
-    });
-
-    function logout() {
-      auth.signOut().then(() => alert("You have logged out successfully."));
-    }
-    function openLogin() {
-      document.getElementById('loginModal').style.display = 'flex';
-    }
-    function closeLogin() {
-      document.getElementById('loginModal').style.display = 'none';
-    }
-    function openSignup() {
-      document.getElementById('signupModal').style.display = 'flex';
-    }
-    function closeSignup() {
-      document.getElementById('signupModal').style.display = 'none';
-    }
-  </script>
+  <script src="script.js" defer></script>
 </body>
 </html>
