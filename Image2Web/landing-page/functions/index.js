@@ -1,59 +1,32 @@
-const functions = require("firebase-functions");
-const admin = require("firebase-admin");
-const axios = require("axios");
-const { Configuration, OpenAI } = require("openai");
+/**
+ * Import function triggers from their respective submodules:
+ *
+ * const {onCall} = require("firebase-functions/v2/https");
+ * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
+ *
+ * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ */
 
-admin.initializeApp();
-const db = admin.firestore();
+const {setGlobalOptions} = require("firebase-functions");
+const {onRequest} = require("firebase-functions/https");
+const logger = require("firebase-functions/logger");
 
-// Initialize OpenAI (replace your API key)
-const openai = new OpenAI({
-  apiKey: "YOUR_OPENAI_API_KEY",
-});
+// For cost control, you can set the maximum number of containers that can be
+// running at the same time. This helps mitigate the impact of unexpected
+// traffic spikes by instead downgrading performance. This limit is a
+// per-function limit. You can override the limit for each function using the
+// `maxInstances` option in the function's options, e.g.
+// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
+// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
+// functions should each use functions.runWith({ maxInstances: 10 }) instead.
+// In the v1 API, each function can only serve one request per container, so
+// this will be the maximum concurrent request count.
+setGlobalOptions({ maxInstances: 10 });
 
-exports.generateCodeFromWireframe = functions.firestore
-  .document("wireframes/{docId}")
-  .onCreate(async (snap, context) => {
-    const data = snap.data();
-    const fileURL = data.fileURL;
-    const description = data.description;
-    const model = data.model || "gpt-4o";
+// Create and deploy your first functions
+// https://firebase.google.com/docs/functions/get-started
 
-    try {
-      // Sample logic: Get image as base64 if needed
-      // const response = await axios.get(fileURL, { responseType: "arraybuffer" });
-      // const imageBase64 = Buffer.from(response.data, "binary").toString("base64");
-
-      // Call AI model with image URL + description
-      const aiResponse = await openai.chat.completions.create({
-        model: model,
-        messages: [
-          {
-            role: "system",
-            content: "You are a helpful AI that converts wireframes into HTML/CSS/JS code."
-          },
-          {
-            role: "user",
-            content: `Here is the wireframe: ${fileURL}. Description: ${description}. Please generate clean, responsive HTML/CSS/JS code for this wireframe.`
-          }
-        ],
-        max_tokens: 4000,
-      });
-
-      const generatedCode = aiResponse.choices[0].message.content;
-
-      // Update document with generated code
-      await snap.ref.update({
-        generatedCode: generatedCode,
-        status: "completed",
-      });
-
-      console.log("Code generation successful for doc:", context.params.docId);
-    } catch (error) {
-      console.error("Error generating code:", error);
-      await snap.ref.update({
-        status: "error",
-        errorMessage: error.message,
-      });
-    }
-  });
+// exports.helloWorld = onRequest((request, response) => {
+//   logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });
