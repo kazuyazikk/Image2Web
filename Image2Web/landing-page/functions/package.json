@@ -1,0 +1,59 @@
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+
+admin.initializeApp();
+const db = admin.firestore();
+
+exports.generateCodeFromWireframe = functions.firestore
+  .document("wireframes/{docId}")
+  .onCreate(async (snap, context) => {
+    const data = snap.data();
+    const fileURL = data.fileURL;
+    const description = data.description;
+    const model = data.model || "mock-model";
+
+    try {
+      // ⚡ MOCK code generation (no OpenAI, Spark-friendly)
+      const generatedCode = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Demo Website</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              text-align: center;
+              padding: 2rem;
+              background: #f9f9f9;
+            }
+            img {
+              max-width: 500px;
+              border-radius: 8px;
+              margin-top: 1rem;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Sample Generated Code (Mock)</h1>
+          <p><strong>Description:</strong> ${description}</p>
+          <img src="${fileURL}" alt="Wireframe Preview">
+        </body>
+        </html>
+      `;
+
+      // Update Firestore document
+      await snap.ref.update({
+        generatedCode: generatedCode,
+        status: "completed",
+        updatedAt: new Date(),
+      });
+
+      console.log("✅ Mock code generation success for doc:", context.params.docId);
+    } catch (error) {
+      console.error("❌ Error generating code:", error);
+      await snap.ref.update({
+        status: "error",
+        errorMessage: error.message,
+      });
+    }
+  });
