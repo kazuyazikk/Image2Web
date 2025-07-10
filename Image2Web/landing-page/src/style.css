@@ -11,9 +11,8 @@ body {
 
 /* === Header === */
 header {
-  background: rgba(24, 31, 42, 0.95);
-  border-bottom: 1px solid #23263a;
-  color: #f3f4f6;
+  background: #fff;
+  color: #181f2a;
   padding: 1rem 2rem;
   display: flex;
   justify-content: center;
@@ -21,6 +20,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
+  border-bottom: 1px solid #23263a;
 }
 
 .header-content {
@@ -103,12 +103,13 @@ nav ul {
 .hero {
   text-align: center;
   padding: 5rem 2rem 3rem 2rem;
-  background: linear-gradient(135deg, #0ea5e9 0%, #4b225c 100%);
+  background: transparent;
   color: #f3f4f6;
 }
 
 .hero-content {
-  background: rgba(24, 31, 42, 0.95);
+  background: #fff;
+  color: #181f2a;
   border-radius: 1.5rem;
   box-shadow: 0 4px 32px rgba(0,0,0,0.18);
   padding: 2.5rem 2rem;
