@@ -8,7 +8,7 @@ body {
 }
 
 header {
-  background-color: #ffffff;
+  background-color: #fff;
   border-bottom: 1px solid #e5e7eb;
   padding: 1rem 2rem;
   display: flex;
@@ -182,9 +182,14 @@ footer {
 }
 
 #user-greeting {
-  margin-left: auto;
+  margin-bottom: 0.3em;
+  font-size: 0.95em;
   color: #0ea5e9;
   font-weight: bold;
+}
+
+#workspace-link.hero-btn {
+  margin-top: 0.2em;
 }
 
 @media (max-width: 768px) {
