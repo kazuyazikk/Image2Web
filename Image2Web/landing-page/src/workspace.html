@@ -6,23 +6,23 @@
   <title>Image2Web - Workspace</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
-  <!-- Your embedded styles here if needed -->
 </head>
 <body>
   <div class="workspace-container">
     <!-- Sidebar -->
     <aside class="sidebar">
       <h2>Image2Web</h2>
-      <div class="sidebar-section">
-        <h3>Navigation</h3>
-        <a href="#" class="sidebar-item">Previous Designs</a>
-        <a href="#" class="sidebar-item active">Workspace</a>
-        <a href="#" class="sidebar-item">Contributors</a>
-      </div>
+      <nav>
+        <ul>
+          <li><a href="#" class="sidebar-item">Previous Designs</a></li>
+          <li><a href="#" class="sidebar-item active">Workspace</a></li>
+          <li><a href="contributors.html" class="sidebar-item">Contributors</a></li>
+        </ul>
+      </nav>
       <div class="user-profile">
         <div class="avatar">U</div>
         <div class="user-info">
-          <h4>Username</h4>
+          <h4 id="sidebar-username">Username</h4>
           <p>Pro User</p>
         </div>
         <button class="logout-btn">Logout</button>
@@ -46,14 +46,14 @@
             <input type="file" class="file-input" id="fileInput" accept="image/*" />
           </div>
 
-          <div class="uploaded-file" id="uploadedFile">
+          <div class="uploaded-file" id="uploadedFile" style="display:none;">
             <div class="file-info">
               <img class="file-preview" id="filePreview" alt="Preview" />
               <div class="file-details">
-                <h4 id="fileName">wireframe.png</h4>
-                <p id="fileSize">2.4 MB</p>
+                <h4 id="fileName"></h4>
+                <p id="fileSize"></p>
               </div>
-              <button class="remove-file" id="removeFile">×</button>
+              <button class="remove-file" id="removeFile" title="Remove file">×</button>
             </div>
           </div>
         </div>
@@ -146,6 +146,7 @@
         filePreview.src = e.target.result;
         fileName.textContent = file.name;
         fileSize.textContent = formatFileSize(file.size);
+        uploadedFile.style.display = 'block';
         uploadedFile.classList.add('show');
         updateGenerateButton();
       };
@@ -155,9 +156,12 @@
     // Remove file
     removeFile.addEventListener('click', () => {
       currentFile = null;
+      uploadedFile.style.display = 'none';
       uploadedFile.classList.remove('show');
       fileInput.value = '';
       filePreview.src = '';
+      fileName.textContent = '';
+      fileSize.textContent = '';
       updateGenerateButton();
     });
 
