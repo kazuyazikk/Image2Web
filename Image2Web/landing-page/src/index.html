@@ -9,6 +9,22 @@
   <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
+    /* Widget Styles */
+    .widget {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1em;
+      margin: 1em 0;
+      box-shadow: 0 2px 8px rgba(30,41,59,0.04);
+    }
+    .widget h3 {
+      margin-top: 0;
+    }
+    #todo-list li.done {
+      text-decoration: line-through;
+      color: #888;
+    }
+
     .nav-btn {
       background: transparent;
       border: 2px solid #0ea5e9;
@@ -23,16 +39,13 @@
       transition: background 0.2s, color 0.2s;
       outline: none;
     }
-    .disabled {
-      pointer-events: none;
-      opacity: 0.5;
-    }
   </style>
 </head>
 <body>
   <header>
     <div class="header-content">
       <div class="logo">
+        <!-- SVG Logo -->
         <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8"/>
           <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9"/>
@@ -52,9 +65,6 @@
           <li class="nav-item" onclick="window.location.href='contributors.html'">
             <button class="nav-btn">Contributors</button>
           </li>
-          <li class="nav-item">
-            <a href="workspace.html" class="nav-btn">Workspace</a>
-          </li>
           <li class="nav-item" id="auth-links">
             <button class="nav-btn" onclick="openLogin()">Login</button>
           </li>
@@ -63,13 +73,13 @@
           </li>
         </ul>
       </nav>
-      <div id="user-greeting" style="display: none;">
+      <div id="user-greeting">
         Hi, <span id="user-name"></span>
       </div>
     </div>
   </header>
 
-  <main id="content">
+  <main>
     <section class="hero">
       <div class="hero-content">
         <div class="hero-label">Digital Insights</div>
@@ -95,7 +105,6 @@
       </div>
     </section>
   </main>
-
   <!-- Sign-up Modal -->
   <div class="signup-modal" id="signupModal">
     <div class="signup-content">
@@ -152,7 +161,7 @@
       <button class="close-btn" onclick="closeAbout()">&times;</button>
       <h2 class="about-title">About Image2Web</h2>
       <p class="about-text">
-        Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease.
+        Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease. Our mission is to empower developers and designers to bring their ideas to life faster and more efficiently.
       </p>
       <p class="about-text">
         <strong>Team:</strong> Moyano, Sarge Dave M. • Mallari, Merick Joshua • Quiambao, Christian Joshua • Dizon, Robby
@@ -165,12 +174,15 @@
       <div class="footer-section">
         <h3 class="footer-title">About Image2Web</h3>
         <p class="footer-text">
-          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds.
+          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds. Built for developers and designers by SeroTech.
         </p>
+        <div class="social-links">
+          <!-- Social Links SVGs here -->
+        </div>
       </div>
       <div class="footer-section">
         <h3 class="footer-title">Quick Links</h3>
-        <a href="#" class="footer-link" onclick="navigate('home'); return false;">Home</a>
+        <a href="#" class="footer-link">Home</a>
         <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
         <a href="#" class="footer-link">Blog</a>
       </div>
@@ -189,7 +201,12 @@
     </div>
   </footer>
 
-  <!-- Firebase SDK -->
+  <!-- Loading Spinner -->
+  <div id="loading-spinner" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">
+    <div style="border:8px solid #eee;border-top:8px solid #0ea5e9;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;"></div>
+  </div>
+
+  <!-- Firebase App (the core Firebase SDK) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -208,5 +225,8 @@
     firebase.analytics();
   </script>
   <script src="script.js" defer></script>
+  <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
+    &#9776;
+  </button>
 </body>
 </html>
