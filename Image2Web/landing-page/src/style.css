@@ -1,72 +1,42 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* General Body and Container Styles */
 :root {
-  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --dark-bg: #0f0f23;
-  --card-bg: rgba(255, 255, 255, 0.05);
-  --text-primary: #ffffff;
-  --text-secondary: #b8c4e6;
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
+  --background-dark: #12002f;
+  --background-light: #2c004f;
+  --primary-blue: #0ea5e9;
+  --secondary-blue: #38bdf8;
+  --tertiary-blue: #06b6d4;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --button-hover: #0EA5E9; /* Using primary-blue for consistent hover effect */
+  --button-text: #f8fafc;
+  --input-bg: #1e293b;
+  --modal-bg: rgba(0, 0, 0, 0.6);
+  --modal-content-bg: #1e293b;
+  --border-color: #334155;
+  --danger-red: #ef4444;
 }
 
-/* This is from Sarge, i'll back it up just in case
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #0ea5e9 100%);
-  min-height: 100vh;
-  color: #fff;
-}
-*/
 body {
   font-family: 'Inter', sans-serif;
-  background: var(--dark-bg);
+  margin: 0;
+  background: linear-gradient(135deg, var(--background-dark), var(--background-light));
   color: var(--text-primary);
-  line-height: 1.6;
-  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Animated Backgroud*/
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
-  z-index: -1;
-  animation: backgroundShift 20s ease-in-out infinite;
-}
-
-@keyframes backgroundShift {
-  0%, 100% {
-    transform: scale(1) translate(0, 0);
-  }
-  50% {
-    transform: scale(1.1) translate(-20px, -20px);
-  }
-}
-
+/* Header Styles */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 32px 48px 0 48px;
   background: transparent;
+  position: relative; /* Ensure header is a positioning context for absolute children */
+  z-index: 1000; /* Ensure header is on top of content */
 }
 
-/* MODIFIED: Changed .header-context to .header-content to match HTML.
-   Added width: 100% to ensure it takes full available width within header padding. */
 .header-content {
   display: flex;
   justify-content: space-between;
@@ -74,6 +44,7 @@ header {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  position: relative; /* Crucial for absolute positioning of nav-toggle and potentially the menu */
 }
 
 .logo {
@@ -82,839 +53,452 @@ header {
   gap: 16px;
 }
 
-.logo svg {
-  filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
-  animation: logoGlow 3s ease-in-out infinite alternate;
+.logo .brand {
+  font-family: 'Russo One', sans-serif;
+  font-size: 2.5em;
+  color: var(--text-primary);
+  white-space: nowrap; /* Prevent brand text from wrapping */
 }
 
-@keyframes logoGlow {
-  0% {
-    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
-  }
-  100% {
-    filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.8));
-  }
-}
-
-.brand {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #38bdf8;
-  display: block;
-  font-family: 'Russo One', Arial, sans-serif;
-}
-
-.slogan {
-  font-family: 'Russo One', Arial, sans-serif;
-  font-size: 1.35rem;
-  color: #38bdf8;
-  letter-spacing: 2px;
-  margin-top: -0.3em;
-  text-shadow: 0 2px 12px rgba(56, 189, 248, 0.15), 0 1px 0 #fff;
-  font-weight: bold;
-  background: linear-gradient(90deg, #38bdf8 30%, #0ea5e9 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  /* text-fill-color: transparent; Removed redundant */
-  animation: sloganPop 1.2s cubic-bezier(.68, -0.55, .27, 1.55);
-}
-
-@keyframes sloganPop {
-  0% {
-    transform: scale(0.7) rotate(-5deg);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.15) rotate(2deg);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1) rotate(0);
-  }
+.logo .slogan {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  white-space: nowrap; /* Prevent slogan text from wrapping */
 }
 
 nav ul {
   list-style: none;
   display: flex;
   gap: 32px;
+  margin: 0;
+  padding: 0;
 }
 
-.nav-item {
-  font-size: 1rem;
-  cursor: pointer;
-  position: relative;
-  color: #fff;
-  transition: color 0.2s, border 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s; /* Added transform and box-shadow to transition */
-  overflow: hidden;
-  padding: 0.5em 1.5em;
-  border: 2px solid transparent;
-  border-radius: 30px;
-  margin: 0 0.25em;
-  font-family: 'Russo One', Arial, sans-serif;
-  letter-spacing: 1px;
-}
-
-/* MODIFIED: This rule now ONLY applies to the hover state of a nav-item */
-.nav-item:hover {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  transform: translateY(-2px);
-  border: 2px solid #38bdf8;
-  color: #38bdf8;
-  box-shadow: 0 2px 12px 0 rgba(56, 189, 248, 0.10);
-}
-
-/* MODIFIED: Styles for the active nav-item (the <li> itself)
-   Explicitly reset properties that might conflict with the desired look,
-   without using !important. This rule comes after .nav-item:hover. */
-.nav-item.active {
-  background: transparent; /* Ensure li background is transparent */
-  border: none; /* Ensure li border is none */
-  box-shadow: none; /* Ensure li has no shadow */
-  transform: none; /* Ensure li doesn't translateY on active state */
-  color: #fff; /* Default text color for the li itself */
-}
-
-/* General nav-btn style */
-.nav-btn {
+.nav-item button {
   background: transparent;
-  border: none;
-  color: #0ea5e9; /* Default color for nav-btn */
+  border: 2px solid var(--primary-blue);
+  color: var(--primary-blue);
   font-family: 'Russo One', Arial, sans-serif;
   font-weight: bold;
   font-size: 1.1em;
   border-radius: 1.5em;
   padding: 0.4em 1.5em;
-  margin-left: 1em;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border 0.2s;
+  transition: background 0.2s, color 0.2s;
   outline: none;
-  box-shadow: none;
 }
 
-/* MODIFIED: Specific style for the button INSIDE an active nav-item.
-   This is more specific than .nav-btn:hover, so it will override it. */
-.nav-item.active .nav-btn {
-  border: 2px solid #0ea5e9;
-  background: transparent;
-  color: #0ea5e9;
+.nav-item button:hover {
+  background: var(--primary-blue);
+  color: var(--button-text);
 }
 
-/* MODIFIED: Hover style for the button. This applies to any nav-btn on hover.
-   If an active button is hovered, its specific rule (.nav-item.active .nav-btn) might
-   be more specific than this one for color/background. If you want active button
-   to also change on hover, you'd add an even more specific rule:
-   .nav-item.active .nav-btn:hover { background: #0ea5e9; color: #fff; }
-   For now, keeping as is, which means active state might not show hover effect on button. */
-.nav-btn:hover {
-  background: #0ea5e9;
-  color: #fff;
-  border: 2px solid #0ea5e9;
+.nav-item.active button {
+  background: var(--primary-blue);
+  color: var(--button-text);
+  border-color: var(--primary-blue);
 }
 
-
-.nav-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: var(--accent-gradient);
-  transition: left 0.3s ease;
-  z-index: -1;
+#user-greeting {
+  color: var(--text-primary);
+  font-size: 1.1em;
+  margin-left: 20px; /* Adjust spacing for desktop */
+  display: none; /* Hidden by default, shown by JS on login */
 }
 
-.nav-item:hover::before {
-  left: 0;
+#user-name {
+  font-weight: bold;
+  color: var(--secondary-blue);
 }
 
-main {
+/* Hamburger menu toggle - HIDDEN by default on desktop */
+#nav-toggle {
+  display: none; /* Hidden on desktop */
+  background: none;
+  border: none;
+  color: var(--primary-blue);
+  font-size: 2em;
+  cursor: pointer;
+  z-index: 1003; /* Ensure it's on top */
+  position: relative; /* In case it needs to be explicitly positioned */
+}
+
+/* Hero Section Styles */
+.hero {
+  flex-grow: 1; /* Allows main content to take available space */
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 90vh; /* or 100vh for full screen */
-  padding: 0 48px;
-}
-
-/*
-.hero {
-  margin-top: 48px;
-  background: linear-gradient(120deg, rgba(16,185,255,0.15) 0%, rgba(14,165,233,0.25) 100%);
-  border-radius: 24px;
-  padding: 48px 64px;
-  max-width: 520px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-}*/
-.hero {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-align: center;
-  min-height: unset; /* Remove min-height if set elsewhere */
+  padding: 80px 20px;
 }
 
 .hero-content {
   max-width: 800px;
-  padding: 2rem;
-  animation: fadeInUp 1s ease-out;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/*
-.hero-label {
-  font-size: 1.1rem;
-  color: #a5f3fc;
-  margin-bottom: 16px;
-  font-family: 'Russo One', Arial, sans-serif;
-} */
 
 .hero-label {
-  display: inline-block;
-  padding: 0.7rem 2rem;
-  background: var(--glass-bg);
-  border: 2px solid #38bdf8;
-  border-radius: 30px;
-  font-size: 1.3rem;
-  font-family: 'Russo One', Arial, sans-serif;
-  color: #38bdf8;
-  letter-spacing: 2px;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 12px 0 rgba(56, 189, 248, 0.10);
-  backdrop-filter: blur(10px);
-  animation: pulse 2s ease-in-out infinite;
-  transition: background 0.3s, color 0.3s, border 0.3s;
+  color: var(--primary-blue);
+  font-size: 1.2em;
+  margin-bottom: 10px;
 }
-
-.hero-label:hover {
-  background: var(--glass-bg);
-  color: #38bdf8;
-  border-color: #38bdf8;
-}
-
-/*
-.hero-title {
-  font-size: 2.8rem;
-  font-weight: 800;
-  margin: 0 0 32px 0;
-  line-height: 1.1;
-  font-family: 'Russo One', Arial, sans-serif;
-} */
 
 .hero-title {
-  font-size: clamp(3rem, 8vw, 6rem);
-  font-weight: 700;
-  margin-bottom: 2rem;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.1;
-}
-
-/*
-.hero-btn {
-  background: #38bdf8;
-  color: #0f172a;
-  border: none;
-  padding: 12px 32px;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-} */
-
-.hero-btn,
-.github-btn,
-.signup-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 2rem;
-  margin: 1rem;
-  border: none;
-  border-radius: 50px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.github-btn {
-  background: var(--glass-bg);
+  font-family: 'Russo One', sans-serif;
+  font-size: 4em;
   color: var(--text-primary);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(10px);
+  margin: 0 0 20px 0;
+  line-height: 1.2;
 }
 
-.hero-btn,
-.signup-btn {
-  background: var(--secondary-gradient);
-  color: white;
-  box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
-}
-
-.hero-btn:hover,
-.github-btn:hover {
-  filter: brightness(1.15);
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.18);
-}
-
-.github-btn:hover,
-.hero-btn:hover,
-.signup-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-}
-
-.signup-btn:hover {
-  box-shadow: 0 15px 40px rgba(245, 87, 108, 0.5);
-}
-
-/*
-.hero-btn:hover {
-  background: #0ea5e9;
-}*/
-
-.contributors-list {
-  font-size: 1.3rem;
-  line-height: 2;
-  margin: 0;
-  padding-left: 1.5rem;
-}
-
-/*
-.github-btn {
-  background: #24292f;
-  color: #fff;
+.hero-btn {
+  background: var(--primary-blue);
+  color: var(--button-text);
   border: none;
-  padding: 0.7em 1.5em;
-  border-radius: 6px;
-  font-size: 1em;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.2em;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  font-family: inherit;
-  transition: background 0.2s;
-} */
+  transition: background 0.3s ease;
+  margin-top: 20px;
+}
 
+.hero-btn:hover {
+  background: var(--secondary-blue);
+}
 
-/*
+.github-btn {
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  margin-top: 20px;
+}
+
 .github-btn:hover {
-  background: #57606a;
-} */
+  background: var(--border-color);
+  border-color: var(--primary-blue);
+}
 
-/* Sign-up Modal */
-.signup-modal {
+/* Modal Styles */
+.signup-modal,
+.login-modal,
+.about-modal {
   display: none;
   position: fixed;
-  top: 0;
+  z-index: 1001; /* Ensure modals are above header and menu */
   left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
-  z-index: 2000;
-  animation: modalFadeIn 0.3s ease-out;
+  overflow: auto;
+  background-color: var(--modal-bg);
+  align-items: center;
+  justify-content: center;
 }
 
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.signup-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 3rem;
-  max-width: 500px;
+.signup-content,
+.login-content,
+.about-content {
+  background-color: var(--modal-content-bg);
+  margin: auto;
+  padding: 40px;
+  border-radius: 10px;
   width: 90%;
-  animation: modalSlideIn 0.3s ease-out;
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -60%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%); /* Corrected typo: ((-50%, -50%)) to (-50%, -50%) */
-  }
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+  text-align: center;
 }
 
 .close-btn {
+  color: var(--text-secondary);
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 15px;
+  right: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
   background: none;
   border: none;
-  color: var(--text-secondary);
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: color 0.3ease;
 }
 
-.close-btn:hover {
+.close-btn:hover,
+.close-btn:focus {
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
+.signup-form,
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.signup-form h2,
+.login-form h2 {
   color: var(--text-primary);
-}
-
-.signup-form h2 {
-  margin-bottom: 2rem;
-  text-align: center;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  text-align: left;
+  margin-bottom: 8px;
   color: var(--text-secondary);
-  font-weight: 500;
 }
 
 .form-group input {
   width: 100%;
-  padding: 1rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--input-bg);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  transition: all 0.3s ease; /* Corrected 'ease' */
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-sizing: border-box;
 }
 
 .form-group input::placeholder {
   color: var(--text-secondary);
 }
 
-/* Footer */
+.signup-btn,
+.login-btn {
+  background-color: var(--primary-blue);
+  color: var(--button-text);
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover,
+.login-btn:hover {
+  background-color: var(--secondary-blue);
+}
+
+.success-message {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Footer Styles */
 footer {
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid var(--glass-border);
-  padding: 3rem 2rem 1rem;
-  margin-top: 5rem;
+  background-color: var(--input-bg);
+  padding: 40px 20px 20px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: auto; /* Pushes footer to the bottom */
 }
 
 .footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  /* MODIFIED: Removed 'display: grid' and 'grid-template-columns' as 'display: flex' was overriding it.
-     '1f' typo in grid-template-columns was fixed to '1fr' in the commented out line. */
-  /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
-  gap: 2rem;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: center;
+  justify-content: space-around;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .footer-section {
-  min-width: 180px;
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
-.footer-section h3 {
-  margin-bottom: 1rem;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.footer-section p,
-.footer-section a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  margin-bottom: 0.5rem;
-  display: block;
-  transition: color 0.3s ease;
-}
-
-.footer-section a:hover {
+.footer-title {
   color: var(--text-primary);
+  font-size: 1.2em;
+  margin-bottom: 15px;
 }
 
-.social-links {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-  justify-content: center; /* Added for centering social links if footer is centered */
-}
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--glass-bg);
-  border-radius: 50%;
-  transition: all 0.3s ease;
-}
-
-.social-link:hover {
-  background: var(--accent-gradient);
-  transform: translateY(-2px);
-}
-
-.footer-bottom {
-  text-align: center;
-  padding-top: 2rem;
-  margin-top: 2rem;
-  border-top: 1px solid var(--glass-border);
-  color: var(--text-secondary);
-}
-
-/* Uniform font for footer */
-.footer-title,
-.footer-link,
-.footer-text,
-.footer-bottom p {
-  font-family: 'Russo One', Arial, sans-serif;
-  letter-spacing: 1px;
+.footer-text {
+  font-size: 0.9em;
+  line-height: 1.6;
 }
 
 .footer-link {
   display: block;
-  color: var(--text-secondary); /* Corrected from #334155 */
+  color: var(--text-secondary);
   text-decoration: none;
-  margin-bottom: 0.5em;
-  font-size: 1em;
-  transition: color 0.2s;
+  margin-bottom: 10px;
+  transition: color 0.2s ease;
 }
 
 .footer-link:hover {
-  color: #0ea5e9;
+  color: var(--primary-blue);
 }
 
-.footer-title {
-  font-size: 1.1em;
-  margin-bottom: 0.5em;
+.social-links a {
+  color: var(--text-secondary);
+  font-size: 1.5em;
+  margin-right: 15px;
+  transition: color 0.2s ease;
 }
 
-.footer-text {
-  font-size: 1em;
-  margin: 0.2em 0;
+.social-links a:hover {
+  color: var(--primary-blue);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .header-content { /* Changed from .header-context */
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  nav ul {
-    gap: 1rem;
-  }
-
-  .hero-content {
-    padding: 1rem;
-  }
-
-  .signup-content {
-    padding: 2rem;
-    margin: 1rem;
-  }
-
-  .footer-content {
-    /* grid-template-columns: 1fr; (If you switch to grid, uncomment this) */
-    text-align: center;
-    /* Flexbox properties already handle this */
-  }
+.footer-bottom {
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+  margin-top: 20px;
+  font-size: 0.8em;
+  color: var(--text-secondary);
 }
 
-/* Success Message for Signing up */
-.success-message {
-  display: none;
-  text-align: center;
-  padding: 2rem;
-  background: linear-gradient(135deg, #10b981, #059669);
-  border-radius: 10px;
-  margin-top: 1rem;
-  animation: successPulse 0.5s ease-out;
+/* Loading Spinner Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-@keyframes successPulse {
-  0% {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
 
-/* About Modal Styles */
-.about-modal {
-  display: none;
-  position: fixed;
-  z-index: 3000;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
-  justify-content: center;
-  align-items: center;
-}
-
-.about-modal.active {
-  display: flex;
-}
-
-.about-content {
-  background: var(--card-bg); /* Changed from #181e2a to var */
-  color: var(--text-primary); /* Changed from #fff to var */
-  border-radius: 18px;
-  padding: 2.5rem 2rem;
-  max-width: 420px;
-  width: 90%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  position: relative;
-  font-family: 'Russo One', Arial, sans-serif;
-  text-align: center;
-}
-
-.about-title {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.about-text {
-  font-size: 1.1em;
-  margin-bottom: 1em;
-  color: var(--text-secondary); /* Changed from #b8c4e6 to var */
-}
-
-.about-content .close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  color: var(--text-secondary); /* Changed from #b8c4e6 to var */
-  font-size: 2rem;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.about-content .close-btn:hover {
-  color: var(--text-primary); /* Changed from #fff to var */
-}
-
-/* Login Modal Styles */
-.login-modal {
-  display: none;
-  position: fixed;
-  z-index: 3000;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
-  justify-content: center;
-  align-items: center;
-}
-
-.login-modal.active {
-  display: flex;
-}
-
-.login-content {
-  background: var(--card-bg); /* Changed from #181e2a to var */
-  color: var(--text-primary); /* Changed from #fff to var */
-  border-radius: 18px;
-  padding: 2.5rem 2rem;
-  max-width: 370px;
-  width: 90%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  position: relative;
-  font-family: 'Russo One', Arial, sans-serif;
-  text-align: center;
-}
-
-.login-title {
-  font-size: 2rem;
-  color: #7c3aed;
-  margin-bottom: 1.5rem;
-  letter-spacing: 2px;
-}
-
-.login-form .form-group {
-  margin-bottom: 1.1rem;
-  text-align: left;
-}
-
-.login-form label {
-  font-size: 1rem;
-  color: var(--text-secondary); /* Changed from #b8c4e6 to var */
-  margin-bottom: 0.2em;
-  letter-spacing: 1px;
-  display: block;
-}
-
-.login-form input {
-  padding: 0.7em 1em;
-  border-radius: 8px;
-  border: 1.5px solid #333;
-  background: var(--dark-bg); /* Changed from #222 to var */
-  color: var(--text-primary); /* Changed from #fff to var */
-  font-size: 1em;
-  font-family: 'Russo One', Arial, sans-serif;
-  outline: none;
-  transition: border 0.2s;
-  width: 100%;
-  margin-top: 0.2em;
-}
-
-.login-form input:focus {
-  border: 1.5px solid #7c3aed;
-}
-
-.login-btn {
-  background: linear-gradient(90deg, #7c3aed 30%, #f472b6 100%);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.8em 0;
-  font-size: 1.1em;
-  font-family: 'Russo One', Arial, sans-serif;
-  letter-spacing: 1px;
-  cursor: pointer;
-  margin-top: 0.5em;
-  transition: background 0.2s;
-  font-weight: bold;
-  box-shadow: 0 2px 12px 0 rgba(124, 58, 237, 0.10);
-  width: 100%;
-}
-
-.login-btn:hover {
-  background: linear-gradient(90deg, #f472b6 30%, #7c3aed 100%);
-}
-
-.close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  color: var(--text-secondary); /* Changed from #b8c4e6 to var */
-  font-size: 2rem;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.close-btn:hover {
-  color: var(--text-primary); /* Changed from #fff to var */
-}
-
-/* Add this at the end of your CSS file for a standout user greeting */
-#user-greeting {
-  display: none;
-  position: absolute;
-  top: 1.5rem;
-  right: 2rem;
-  font-weight: bold;
-  font-size: 1.15em;
-  color: #fff;
-  background: linear-gradient(90deg, #0ea5e9 60%, #38bdf8 100%);
-  padding: 0.5em 1.2em;
-  border-radius: 2em;
-  box-shadow: 0 2px 12px rgba(14, 165, 233, 0.15);
-  letter-spacing: 0.03em;
-  border: 2px solid #38bdf8;
-  z-index: 1001;
-  transition: background 0.3s, color 0.3s;
-}
-
-#user-greeting #user-name {
-  color: #ffe066;
-  margin-left: 0.3em;
-  font-weight: 900;
-  text-shadow: 0 1px 4px #0ea5e9;
-  font-size: 1.15em;
-  display: inline;
-}
-
+/* ------------------------------------------- */
+/* MOBILE OPTIMIZATIONS              */
+/* ------------------------------------------- */
 @media (max-width: 700px) {
-  nav ul {
-    display: none;
-    flex-direction: column;
-    background: #222;
-    position: absolute;
-    top: 60px;
-    right: 0;
-    width: 200px;
-    z-index: 1002;
+  header {
+    padding: 20px; /* Adjust header padding for smaller screens */
   }
+
+  .header-content {
+    flex-wrap: wrap; /* Allow elements to wrap if needed */
+    justify-content: center; /* Center items for very small screens */
+    padding-bottom: 10px; /* Add some space below logo/greeting */
+  }
+
+  .logo {
+    justify-content: center; /* Center the logo */
+    width: 100%; /* Take full width to prevent overlap */
+    margin-bottom: 10px; /* Space below logo */
+  }
+
+  .logo .brand {
+    font-size: 2em; /* Smaller font for brand */
+  }
+
+  .logo .slogan {
+    font-size: 0.7em; /* Smaller font for slogan */
+  }
+
+  /* Hamburger menu toggle - VISIBLE on mobile */
+  #nav-toggle {
+    display: block; /* Show the hamburger icon on mobile */
+    position: absolute; /* Position relative to .header-content */
+    top: 25px; /* Adjust this to control vertical position */
+    right: 20px; /* Adjust this to control horizontal position */
+    font-size: 2.5em; /* Make it more prominent */
+    z-index: 1003; /* Ensure it's on top of everything */
+  }
+
+  #user-greeting {
+    display: block; /* Or hide if you want it inside the menu */
+    width: 100%; /* Take full width */
+    text-align: right; /* Align greeting to the right */
+    position: absolute; /* Position relative to .header-content */
+    top: 25px; /* Align with nav-toggle */
+    right: 80px; /* Position to the left of the toggle */
+    font-size: 1em; /* Smaller font for greeting */
+    z-index: 1003; /* Ensure it's above other elements */
+    white-space: nowrap; /* Prevent text wrap */
+  }
+
+
+  /* Navigation Menu (Hidden by default, shown when 'open' class is added) */
+  nav ul {
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    background: var(--modal-content-bg); /* Dark background for the menu */
+    position: absolute; /* Position it relative to .header-content */
+    top: 80px; /* POSITION THE MENU BELOW THE HEADER. Adjust based on header's actual height */
+    right: 20px; /* Align with the right edge */
+    width: calc(100% - 40px); /* Adjust width to fit screen with padding */
+    max-width: 250px; /* Limit max width for menu */
+    z-index: 1002; /* Below toggle, above content */
+    padding: 15px 0; /* Vertical padding, no horizontal as items take full width */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    border-radius: 8px; /* Rounded corners for the menu box */
+    align-items: flex-start; /* Align menu items to the left */
+    gap: 8px; /* Smaller gap between menu items */
+  }
+
   nav ul.open {
-    display: flex;
+    display: flex; /* Show the menu when the 'open' class is present */
+  }
+
+  .nav-item {
+    width: 100%; /* Make each nav item take full width of the menu */
+  }
+
+  .nav-item button {
+    width: 100%; /* Make button fill the nav item */
+    margin: 0; /* Remove left margin */
+    padding: 10px 15px; /* Adjust padding for mobile buttons */
+    text-align: left; /* Align button text to the left */
+  }
+
+  .hero-title {
+    font-size: 2.5em; /* Smaller font for hero title on mobile */
+  }
+
+  .hero p {
+    font-size: 1em; /* Smaller font for hero paragraph */
+  }
+
+  .hero-btn,
+  .github-btn {
+    width: 100%; /* Make buttons full width */
+    margin-bottom: 10px; /* Add space between buttons */
+  }
+
+  .footer-section {
+    min-width: 150px; /* Allow footer sections to be smaller */
+    text-align: center; /* Center footer content */
+  }
+}
+
+/* Optional: Adjust for very small screens */
+@media (max-width: 480px) {
+  header {
+    padding: 15px;
+  }
+  .header-content {
+    flex-direction: column; /* Stack logo, greeting, and toggle */
+    align-items: center;
+  }
+  .logo {
+    margin-bottom: 15px;
   }
   #nav-toggle {
-    display: block;
-    background: none;
-    border: none;
-    color: #0ea5e9;
-    font-size: 2em;
-    position: absolute;
-    top: 1.2rem;
-    right: 2rem;
-    z-index: 1003;
+    position: static; /* Let it flow normally */
+    margin-top: 10px; /* Space below content */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #user-greeting {
+    position: static; /* Let it flow normally */
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  nav ul {
+    right: 15px; /* Adjust for smaller screens */
+    width: calc(100% - 30px);
   }
 }
