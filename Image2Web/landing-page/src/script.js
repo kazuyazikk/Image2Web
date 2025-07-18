@@ -162,6 +162,7 @@ if (typeof firebase !== 'undefined' && firebase.auth) {
 // --- DOMContentLoaded for main event listeners ---
 document.addEventListener('DOMContentLoaded', () => {
     // Initial load
+    // Check if 'content' element exists before trying to navigate, as it might not be present on all pages (e.g., workspace.html)
     if (document.getElementById('content')) {
         navigate('home');
     }
