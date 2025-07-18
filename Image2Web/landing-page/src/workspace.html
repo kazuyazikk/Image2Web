@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Your personal workspace on Image2Web. Manage your projects and conversions here. Designed by SeroTech.">
+  <title>CODE4WEB - Your Workspace</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <style>
+    /* Widget Styles - If these are global and not already in style.css */
+    .widget {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1em;
+      margin: 1em 0;
+      box-shadow: 0 2px 8px rgba(30, 41, 59, 0.04);
+    }
+
+    .widget h3 {
+      margin-top: 0;
+    }
+
+    #todo-list li.done {
+      text-decoration: line-through;
+      color: #888;
+    }
+
+    /* Override for active nav button on this page */
+    .nav-item.active .nav-btn {
+      border: 2px solid #0ea5e9;
+      background: transparent;
+      color: #0ea5e9;
+    }
+
+    /* Basic styling for the workspace content */
+    .workspace-content {
+      max-width: 900px;
+      margin: 4rem auto;
+      padding: 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .workspace-content h1 {
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      font-family: 'Russo One', Arial, sans-serif;
+    }
+
+    /* New styles for Workspace functionalities */
+    .upload-section {
+      margin-bottom: 2rem;
+    }
+
+    .upload-section p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .image-upload-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .upload-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 2rem;
+      background: var(--glass-bg);
+      border: 2px dashed #38bdf8;
+      border-radius: 10px;
+      color: #38bdf8;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      gap: 0.5rem;
+    }
+
+    .upload-label:hover {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: #0ea5e9;
+    }
+
+    .upload-label svg {
+      width: 1.5em;
+      height: 1.5em;
+    }
+
+    #imagePreview {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 10px;
+      margin-top: 1rem;
+      object-fit: contain; /* Ensures the image fits without distortion */
+      border: 1px solid var(--glass-border);
+    }
+
+    #fileName {
+      margin-top: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    #statusMessage {
+      margin-top: 1rem;
+      color: #ffe066; /* A distinct color for status messages */
+      font-weight: 500;
+    }
+
+    .workspace-cta-btn {
+      background: var(--secondary-gradient);
+      color: white;
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+    }
+
+    .workspace-cta-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(245, 87, 108, 0.5);
+    }
+
+    /* Styles for Projects Section */
+    .projects-section {
+      margin-top: 3rem;
+    }
+
+    .projects-section h2 {
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      margin-bottom: 2rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-family: 'Russo One', Arial, sans-serif;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: left;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .project-card h3 {
+      font-size: 1.3rem;
+      color: #38bdf8;
+      margin-bottom: 0.5rem;
+      font-family: 'Russo One', Arial, sans-serif;
+    }
+
+    .project-card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .project-card .project-link {
+      display: inline-block;
+      background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: filter 0.2s ease;
+    }
+
+    .project-card .project-link:hover {
+      filter: brightness(1.1);
+    }
+
+    /* Separator line */
+    hr.section-separator {
+      border: 0;
+      height: 1px;
+      background: var(--glass-border);
+      margin: 3rem 0;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8" />
+          <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9" />
+          <rect x="20" y="32" width="16" height="16" rx="4" fill="#06B6D4" />
+          <rect x="20" y="20" width="16" height="16" rx="4" fill="#1E293B" />
+        </svg>
+        <div>
+          <span class="brand">CODE4WEB</span>
+          <div class="slogan">Designed by SeroTech</div>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li class="nav-item" onclick="window.location.href='index.html'">
+            <button class="nav-btn">Home</button>
+          </li>
+          <li class="nav-item" onclick="window.location.href='contributors.html'">
+            <button class="nav-btn">Contributors</button>
+          </li>
+          <li class="nav-item active" onclick="window.location.href='workspace.html'">
+            <button class="nav-btn">Workspace</button>
+          </li>
+          <li class="nav-item" id="auth-links">
+            <button class="nav-btn" onclick="openLogin()">Login</button>
+          </li>
+          <li class="nav-item" id="user-links" style="display: none;">
+            <button class="nav-btn" onclick="logout()">Logout</button>
+          </li>
+        </ul>
+      </nav>
+      <div id="user-greeting">
+        Hi, <span id="user-name"></span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="workspace-content">
+      <h1>Your Personal Workspace</h1>
+
+      <div class="upload-section">
+        <p>Upload your wireframe or image to convert it into a website.</p>
+        <div class="image-upload-area">
+          <label for="imageUpload" class="upload-label">
+            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path
+                d="M10 2a.75.75 0 01.75.75v6.5h6.5a.75.75 0 010 1.5h-6.5v6.5a.75.75 0 01-1.5 0v-6.5h-6.5a.75.75 0 010-1.5h6.5v-6.5A.75.75 0 0110 2z">
+              </path>
+            </svg>
+            Select an image
+          </label>
+          <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+          <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
+          <p id="fileName"></p>
+        </div>
+        <button id="convertBtn" class="workspace-cta-btn" style="margin-top: 1rem;">Convert to Website</button>
+        <p id="statusMessage"></p>
+      </div>
+
+      <hr class="section-separator">
+
+      <div class="projects-section">
+        <h2>Your Generated Projects</h2>
+        <div id="projectsList" class="projects-grid">
+          <p style="color: var(--text-secondary);">No projects yet. Upload an image to get started!</p>
+          </div>
+      </div>
+
+    </section>
+  </main>
+
+  <div class="signup-modal" id="signupModal">
+    <div class="signup-content">
+      <button class="close-btn" onclick="closeSignup()">&times;</button>
+      <form id="signupForm" class="signup-form">
+        <h2>Join Image2Web</h2>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input id="signup-username" name="username" type="text" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="signup-email" name="email" type="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="signup-password" name="password" type="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="signup-btn" style="width: 100%; margin: 0;">
+          Create Account
+        </button>
+        <div class="success-message" id="successMessage" style="display:none;">
+          <h3>🎉 Welcome to CODE4WEB!</h3>
+          <p>Your account has been created successfully.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="login-modal" id="loginModal">
+    <div class="login-content">
+      <button class="close-btn" onclick="closeLogin()">&times;</button>
+      <form class="login-form" id="loginForm">
+        <h2 class="login-title">Login to Image2Web</h2>
+        <div class="form-group">
+          <label for="login-username">Email</label>
+          <input type="email" id="login-username" name="login-username" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="login-password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="login-btn" style="width: 100%; margin: 0;">
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="about-modal" id="aboutModal">
+    <div class="about-content">
+      <button class="close-btn" onclick="closeAbout()">&times;</button>
+      <h2 class="about-title">About Image2Web</h2>
+      <p class="about-text">
+        Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease. Our
+        mission is to empower developers and designers to bring their ideas to life faster and more efficiently.
+      </p>
+      <p class="about-text">
+        <strong>Team:</strong> Moyano, Sarge Dave M. • Mallari, Merick Joshua • Quiambao, Christian Joshua • Dizon,
+        Robby
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3 class="footer-title">About Image2Web</h3>
+        <p class="footer-text">
+          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds.
+          Built for developers and designers by SeroTech.
+        </p>
+        <div class="social-links">
+          </div>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">Quick Links</h3>
+        <a href="#" class="footer-link" onclick="window.location.href='index.html'">Home</a>
+        <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
+        <a href="#" class="footer-link">Blog</a>
+      </div>
+      <div class="footer-section">
+        <a href="#" class="footer-link">Documentation</a>
+        <a href="#" class="footer-link">Tutorials</a>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">Contact</h3>
+        <p class="footer-text">📧 our email</p>
+        <p class="footer-text">📍 A Wireframe to Website Generator</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-text">&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
+    </div>
+  </footer>
+
+  <div id="loading-spinner"
+    style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">
+    <div
+      style="border:8px solid #eee;border-top:8px solid #0ea5e9;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;">
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDA9TT-iCH515H63y-4zJkTJ1tZAOU7m60",
+      authDomain: "image2web-1a6c0.firebaseapp.com",
+      projectId: "image2web-1a6c0",
+      storageBucket: "image2web-1a6c0.appspot.com",
+      messagingSenderId: "167811907825",
+      appId: "1:167811907825:web:809c410fefc52de3542950",
+      measurementId: "G-LF3Y1S5M47"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    // JavaScript for Workspace Functionality (Add this to your script.js or directly here)
+    document.addEventListener('DOMContentLoaded', () => {
+      const imageUpload = document.getElementById('imageUpload');
+      const imagePreview = document.getElementById('imagePreview');
+      const fileNameDisplay = document.getElementById('fileName');
+      const convertBtn = document.getElementById('convertBtn');
+      const statusMessage = document.getElementById('statusMessage');
+      const loadingSpinner = document.getElementById('loading-spinner');
+      const projectsList = document.getElementById('projectsList');
+
+      // Handle image file selection
+      imageUpload.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+            fileNameDisplay.textContent = imageUpload.files[0].name;
+            statusMessage.textContent = ''; // Clear any previous status
+          };
+          reader.readAsDataURL(this.files[0]);
+        } else {
+          imagePreview.src = '#';
+          imagePreview.style.display = 'none';
+          fileNameDisplay.textContent = '';
+        }
+      });
+
+      // Handle convert button click
+      convertBtn.addEventListener('click', async () => {
+        if (!imageUpload.files || imageUpload.files.length === 0) {
+          statusMessage.textContent = 'Please select an image first.';
+          statusMessage.style.color = '#f5576c'; // Error color
+          return;
+        }
+
+        statusMessage.textContent = 'Converting image... This may take a moment.';
+        statusMessage.style.color = '#ffe066'; // Warning/info color
+        loadingSpinner.style.display = 'flex'; // Show spinner
+
+        const file = imageUpload.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+
+        // --- IMPORTANT: This is where you would make an API call to your backend service ---
+        try {
+          // Replace with your actual API endpoint
+          const response = await fetch('/api/convert-image', { 
+            method: 'POST',
+            body: formData,
+            // headers: { 'Authorization': `Bearer ${YOUR_AUTH_TOKEN}` } // Add if authentication is needed
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const result = await response.json();
+          // Assuming the backend returns a URL or details for the generated website
+          statusMessage.textContent = 'Conversion successful! 🎉';
+          statusMessage.style.color = '#10b981'; // Success color
+
+          // Example: Add a new project card
+          const projectName = file.name.split('.')[0] || 'New Project';
+          const projectUrl = result.websiteUrl || '#'; // Replace with actual URL from API response
+          addProjectCard(projectName, new Date().toLocaleDateString(), projectUrl);
+
+        } catch (error) {
+          console.error('Conversion failed:', error);
+          statusMessage.textContent = `Conversion failed: ${error.message}. Please try again.`;
+          statusMessage.style.color = '#f5576c'; // Error color
+        } finally {
+          loadingSpinner.style.display = 'none'; // Hide spinner
+        }
+      });
+
+      // Function to dynamically add a project card
+      function addProjectCard(name, date, url) {
+        // Remove the "No projects yet" message if it exists
+        const noProjectsMessage = projectsList.querySelector('p');
+        if (noProjectsMessage) {
+          noProjectsMessage.remove();
+        }
+
+        const projectCard = document.createElement('div');
+        projectCard.classList.add('project-card');
+        projectCard.innerHTML = `
+          <h3>${name}</h3>
+          <p>Converted on: ${date}</p>
+          <p>Status: Completed</p>
+          <a href="${url}" class="project-link" target="_blank" rel="noopener noreferrer">View Website</a>
+        `;
+        projectsList.prepend(projectCard); // Add to the beginning of the list
+      }
+
+      // TODO: Implement logic to load existing projects for the logged-in user (from Firebase Firestore)
+      // This would typically happen when the page loads, or after a user logs in.
+      // You'd fetch data from Firestore and call addProjectCard for each project.
+    });
+  </script>
+  <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
+    &#9776;
+  </button>
+</body>
+
+</html>
