@@ -11,6 +11,53 @@
   <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
+    /* Optional: Add a simple loading state or hidden content if you want to prevent flicker */
+    body {
+      opacity: 0;
+      /* Hide body initially */
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    body.loaded {
+      opacity: 1;
+      /* Show body once authentication check is done */
+    }
+
+    .access-denied-message {
+      display: none;
+      /* Hidden by default */
+      text-align: center;
+      margin-top: 50px;
+      font-size: 1.5em;
+      color: var(--danger-red);
+      /* Assuming you have a danger-red variable */
+      padding: 30px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background-color: var(--modal-content-bg);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .access-denied-message h2 {
+      color: var(--primary-blue);
+      margin-bottom: 15px;
+    }
+
+    .access-denied-message p {
+      margin-bottom: 25px;
+      color: var(--text-primary);
+    }
+
+    .access-denied-message .hero-btn {
+      padding: 10px 30px;
+      font-size: 1em;
+      border-radius: 50px;
+    }
+
+
     /* Widget Styles - If these are global and not already in style.css */
     .widget {
       background: #f8fafc;
@@ -29,81 +76,189 @@
       color: #888;
     }
 
-    /* Override for active nav button on this page */
-    .nav-item.active .nav-btn {
-      border: 2px solid #0ea5e9;
-      background: transparent;
-      color: #0ea5e9;
+    /* Override for active nav button on this page (header nav) */
+    /* I'm keeping this commented out as per our previous discussion to let global style.css rule apply
+      for solid background. If you want a border, uncomment and adjust. */
+    /* .nav-item.active .nav-btn { */
+    /* border: 2px solid #0ea5e9; */
+    /* background: transparent; */
+    /* color: #0ea5e9; */
+    /* } */
+
+    /* General Layout for Workspace Page (copied from previous response) */
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
     }
 
-    /* Basic styling for the workspace content */
-    .workspace-content {
-      max-width: 900px;
-      margin: 4rem auto;
-      padding: 2rem;
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-      animation: fadeInUp 1s ease-out;
+    .main-wrapper {
+      display: flex;
+      flex-grow: 1;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 20px;
     }
 
-    .workspace-content h1 {
-      font-size: clamp(2rem, 6vw, 4rem);
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      background: var(--primary-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.1;
-      font-family: 'Russo One', Arial, sans-serif;
+    .sidebar {
+      width: 250px;
+      min-width: 200px;
+      background: var(--modal-content-bg);
+      padding: 20px;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 15px;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px;
     }
 
-    /* New styles for Workspace functionalities */
-    .upload-section {
-      margin-bottom: 2rem;
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    .upload-section p {
-      font-size: 1.1rem;
+    .sidebar-nav li a,
+    .logout-btn {
+      display: block;
+      padding: 10px 15px;
       color: var(--text-secondary);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.2s ease, color 0.2s ease;
+      font-size: 1.1em;
     }
 
+    .sidebar-nav li a:hover,
+    .logout-btn:hover {
+      background: rgba(var(--primary-blue), 0.1);
+      color: var(--primary-blue);
+    }
+
+    .sidebar-nav li.active a {
+      background: var(--primary-blue);
+      color: var(--button-text);
+      font-weight: bold;
+    }
+
+    .sidebar-user {
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+    }
+
+    .sidebar-user p {
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .main-content-area {
+      flex-grow: 1;
+      padding: 20px 40px;
+      background: var(--background-light);
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    /* Workspace-specific content containers */
+    .workspace-section-card {
+      background: var(--modal-content-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .workspace-section-card h2 {
+      font-family: 'Russo One', sans-serif;
+      color: var(--primary-blue);
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      text-align: center;
+      /* Center the title */
+    }
+
+    /* Input and Select Styles */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      background-color: var(--input-bg);
+      color: var(--text-primary);
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      font-size: 1em;
+      resize: vertical;
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394A3B8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.4L146.2%20227.3%2018.8%2074.8c-2.9-3-6.4-4.6-10.9-4.6A17.6%2017.6%200%200%200%200%2080.2V212.1c0%203.9%201.5%207.4%204.6%2010.9L146.2%20272.7l141.6-141.6c3-3.5%204.6-7%204.6-10.9V80.2c0-4.5-1.5-8-4.6-10.9z%22%2F%3E%3C%2Fsvg%3E');
+      background-repeat: no-repeat;
+      background-position: right 10px top 50%;
+      background-size: 12px auto;
+    }
+
+    /* Image Upload Area */
     .image-upload-area {
       display: flex;
       flex-direction: column;
       align-items: center;
       margin-top: 1.5rem;
+      border: 2px dashed var(--primary-blue);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      min-height: 150px;
+      justify-content: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .image-upload-area.drag-over {
+      background-color: rgba(56, 189, 248, 0.1);
+      border-color: var(--secondary-blue);
     }
 
     .upload-label {
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      padding: 1rem 2rem;
-      background: var(--glass-bg);
-      border: 2px dashed #38bdf8;
-      border-radius: 10px;
-      color: #38bdf8;
+      gap: 10px;
+      padding: 10px 20px;
+      background: var(--primary-blue);
+      color: var(--button-text);
+      border-radius: 50px;
       font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      gap: 0.5rem;
+      transition: background 0.3s ease, transform 0.2s ease;
     }
 
     .upload-label:hover {
-      background: rgba(56, 189, 248, 0.1);
-      border-color: #0ea5e9;
-    }
-
-    .upload-label svg {
-      width: 1.5em;
-      height: 1.5em;
+      background: var(--secondary-blue);
+      transform: translateY(-2px);
     }
 
     #imagePreview {
@@ -111,114 +266,128 @@
       max-height: 200px;
       border-radius: 10px;
       margin-top: 1rem;
-      object-fit: contain; /* Ensures the image fits without distortion */
-      border: 1px solid var(--glass-border);
+      object-fit: contain;
+      border: 1px solid var(--border-color);
+      display: none;
     }
 
-    #fileName {
-      margin-top: 0.5rem;
+    /* Code Inspector Area */
+    .code-inspector-section {
+      background: var(--modal-content-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .code-inspector-section h2 {
+      font-family: 'Russo One', sans-serif;
+      color: var(--primary-blue);
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      text-align: center;
+      /* Center the title */
+    }
+
+    .code-display {
+      background-color: var(--input-bg);
+      color: var(--text-primary);
+      font-family: 'Fira Code', 'Monaco', monospace;
+      font-size: 0.9em;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      min-height: 200px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      border: 1px solid var(--border-color);
+    }
+
+    .code-display.empty-state {
       color: var(--text-secondary);
-      font-size: 0.9rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    #statusMessage {
-      margin-top: 1rem;
-      color: #ffe066; /* A distinct color for status messages */
-      font-weight: 500;
-    }
-
-    .workspace-cta-btn {
-      background: var(--secondary-gradient);
-      color: white;
-      padding: 0.8rem 2rem;
+    .download-code-btn {
+      background: var(--tertiary-blue);
+      color: var(--button-text);
+      padding: 10px 20px;
       border: none;
       border-radius: 50px;
-      font-family: 'Inter', sans-serif;
       font-weight: 600;
-      text-decoration: none;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+      margin-top: 20px;
+      transition: background 0.3s ease, transform 0.2s ease;
     }
 
-    .workspace-cta-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(245, 87, 108, 0.5);
+    .download-code-btn:hover {
+      background: #0ea5e9;
+      transform: translateY(-2px);
     }
 
-    /* Styles for Projects Section */
-    .projects-section {
-      margin-top: 3rem;
+    /* Media Queries for Responsive Layout */
+    @media (max-width: 900px) {
+      .main-wrapper {
+        flex-direction: column;
+        padding-top: 0;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 0;
+        padding: 15px 20px;
+      }
+
+      .sidebar-nav ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .sidebar-nav li a {
+        padding: 8px 12px;
+        font-size: 1em;
+      }
+
+      .sidebar-user {
+        border-top: none;
+        padding-top: 0;
+        margin-top: 15px;
+        text-align: center;
+      }
+
+      .main-content-area {
+        padding: 20px;
+        border-radius: 0;
+        max-width: 100%;
+      }
+
+      .workspace-section-card {
+        padding: 20px;
+      }
+
+      .workspace-section-card h2 {
+        font-size: 1.5em;
+      }
     }
 
-    .projects-section h2 {
-      font-size: clamp(1.5rem, 5vw, 3rem);
-      margin-bottom: 2rem;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-family: 'Russo One', Arial, sans-serif;
-    }
+    @media (max-width: 700px) {
+      .sidebar {
+        display: none;
+      }
 
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .project-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 15px;
-      padding: 1.5rem;
-      text-align: left;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .project-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .project-card h3 {
-      font-size: 1.3rem;
-      color: #38bdf8;
-      margin-bottom: 0.5rem;
-      font-family: 'Russo One', Arial, sans-serif;
-    }
-
-    .project-card p {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      margin-bottom: 1rem;
-    }
-
-    .project-card .project-link {
-      display: inline-block;
-      background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%);
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: filter 0.2s ease;
-    }
-
-    .project-card .project-link:hover {
-      filter: brightness(1.1);
-    }
-
-    /* Separator line */
-    hr.section-separator {
-      border: 0;
-      height: 1px;
-      background: var(--glass-border);
-      margin: 3rem 0;
-      opacity: 0.5;
+      .main-content-area {
+        width: 100%;
+        margin-top: 0;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+      }
     }
   </style>
 </head>
@@ -240,13 +409,13 @@
       </div>
       <nav>
         <ul>
-          <li class="nav-item" onclick="window.location.href='index.html'">
+          <li class="nav-item" data-page="home" onclick="window.location.href='index.html'">
             <button class="nav-btn">Home</button>
           </li>
-          <li class="nav-item" onclick="window.location.href='contributors.html'">
+          <li class="nav-item" data-page="contributors" onclick="window.location.href='contributors.html'">
             <button class="nav-btn">Contributors</button>
           </li>
-          <li class="nav-item active" onclick="window.location.href='workspace.html'">
+          <li class="nav-item active" data-page="workspace" onclick="window.location.href='workspace.html'">
             <button class="nav-btn">Workspace</button>
           </li>
           <li class="nav-item" id="auth-links">
@@ -263,40 +432,75 @@
     </div>
   </header>
 
-  <main>
-    <section class="workspace-content">
-      <h1>Your Personal Workspace</h1>
-
-      <div class="upload-section">
-        <p>Upload your wireframe or image to convert it into a website.</p>
-        <div class="image-upload-area">
-          <label for="imageUpload" class="upload-label">
-            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path
-                d="M10 2a.75.75 0 01.75.75v6.5h6.5a.75.75 0 010 1.5h-6.5v6.5a.75.75 0 01-1.5 0v-6.5h-6.5a.75.75 0 010-1.5h6.5v-6.5A.75.75 0 0110 2z">
-              </path>
-            </svg>
-            Select an image
-          </label>
-          <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-          <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
-          <p id="fileName"></p>
+  <div id="workspace-authorized-content" style="display: none;">
+    <div class="main-wrapper">
+      <aside class="sidebar">
+        <nav class="sidebar-nav">
+          <ul>
+            <li data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
+            <li class="active" data-page="workspace"><a href="workspace.html">Workspace</a></li>
+            <li data-page="contributors"><a href="contributors.html">Contributors</a></li>
+          </ul>
+        </nav>
+        <div class="sidebar-user">
+          <p>Username: <span id="sidebar-username">Guest</span></p>
+          <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
-        <button id="convertBtn" class="workspace-cta-btn" style="margin-top: 1rem;">Convert to Website</button>
-        <p id="statusMessage"></p>
-      </div>
+      </aside>
 
-      <hr class="section-separator">
+      <main class="main-content-area">
+        <section class="workspace-section-card">
+          <h2>Generate Code from Wireframe</h2>
 
-      <div class="projects-section">
-        <h2>Your Generated Projects</h2>
-        <div id="projectsList" class="projects-grid">
-          <p style="color: var(--text-secondary);">No projects yet. Upload an image to get started!</p>
+          <div class="form-group">
+            <label for="selectModel">Select Model</label>
+            <select id="selectModel">
+              <option value="gemini-google">Gemini Google</option>
+              <option value="openai-gpt4o">OpenAI GPT-4o</option>
+            </select>
           </div>
-      </div>
 
-    </section>
-  </main>
+          <div class="form-group">
+            <label for="websiteDescription">Description of your website</label>
+            <textarea id="websiteDescription" rows="5"
+              placeholder="e.g., A minimalist portfolio website for a graphic designer, with a dark theme and subtle animations."></textarea>
+          </div>
+
+          <div class="image-upload-area" id="dropArea">
+            <label for="imageUpload" class="upload-label">
+              <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path
+                  d="M10 2a.75.75 0 01.75.75v6.5h6.5a.75.75 0 010 1.5h-6.5v6.5a.75.75 0 01-1.5 0v-6.5h-6.5a.75.75 0 010-1.5h6.5v-6.5A.75.75 0 0110 2z">
+                </path>
+              </svg>
+              Upload Wireframe Here
+            </label>
+            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+            <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
+            <p id="fileName"></p>
+          </div>
+
+          <button id="generateCodeBtn" class="workspace-cta-btn" style="margin-top: 1rem;">Generate Code!</button>
+          <p id="statusMessage"></p>
+        </section>
+
+        <section class="workspace-section-card code-inspector-section">
+          <h2>Inspector</h2>
+          <div id="codeDisplay" class="code-display empty-state">
+            <p>Generated code will appear here.</p>
+          </div>
+          <button id="saveHtmlBtn" class="download-code-btn" style="display: none;">Save as HTML file</button>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="access-denied-message" id="accessDeniedMessage">
+    <h2>Access Denied</h2>
+    <p>Please log in to access your workspace. You will be redirected to the home page shortly.</p>
+    <button class="hero-btn" onclick="openLogin()">Login Now</button>
+  </div>
+
 
   <div class="signup-modal" id="signupModal">
     <div class="signup-content">
@@ -370,7 +574,7 @@
           Built for developers and designers by SeroTech.
         </p>
         <div class="social-links">
-          </div>
+        </div>
       </div>
       <div class="footer-section">
         <h3 class="footer-title">Quick Links</h3>
@@ -417,27 +621,147 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
 
-    // JavaScript for Workspace Functionality (Add this to your script.js or directly here)
+    // Helper functions for modals (assuming they are in script.js or a global scope)
+    function openLogin() {
+      document.getElementById('loginModal').classList.add('active');
+    }
+
+    function closeLogin() {
+      document.getElementById('loginModal').classList.remove('active');
+    }
+
+    function openSignup() {
+      document.getElementById('signupModal').classList.add('active');
+    }
+
+    function closeSignup() {
+      document.getElementById('signupModal').classList.remove('active');
+    }
+
+    function openAbout() {
+      document.getElementById('aboutModal').classList.add('active');
+    }
+
+    function closeAbout() {
+      document.getElementById('aboutModal').classList.remove('active');
+    }
+
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        console.log("User logged out");
+        window.location.href = 'index.html'; // Redirect to home after logout
+      }).catch((error) => {
+        console.error("Logout Error:", error);
+        alert("Logout failed: " + error.message);
+      });
+    }
+
+    // Workspace Functionality JavaScript
     document.addEventListener('DOMContentLoaded', () => {
       const imageUpload = document.getElementById('imageUpload');
       const imagePreview = document.getElementById('imagePreview');
       const fileNameDisplay = document.getElementById('fileName');
-      const convertBtn = document.getElementById('convertBtn');
+      const generateCodeBtn = document.getElementById('generateCodeBtn');
       const statusMessage = document.getElementById('statusMessage');
       const loadingSpinner = document.getElementById('loading-spinner');
-      const projectsList = document.getElementById('projectsList');
+      const selectModel = document.getElementById('selectModel');
+      const websiteDescription = document.getElementById('websiteDescription');
+      const codeDisplay = document.getElementById('codeDisplay');
+      const saveHtmlBtn = document.getElementById('saveHtmlBtn');
+      const sidebarUsernameSpan = document.getElementById('sidebar-username');
 
-      // Handle image file selection
+      const workspaceAuthorizedContent = document.getElementById('workspace-authorized-content');
+      const accessDeniedMessage = document.getElementById('accessDeniedMessage');
+      const body = document.body;
+
+      // Initial state: hide authorized content and access denied message
+      workspaceAuthorizedContent.style.display = 'none';
+      accessDeniedMessage.style.display = 'none';
+
+      // Firebase Authentication Check
+      firebase.auth().onAuthStateChanged(user => {
+        const authLinks = document.getElementById('auth-links');
+        const userLinks = document.getElementById('user-links');
+        const userGreeting = document.getElementById('user-greeting');
+        const userNameSpan = document.getElementById('user-name');
+
+        if (user) {
+          // User is signed in. Allow access to workspace.
+          console.log("User is logged in:", user.email);
+          workspaceAuthorizedContent.style.display = 'flex'; // Show workspace content (assuming main-wrapper uses flex)
+          accessDeniedMessage.style.display = 'none'; // Hide access denied message
+
+          // Update header for logged-in user
+          authLinks.style.display = 'none';
+          userLinks.style.display = 'list-item';
+          userGreeting.style.display = 'block';
+          userNameSpan.textContent = user.displayName || user.email || 'User';
+          sidebarUsernameSpan.textContent = user.displayName || user.email || 'User';
+
+
+        } else {
+          // User is logged out. Show access denied message and redirect.
+          console.log("User is logged out. Access denied.");
+          workspaceAuthorizedContent.style.display = 'none'; // Hide workspace content
+          accessDeniedMessage.style.display = 'block'; // Show access denied message
+
+          // Update header for logged-out user
+          authLinks.style.display = 'list-item';
+          userLinks.style.display = 'none';
+          userGreeting.style.display = 'none';
+          userNameSpan.textContent = '';
+          sidebarUsernameSpan.textContent = 'Guest';
+
+          // Redirect to home page after a delay
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 2000); // Redirect after 2 seconds
+        }
+        body.classList.add('loaded'); // Ensure body becomes visible after auth check
+      });
+
+
+      // Drag and Drop functionality
+      const dropArea = document.getElementById('dropArea');
+
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => dropArea.classList.add('drag-over'), false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => dropArea.classList.remove('drag-over'), false);
+      });
+
+      dropArea.addEventListener('drop', handleDrop, false);
+
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        imageUpload.files = files;
+        imageUpload.dispatchEvent(new Event('change'));
+      }
+
+      // Handle image file selection (from click or drag-drop)
       imageUpload.addEventListener('change', function() {
         if (this.files && this.files[0]) {
+          const file = this.files[0];
           const reader = new FileReader();
           reader.onload = function(e) {
             imagePreview.src = e.target.result;
             imagePreview.style.display = 'block';
-            fileNameDisplay.textContent = imageUpload.files[0].name;
-            statusMessage.textContent = ''; // Clear any previous status
+            fileNameDisplay.textContent = file.name;
+            statusMessage.textContent = '';
           };
-          reader.readAsDataURL(this.files[0]);
+          reader.readAsDataURL(file);
         } else {
           imagePreview.src = '#';
           imagePreview.style.display = 'none';
@@ -445,81 +769,127 @@
         }
       });
 
-      // Handle convert button click
-      convertBtn.addEventListener('click', async () => {
+      // Handle Generate Code button click
+      generateCodeBtn.addEventListener('click', async () => {
         if (!imageUpload.files || imageUpload.files.length === 0) {
           statusMessage.textContent = 'Please select an image first.';
-          statusMessage.style.color = '#f5576c'; // Error color
+          statusMessage.style.color = '#f5576c';
           return;
         }
 
-        statusMessage.textContent = 'Converting image... This may take a moment.';
-        statusMessage.style.color = '#ffe066'; // Warning/info color
-        loadingSpinner.style.display = 'flex'; // Show spinner
+        const selectedModel = selectModel.value;
+        const description = websiteDescription.value.trim();
+
+        if (!description) {
+          statusMessage.textContent = 'Please provide a description of your website.';
+          statusMessage.style.color = '#f5576c';
+          return;
+        }
+
+        statusMessage.textContent = `Generating code using ${selectedModel}... This may take a moment.`;
+        statusMessage.style.color = '#ffe066';
+        loadingSpinner.style.display = 'flex';
 
         const file = imageUpload.files[0];
         const formData = new FormData();
         formData.append('image', file);
+        formData.append('model', selectedModel);
+        formData.append('description', description);
 
-        // --- IMPORTANT: This is where you would make an API call to your backend service ---
         try {
-          // Replace with your actual API endpoint
-          const response = await fetch('/api/convert-image', { 
+          // Replace with your actual API endpoint for code generation
+          const response = await fetch('/api/generate-code', {
             method: 'POST',
             body: formData,
             // headers: { 'Authorization': `Bearer ${YOUR_AUTH_TOKEN}` } // Add if authentication is needed
           });
 
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
           }
 
-          const result = await response.json();
-          // Assuming the backend returns a URL or details for the generated website
-          statusMessage.textContent = 'Conversion successful! 🎉';
-          statusMessage.style.color = '#10b981'; // Success color
+          const result = await response.json(); // Assuming backend returns JSON with 'htmlCode'
 
-          // Example: Add a new project card
-          const projectName = file.name.split('.')[0] || 'New Project';
-          const projectUrl = result.websiteUrl || '#'; // Replace with actual URL from API response
-          addProjectCard(projectName, new Date().toLocaleDateString(), projectUrl);
+          if (result && result.htmlCode) {
+            codeDisplay.innerHTML = `<pre><code>${escapeHtml(result.htmlCode)}</code></pre>`;
+            codeDisplay.classList.remove('empty-state');
+            saveHtmlBtn.style.display = 'block';
+            statusMessage.textContent = 'Code generated successfully! 🎉';
+            statusMessage.style.color = '#10b981';
+
+            // --- Save project to Firestore after successful generation ---
+            const user = firebase.auth().currentUser;
+            if (user) {
+              const db = firebase.firestore();
+              await db.collection('users').doc(user.uid).collection('projects').add({
+                name: file.name.split('.')[0] || 'Generated Design',
+                description: description,
+                modelUsed: selectedModel,
+                htmlCode: result.htmlCode, // You might store the code or a reference to it
+                // You might also upload the image to storage and save its URL here
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                websiteUrl: '#' // Placeholder, if you host generated sites, put URL here
+              });
+              console.log("Project saved to Firestore!");
+              // No need to call addProjectCard here, as previous_designs.html will load them.
+            } else {
+              console.warn("User not logged in, project not saved to Firestore.");
+            }
+
+          } else {
+            throw new Error('No HTML code received from the server.');
+          }
 
         } catch (error) {
-          console.error('Conversion failed:', error);
-          statusMessage.textContent = `Conversion failed: ${error.message}. Please try again.`;
-          statusMessage.style.color = '#f5576c'; // Error color
+          console.error('Code generation failed:', error);
+          codeDisplay.innerHTML = `<p style="color: var(--danger-red);">Error generating code: ${error.message}</p>`;
+          codeDisplay.classList.remove('empty-state');
+          saveHtmlBtn.style.display = 'none';
+          statusMessage.textContent = `Generation failed: ${error.message}. Please try again.`;
+          statusMessage.style.color = '#f5576c';
         } finally {
-          loadingSpinner.style.display = 'none'; // Hide spinner
+          loadingSpinner.style.display = 'none';
         }
       });
 
-      // Function to dynamically add a project card
-      function addProjectCard(name, date, url) {
-        // Remove the "No projects yet" message if it exists
-        const noProjectsMessage = projectsList.querySelector('p');
-        if (noProjectsMessage) {
-          noProjectsMessage.remove();
-        }
+      // Handle Save as HTML file button click
+      saveHtmlBtn.addEventListener('click', () => {
+        const generatedCode = codeDisplay.querySelector('code').textContent;
+        const blob = new Blob([generatedCode], {
+          type: 'text/html'
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'generated_website.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
 
-        const projectCard = document.createElement('div');
-        projectCard.classList.add('project-card');
-        projectCard.innerHTML = `
-          <h3>${name}</h3>
-          <p>Converted on: ${date}</p>
-          <p>Status: Completed</p>
-          <a href="${url}" class="project-link" target="_blank" rel="noopener noreferrer">View Website</a>
-        `;
-        projectsList.prepend(projectCard); // Add to the beginning of the list
+      // Helper function to escape HTML for display
+      function escapeHtml(html) {
+        const div = document.createElement('div');
+        div.appendChild(document.createTextNode(html));
+        return div.innerHTML;
       }
 
-      // TODO: Implement logic to load existing projects for the logged-in user (from Firebase Firestore)
-      // This would typically happen when the page loads, or after a user logs in.
-      // You'd fetch data from Firestore and call addProjectCard for each project.
+      // Sidebar navigation active state (Client-side only)
+      const sidebarNavItems = document.querySelectorAll('.sidebar-nav li');
+      const currentPage = "workspace";
+      sidebarNavItems.forEach(item => {
+        if (item.dataset.page === currentPage) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
     });
   </script>
   <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
     &#9776;
   </button>
-</body>
-
+</body> 
 </html>

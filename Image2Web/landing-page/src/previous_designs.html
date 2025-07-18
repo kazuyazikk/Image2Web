@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="View your previous wireframe to website conversions on Image2Web. Manage and review your past projects. Designed by SeroTech.">
+  <title>CODE4WEB - Previous Designs</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <style>
+    /* Add any specific styles for previous_designs.html here if needed,
+       or extend the styles that are already in style.css for general layout. */
+
+    /* Override for active nav button on this page (if it's in the header) */
+    /* If you want "Previous Designs" to have a solid background when active in header */
+    /* .nav-item.active .nav-btn {
+      background: var(--primary-blue);
+      color: var(--button-text);
+      border-color: var(--primary-blue);
+    } */
+
+    /* Styles for the main content area, similar to workspace but adapted */
+    .main-wrapper {
+      display: flex; /* Flex container for sidebar and main-content-area */
+      flex-grow: 1; /* Allow it to take available height */
+      width: 100%;
+      max-width: 1400px; /* Max width for the entire layout */
+      margin: 0 auto; /* Center the layout */
+      padding-top: 20px; /* Space from header */
+    }
+
+    .sidebar {
+      width: 250px; /* Fixed width for the sidebar */
+      min-width: 200px; /* Minimum width */
+      background: var(--modal-content-bg);
+      padding: 20px;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 15px;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      border-bottom-left-radius: 10px;
+      border-top-left-radius: 10px;
+    }
+
+    .sidebar-nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-nav li a,
+    .logout-btn {
+      display: block;
+      padding: 10px 15px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.2s ease, color 0.2s ease;
+      font-size: 1.1em;
+    }
+
+    .sidebar-nav li a:hover,
+    .logout-btn:hover {
+      background: rgba(var(--primary-blue), 0.1);
+      color: var(--primary-blue);
+    }
+
+    .sidebar-nav li.active a {
+      background: var(--primary-blue);
+      color: var(--button-text);
+      font-weight: bold;
+    }
+
+    .sidebar-user {
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+    }
+
+    .sidebar-user p {
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .main-content-area {
+      flex-grow: 1;
+      padding: 20px 40px;
+      background: var(--background-light);
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    /* Styles for Projects Section - copied from workspace.html */
+    .projects-section {
+      margin-top: 0; /* Remove top margin if within workspace-section-card */
+    }
+
+    .projects-section h2 {
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      margin-bottom: 2rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-family: 'Russo One', Arial, sans-serif;
+      text-align: center; /* Center the title */
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: left;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .project-card h3 {
+      font-size: 1.3rem;
+      color: #38bdf8;
+      margin-bottom: 0.5rem;
+      font-family: 'Russo One', Arial, sans-serif;
+    }
+
+    .project-card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .project-card .project-link {
+      display: inline-block;
+      background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: filter 0.2s ease;
+    }
+
+    .project-card .project-link:hover {
+      filter: brightness(1.1);
+    }
+
+    /* General layout adjustments */
+    body {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    main {
+      flex-grow: 1; /* Allow main content to take available space */
+    }
+
+    /* Responsive adjustments for sidebar and main content */
+    @media (max-width: 900px) {
+      .main-wrapper {
+        flex-direction: column;
+        padding-top: 0;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 0;
+        padding: 15px 20px;
+      }
+
+      .sidebar-nav ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .sidebar-nav li a {
+        padding: 8px 12px;
+        font-size: 1em;
+      }
+
+      .sidebar-user {
+        border-top: none;
+        padding-top: 0;
+        margin-top: 15px;
+        text-align: center;
+      }
+
+      .main-content-area {
+        padding: 20px;
+        border-radius: 0;
+        max-width: 100%;
+      }
+
+      .workspace-section-card { /* Using this for the projects section in previous_designs */
+        padding: 20px;
+      }
+
+      .projects-section h2 {
+        font-size: 1.5em;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        display: none; /* Hide sidebar on very small screens */
+      }
+
+      .main-content-area {
+        width: 100%;
+        margin-top: 0;
+        border-top-left-radius: 10px; /* Add radius if sidebar is hidden */
+        border-bottom-left-radius: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8" />
+          <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9" />
+          <rect x="20" y="32" width="16" height="16" rx="4" fill="#06B6D4" />
+          <rect x="20" y="20" width="16" height="16" rx="4" fill="#1E293B" />
+        </svg>
+        <div>
+          <span class="brand">CODE4WEB</span>
+          <div class="slogan">Designed by SeroTech</div>
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li class="nav-item" data-page="home" onclick="window.location.href='index.html'">
+            <button class="nav-btn">Home</button>
+          </li>
+          <li class="nav-item" data-page="contributors" onclick="window.location.href='contributors.html'">
+            <button class="nav-btn">Contributors</button>
+          </li>
+          <li class="nav-item" data-page="workspace" onclick="window.location.href='workspace.html'">
+            <button class="nav-btn">Workspace</button>
+          </li>
+          <li class="nav-item" id="auth-links">
+            <button class="nav-btn" onclick="openLogin()">Login</button>
+          </li>
+          <li class="nav-item" id="user-links" style="display: none;">
+            <button class="nav-btn" onclick="logout()">Logout</button>
+          </li>
+        </ul>
+      </nav>
+      <div id="user-greeting">
+        Hi, <span id="user-name"></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-wrapper">
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="active" data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
+          <li data-page="workspace"><a href="workspace.html">Workspace</a></li>
+          <li data-page="contributors"><a href="contributors.html">Contributors</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-user">
+        <p>Username: <span id="sidebar-username">Guest</span></p>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </aside>
+
+    <main class="main-content-area">
+      <section class="workspace-section-card projects-section">
+        <h2>Your Generated Projects</h2>
+        <div id="projectsList" class="projects-grid">
+          <p style="color: var(--text-secondary);">No projects yet. Log in to view your designs or start a new conversion in the Workspace!</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="signup-modal" id="signupModal">
+    <div class="signup-content">
+      <button class="close-btn" onclick="closeSignup()">&times;</button>
+      <form id="signupForm" class="signup-form">
+        <h2>Join Image2Web</h2>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input id="signup-username" name="username" type="text" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="signup-email" name="email" type="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="signup-password" name="password" type="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="signup-btn" style="width: 100%; margin: 0;">
+          Create Account
+        </button>
+        <div class="success-message" id="successMessage" style="display:none;">
+          <h3>🎉 Welcome to CODE4WEB!</h3>
+          <p>Your account has been created successfully.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="login-modal" id="loginModal">
+    <div class="login-content">
+      <button class="close-btn" onclick="closeLogin()">&times;</button>
+      <form class="login-form" id="loginForm">
+        <h2 class="login-title">Login to Image2Web</h2>
+        <div class="form-group">
+          <label for="login-username">Email</label>
+          <input type="email" id="login-username" name="login-username" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="login-password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="login-btn" style="width: 100%; margin: 0;">
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="about-modal" id="aboutModal">
+    <div class="about-content">
+      <button class="close-btn" onclick="closeAbout()">&times;</button>
+      <h2 class="about-title">About Image2Web</h2>
+      <p class="about-text">
+        Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease. Our
+        mission is to empower developers and designers to bring their ideas to life faster and more efficiently.
+      </p>
+      <p class="about-text">
+        <strong>Team:</strong> Moyano, Sarge Dave M. • Mallari, Merick Joshua • Quiambao, Christian Joshua • Dizon,
+        Robby
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3 class="footer-title">About Image2Web</h3>
+        <p class="footer-text">
+          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds.
+          Built for developers and designers by SeroTech.
+        </p>
+        <div class="social-links">
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">Quick Links</h3>
+        <a href="#" class="footer-link" onclick="window.location.href='index.html'">Home</a>
+        <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
+        <a href="#" class="footer-link">Blog</a>
+      </div>
+      <div class="footer-section">
+        <a href="#" class="footer-link">Documentation</a>
+        <a href="#" class="footer-link">Tutorials</a>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">Contact</h3>
+        <p class="footer-text">📧 our email</p>
+        <p class="footer-text">📍 A Wireframe to Website Generator</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-text">&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
+    </div>
+  </footer>
+
+  <div id="loading-spinner"
+    style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">
+    <div
+      style="border:8px solid #eee;border-top:8px solid #0ea5e9;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;">
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDA9TT-iCH515H63y-4zJkTJ1tZAOU7m60",
+      authDomain: "image2web-1a6c0.firebaseapp.com",
+      projectId: "image2web-1a6c0",
+      storageBucket: "image2web-1a6c0.appspot.com",
+      messagingSenderId: "167811907825",
+      appId: "1:167811907825:web:809c410fefc52de3542950",
+      measurementId: "G-LF3Y1S5M47"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    // Helper functions for modals (assuming they are in script.js or a global scope)
+    function openLogin() {
+      document.getElementById('loginModal').classList.add('active');
+    }
+
+    function closeLogin() {
+      document.getElementById('loginModal').classList.remove('active');
+    }
+
+    function openSignup() {
+      document.getElementById('signupModal').classList.add('active');
+    }
+
+    function closeSignup() {
+      document.getElementById('signupModal').classList.remove('active');
+    }
+
+    function openAbout() {
+      document.getElementById('aboutModal').classList.add('active');
+    }
+
+    function closeAbout() {
+      document.getElementById('aboutModal').classList.remove('active');
+    }
+
+    // Previous Designs Functionality JavaScript
+    document.addEventListener('DOMContentLoaded', () => {
+      const projectsList = document.getElementById('projectsList');
+      const sidebarUsernameSpan = document.getElementById('sidebar-username');
+
+      // User Authentication and Sidebar Updates
+      firebase.auth().onAuthStateChanged(user => {
+        const authLinks = document.getElementById('auth-links');
+        const userLinks = document.getElementById('user-links');
+        const userGreeting = document.getElementById('user-greeting');
+        const userNameSpan = document.getElementById('user-name');
+
+        if (user) {
+          // User is signed in
+          authLinks.style.display = 'none';
+          userLinks.style.display = 'list-item';
+          userGreeting.style.display = 'block';
+          userNameSpan.textContent = user.displayName || user.email || 'User';
+          sidebarUsernameSpan.textContent = user.displayName || user.email || 'User';
+          loadPreviousDesigns(user.uid); // Load designs specific to this user
+        } else {
+          // No user is signed in
+          authLinks.style.display = 'list-item';
+          userLinks.style.display = 'none';
+          userGreeting.style.display = 'none';
+          userNameSpan.textContent = '';
+          sidebarUsernameSpan.textContent = 'Guest';
+          projectsList.innerHTML = '<p style="color: var(--text-secondary);">No projects yet. Log in to view your designs or start a new conversion in the Workspace!</p>';
+        }
+      });
+
+      function logout() {
+        firebase.auth().signOut().then(() => {
+          console.log("User logged out");
+          window.location.href = 'index.html'; // Redirect after logout
+        }).catch((error) => {
+          console.error("Logout Error:", error);
+          alert("Logout failed: " + error.message);
+        });
+      }
+
+      // Function to load existing projects for the logged-in user (from Firebase Firestore)
+      async function loadPreviousDesigns(userId) {
+        projectsList.innerHTML = '<p style="color: var(--text-secondary);">Loading your previous designs...</p>';
+        try {
+          const db = firebase.firestore();
+          // Ensure you have a 'projects' subcollection under each user's document
+          const projectsRef = db.collection('users').doc(userId).collection('projects').orderBy('createdAt', 'desc');
+          const snapshot = await projectsRef.get();
+
+          if (snapshot.empty) {
+            projectsList.innerHTML = '<p style="color: var(--text-secondary);">No projects yet. Start a new conversion in the Workspace!</p>';
+            return;
+          }
+
+          projectsList.innerHTML = ''; // Clear loading message
+          snapshot.forEach(doc => {
+            const project = doc.data();
+            addProjectCard(
+              project.name || `Design ${doc.id.substring(0, 5)}`, // Fallback name
+              project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'N/A',
+              project.websiteUrl || '#' // Assuming you save a URL to the generated site
+            );
+          });
+        } catch (error) {
+          console.error("Error loading previous designs:", error);
+          projectsList.innerHTML = `<p style="color: var(--danger-red);">Error loading projects: ${error.message}</p>`;
+        }
+      }
+
+      // Function to dynamically add a project card
+      function addProjectCard(name, date, url) {
+        // Remove the "No projects yet" message if it exists
+        const noProjectsMessage = projectsList.querySelector('p');
+        if (noProjectsMessage && noProjectsMessage.textContent.includes('No projects yet')) {
+          noProjectsMessage.remove();
+        }
+
+        const projectCard = document.createElement('div');
+        projectCard.classList.add('project-card');
+        projectCard.innerHTML = `
+          <h3>${name}</h3>
+          <p>Converted on: ${date}</p>
+          <p>Status: Completed</p>
+          <a href="${url}" class="project-link" target="_blank" rel="noopener noreferrer">View Website</a>
+        `;
+        projectsList.prepend(projectCard); // Add to the beginning of the list
+      }
+
+      // Sidebar navigation active state for this page
+      const sidebarNavItems = document.querySelectorAll('.sidebar-nav li');
+      const currentPage = "previous-designs";
+      sidebarNavItems.forEach(item => {
+        if (item.dataset.page === currentPage) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    });
+  </script>
+  <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
+    &#9776;
+  </button>
+</body>
+
+</html>
