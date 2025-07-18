@@ -370,7 +370,7 @@ footer {
 
 
 /* ------------------------------------------- */
-/* MOBILE OPTIMIZATIONS              */
+/* MOBILE OPTIMIZATIONS (LAYOUT ONLY)        */
 /* ------------------------------------------- */
 @media (max-width: 700px) {
   header {
@@ -379,14 +379,14 @@ footer {
 
   .header-content {
     flex-wrap: wrap; /* Allow elements to wrap if needed */
-    justify-content: center; /* Center items for very small screens */
+    justify-content: space-between; /* Space logo and right-side elements */
     padding-bottom: 10px; /* Add some space below logo/greeting */
   }
 
   .logo {
-    justify-content: center; /* Center the logo */
-    width: 100%; /* Take full width to prevent overlap */
-    margin-bottom: 10px; /* Space below logo */
+    justify-content: flex-start; /* Align logo to the left */
+    width: auto; /* Allow logo to take natural width */
+    margin-bottom: 0; /* No extra space below logo */
   }
 
   .logo .brand {
@@ -408,8 +408,8 @@ footer {
   }
 
   #user-greeting {
-    display: block; /* Or hide if you want it inside the menu */
-    width: 100%; /* Take full width */
+    display: block; /* Show greeting */
+    width: auto; /* Let content determine width */
     text-align: right; /* Align greeting to the right */
     position: absolute; /* Position relative to .header-content */
     top: 25px; /* Align with nav-toggle */
@@ -424,16 +424,14 @@ footer {
   nav ul {
     display: none; /* Hidden by default */
     flex-direction: column;
-    background: var(--modal-content-bg); /* Dark background for the menu */
+    /* REMOVED: background, box-shadow, border-radius to preserve design */
     position: absolute; /* Position it relative to .header-content */
     top: 80px; /* POSITION THE MENU BELOW THE HEADER. Adjust based on header's actual height */
     right: 20px; /* Align with the right edge */
     width: calc(100% - 40px); /* Adjust width to fit screen with padding */
     max-width: 250px; /* Limit max width for menu */
     z-index: 1002; /* Below toggle, above content */
-    padding: 15px 0; /* Vertical padding, no horizontal as items take full width */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    border-radius: 8px; /* Rounded corners for the menu box */
+    padding: 15px 0; /* Vertical padding, no horizontal */
     align-items: flex-start; /* Align menu items to the left */
     gap: 8px; /* Smaller gap between menu items */
   }
@@ -473,7 +471,7 @@ footer {
   }
 }
 
-/* Optional: Adjust for very small screens */
+/* Optional: Adjust for very small screens (if desired for very narrow views) */
 @media (max-width: 480px) {
   header {
     padding: 15px;
@@ -485,6 +483,7 @@ footer {
   .logo {
     margin-bottom: 15px;
   }
+  /* On very small screens, placing toggle and greeting statically can prevent complex overlaps */
   #nav-toggle {
     position: static; /* Let it flow normally */
     margin-top: 10px; /* Space below content */
@@ -501,4 +500,164 @@ footer {
     right: 15px; /* Adjust for smaller screens */
     width: calc(100% - 30px);
   }
+}
+
+/* Ensure desktop view is correct when screen size increases */
+@media (min-width: 701px) {
+  #nav-toggle {
+    display: none; /* Hide hamburger icon on desktop */
+  }
+  nav ul {
+    display: flex !important; /* Ensure navigation list is always visible on desktop */
+    position: static; /* Reset positioning for desktop */
+    width: auto; /* Reset width for desktop */
+    max-width: none; /* Reset max-width for desktop */
+    padding: 0; /* Reset padding for desktop */
+    background: transparent; /* Ensure no background for desktop */
+    box-shadow: none; /* Ensure no box-shadow for desktop */
+    border-radius: 0; /* Ensure no border-radius for desktop */
+  }
+  .nav-item button {
+    margin-left: 1em; /* Restore original desktop margin */
+    padding: 0.4em 1.5em; /* Restore original desktop padding */
+    text-align: center; /* Restore original desktop text alignment */
+  }
+  #user-greeting {
+    display: block; /* Show greeting on desktop */
+    position: static; /* Reset positioning for desktop */
+    margin-left: 20px; /* Restore original desktop margin */
+    width: auto;
+  }
+}
+
+
+/* ------------------------------------------- */
+/* CONTRIBUTORS PAGE SPECIFIC STYLES           */
+/* ------------------------------------------- */
+
+/* Apply to the hero section on the contributors page */
+.hero.contributors-hero .hero-content {
+    background: var(--card-bg); /* Use existing variable for card background */
+    backdrop-filter: blur(15px); /* Apply blur for glass effect */
+    border: 1px solid var(--glass-border); /* Add a subtle border */
+    padding: 3rem 4rem;
+    border-radius: 20px; /* Use rounded corners from your theme */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Stronger shadow for depth */
+    animation: fadeInUp 1s ease-out; /* Re-use existing hero animation */
+}
+
+/* Override hero-label for contributors page for a distinct look */
+.hero.contributors-hero .hero-label {
+    font-size: 2.5rem; /* Make the "Contributors" label larger */
+    font-weight: bold;
+    color: var(--text-primary); /* Use primary text color for the label */
+    background: var(--accent-gradient); /* Use accent gradient for the label text */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); /* Text shadow for pop */
+    padding: 0; /* Remove padding from general hero-label if it interferes */
+    border: none; /* Remove border from general hero-label */
+    box-shadow: none; /* Remove box-shadow from general hero-label */
+    backdrop-filter: none; /* Remove backdrop-filter from general hero-label */
+    animation: none; /* Disable pulse animation if you want a static title */
+}
+
+/* Style the Contributors List */
+.contributors-list {
+    list-style: none;
+    padding: 0;
+    display: grid; /* Use CSS Grid for a responsive layout */
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Responsive columns */
+    gap: 25px; /* Space between cards */
+    margin-top: 2rem; /* Space below the title */
+    width: 100%; /* Ensure list takes full width of its container */
+}
+
+.contributors-list li {
+    background: var(--glass-bg); /* Use glass background for each contributor card */
+    border: 1px solid var(--glass-border); /* Add subtle border */
+    padding: 1.8rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease; /* Smooth transitions */
+    cursor: pointer;
+    position: relative;
+    overflow: hidden; /* Hide overflow for gradient effect */
+    font-family: 'Inter', sans-serif; /* Keep consistent font for names */
+}
+
+.contributors-list li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--accent-gradient); /* Use accent gradient for overlay */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0; /* Ensure it's behind the text */
+}
+
+.contributors-list li:hover::before {
+    opacity: 0.15; /* Subtle gradient overlay on hover */
+}
+
+.contributors-list li:hover {
+    transform: translateY(-8px) scale(1.03); /* Lift and slightly enlarge on hover */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); /* More pronounced shadow on hover */
+    border-color: #4facfe; /* Highlight border with accent color */
+}
+
+.contributors-list li span {
+    position: relative; /* Ensure text is above pseudo-element */
+    z-index: 1; /* Place text above the ::before pseudo-element */
+    display: block; /* Make span a block to fill the space */
+}
+
+/* Staggered entry animation for contributor cards */
+.contributors-list li {
+    animation: listItemFadeIn 0.8s ease-out forwards;
+    opacity: 0; /* Start invisible for animation */
+}
+
+.contributors-list li:nth-child(1) { animation-delay: 0.2s; }
+.contributors-list li:nth-child(2) { animation-delay: 0.4s; }
+.contributors-list li:nth-child(3) { animation-delay: 0.6s; }
+.contributors-list li:nth-child(4) { animation-delay: 0.8s; }
+/* Add more :nth-child rules if you have more contributors */
+
+@keyframes listItemFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive adjustments for contributors list */
+@media (max-width: 768px) {
+    .hero.contributors-hero .hero-content {
+        padding: 2rem;
+    }
+    .hero.contributors-hero .hero-label {
+        font-size: 2rem;
+    }
+    .contributors-list {
+        grid-template-columns: 1fr; /* Single column on small screens */
+        gap: 15px;
+    }
+    .contributors-list li {
+        padding: 1.2rem;
+        font-size: 1.1rem;
+    }
 }
