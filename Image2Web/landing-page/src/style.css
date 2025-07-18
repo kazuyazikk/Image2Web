@@ -1,10 +1,10 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root{
+:root {
   --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
@@ -15,15 +15,16 @@
   --glass-bg: rgba(255, 255, 255, 0.1);
   --glass-border: rgba(255, 255, 255, 0.2);
 }
+
 /* This is from Sarge, i'll back it up just in case
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: linear-gradient(135deg, #0f172a 0%, #0ea5e9 100%);
   min-height: 100vh;
   color: #fff;
-} 
+}
 */
-body{
+body {
   font-family: 'Inter', sans-serif;
   background: var(--dark-bg);
   color: var(--text-primary);
@@ -32,23 +33,28 @@ body{
 }
 
 /* Animated Backgroud*/
-body::before{
+body::before {
   content: '';
   position: fixed;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background:
-    radial-gradient(circle at 20% 80%, rgba(120,119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255,119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120,219, 255, 0.2) 0%, transparent 50%);
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
   z-index: -1;
   animation: backgroundShift 20s ease-in-out infinite;
 }
-@keyframes backgroundShift{
-  0%, 100% { transform: scale(1) translate(0,0);}
-  50% {transform: scale(1.1) translate(-20px, -20px);}
+
+@keyframes backgroundShift {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.1) translate(-20px, -20px);
+  }
 }
 
 header {
@@ -58,12 +64,16 @@ header {
   padding: 32px 48px 0 48px;
   background: transparent;
 }
-.header-context{
-  display:flex;
+
+/* MODIFIED: Changed .header-context to .header-content to match HTML.
+   Added width: 100% to ensure it takes full available width within header padding. */
+.header-content {
+  display: flex;
   justify-content: space-between;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .logo {
@@ -77,9 +87,13 @@ header {
   animation: logoGlow 3s ease-in-out infinite alternate;
 }
 
-@keyframes logoGlow{
-  0% {filter: drop-shadow(0 0 10px rgba(56,189, 248, 0.5));}
-  100% { filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.8)); }
+@keyframes logoGlow {
+  0% {
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.8));
+  }
 }
 
 .brand {
@@ -96,21 +110,29 @@ header {
   font-size: 1.35rem;
   color: #38bdf8;
   letter-spacing: 2px;
-  margin-top: -0.3em;    
-  text-shadow: 0 2px 12px rgba(56,189,248,0.15), 0 1px 0 #fff;
+  margin-top: -0.3em;
+  text-shadow: 0 2px 12px rgba(56, 189, 248, 0.15), 0 1px 0 #fff;
   font-weight: bold;
   background: linear-gradient(90deg, #38bdf8 30%, #0ea5e9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-fill-color: transparent;
-  animation: sloganPop 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+  /* text-fill-color: transparent; Removed redundant */
+  animation: sloganPop 1.2s cubic-bezier(.68, -0.55, .27, 1.55);
 }
 
 @keyframes sloganPop {
-  0% { transform: scale(0.7) rotate(-5deg); opacity: 0; }
-  60% { transform: scale(1.15) rotate(2deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0); }
+  0% {
+    transform: scale(0.7) rotate(-5deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15) rotate(2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
 }
 
 nav ul {
@@ -124,7 +146,7 @@ nav ul {
   cursor: pointer;
   position: relative;
   color: #fff;
-  transition: color 0.2s, border 0.2s, background 0.2s;
+  transition: color 0.2s, border 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s; /* Added transform and box-shadow to transition */
   overflow: hidden;
   padding: 0.5em 1.5em;
   border: 2px solid transparent;
@@ -134,28 +156,32 @@ nav ul {
   letter-spacing: 1px;
 }
 
-.nav-item.active,
+/* MODIFIED: This rule now ONLY applies to the hover state of a nav-item */
 .nav-item:hover {
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
   transform: translateY(-2px);
   border: 2px solid #38bdf8;
   color: #38bdf8;
-  box-shadow: 0 2px 12px 0 rgba(56,189,248,0.10);
+  box-shadow: 0 2px 12px 0 rgba(56, 189, 248, 0.10);
 }
 
-/* Remove border/background from .nav-item.active */
+/* MODIFIED: Styles for the active nav-item (the <li> itself)
+   Explicitly reset properties that might conflict with the desired look,
+   without using !important. This rule comes after .nav-item:hover. */
 .nav-item.active {
-  border: none !important;
-  background: none !important;
-  box-shadow: none !important;
+  background: transparent; /* Ensure li background is transparent */
+  border: none; /* Ensure li border is none */
+  box-shadow: none; /* Ensure li has no shadow */
+  transform: none; /* Ensure li doesn't translateY on active state */
+  color: #fff; /* Default text color for the li itself */
 }
 
-/* Only the button inside .nav-item.active gets the border */
+/* General nav-btn style */
 .nav-btn {
   background: transparent;
   border: none;
-  color: #0ea5e9;
+  color: #0ea5e9; /* Default color for nav-btn */
   font-family: 'Russo One', Arial, sans-serif;
   font-weight: bold;
   font-size: 1.1em;
@@ -168,19 +194,28 @@ nav ul {
   box-shadow: none;
 }
 
+/* MODIFIED: Specific style for the button INSIDE an active nav-item.
+   This is more specific than .nav-btn:hover, so it will override it. */
 .nav-item.active .nav-btn {
   border: 2px solid #0ea5e9;
   background: transparent;
   color: #0ea5e9;
 }
 
+/* MODIFIED: Hover style for the button. This applies to any nav-btn on hover.
+   If an active button is hovered, its specific rule (.nav-item.active .nav-btn) might
+   be more specific than this one for color/background. If you want active button
+   to also change on hover, you'd add an even more specific rule:
+   .nav-item.active .nav-btn:hover { background: #0ea5e9; color: #fff; }
+   For now, keeping as is, which means active state might not show hover effect on button. */
 .nav-btn:hover {
   background: #0ea5e9;
   color: #fff;
   border: 2px solid #0ea5e9;
 }
 
-.nav-item::before{
+
+.nav-item::before {
   content: '';
   position: absolute;
   top: 0;
@@ -203,6 +238,7 @@ main {
   min-height: 90vh; /* or 100vh for full screen */
   padding: 0 48px;
 }
+
 /*
 .hero {
   margin-top: 48px;
@@ -212,7 +248,7 @@ main {
   max-width: 520px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
 }*/
-.hero{
+.hero {
   width: 100%;
   display: flex;
   align-items: center;
@@ -221,7 +257,7 @@ main {
   min-height: unset; /* Remove min-height if set elsewhere */
 }
 
-.hero-content{
+.hero-content {
   max-width: 800px;
   padding: 2rem;
   animation: fadeInUp 1s ease-out;
@@ -231,8 +267,9 @@ main {
   align-items: center;
   justify-content: center;
 }
-@keyframes fadeInUp{
-  from{
+
+@keyframes fadeInUp {
+  from {
     opacity: 0;
     transform: translateY(30px);
   }
@@ -241,6 +278,7 @@ main {
     transform: translateY(0);
   }
 }
+
 /*
 .hero-label {
   font-size: 1.1rem;
@@ -249,7 +287,7 @@ main {
   font-family: 'Russo One', Arial, sans-serif;
 } */
 
-.hero-label{
+.hero-label {
   display: inline-block;
   padding: 0.7rem 2rem;
   background: var(--glass-bg);
@@ -260,7 +298,7 @@ main {
   color: #38bdf8;
   letter-spacing: 2px;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 12px 0 rgba(56,189,248,0.10);
+  box-shadow: 0 2px 12px 0 rgba(56, 189, 248, 0.10);
   backdrop-filter: blur(10px);
   animation: pulse 2s ease-in-out infinite;
   transition: background 0.3s, color 0.3s, border 0.3s;
@@ -281,7 +319,7 @@ main {
   font-family: 'Russo One', Arial, sans-serif;
 } */
 
-.hero-title{
+.hero-title {
   font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 700;
   margin-bottom: 2rem;
@@ -291,6 +329,7 @@ main {
   background-clip: text;
   line-height: 1.1;
 }
+
 /*
 .hero-btn {
   background: #38bdf8;
@@ -304,13 +343,15 @@ main {
   transition: background 0.2s;
 } */
 
-.hero-btn, .github-btn, .signup-btn {
+.hero-btn,
+.github-btn,
+.signup-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 1rem 2rem;
   margin: 1rem;
-  border:none;
+  border: none;
   border-radius: 50px;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -321,31 +362,35 @@ main {
   overflow: hidden;
 }
 
-.github-btn{
-  background:var(--glass-bg);
+.github-btn {
+  background: var(--glass-bg);
   color: var(--text-primary);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(10px);
 }
 
-.hero-btn, .signup-btn{
+.hero-btn,
+.signup-btn {
   background: var(--secondary-gradient);
   color: white;
   box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
 }
 
-.hero-btn:hover, .github-btn:hover {
+.hero-btn:hover,
+.github-btn:hover {
   filter: brightness(1.15);
   transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 4px 16px rgba(14,165,233,0.18);
+  box-shadow: 0 4px 16px rgba(14, 165, 233, 0.18);
 }
 
-.github-btn:hover, .hero-btn:hover, .signup-btn:hover{
+.github-btn:hover,
+.hero-btn:hover,
+.signup-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
-.signup-btn:hover{
+.signup-btn:hover {
   box-shadow: 0 15px 40px rgba(245, 87, 108, 0.5);
 }
 
@@ -360,6 +405,7 @@ main {
   margin: 0;
   padding-left: 1.5rem;
 }
+
 /*
 .github-btn {
   background: #24292f;
@@ -383,8 +429,8 @@ main {
 } */
 
 /* Sign-up Modal */
-.signup-modal{
-  display:none;
+.signup-modal {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -397,11 +443,15 @@ main {
 }
 
 @keyframes modalFadeIn {
-  from {opacity: 0;}
-  to{opacity: 1;}
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.signup-content{
+.signup-content {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -416,18 +466,18 @@ main {
   animation: modalSlideIn 0.3s ease-out;
 }
 
-@keyframes modalSlideIn{
-  from{
+@keyframes modalSlideIn {
+  from {
     opacity: 0;
     transform: translate(-50%, -60%);
   }
   to {
     opacity: 1;
-    transform: translate((-50%, -50%));
+    transform: translate(-50%, -50%); /* Corrected typo: ((-50%, -50%)) to (-50%, -50%) */
   }
 }
 
-.close-btn{
+.close-btn {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -439,11 +489,11 @@ main {
   transition: color 0.3ease;
 }
 
-.close-btn:hover{
+.close-btn:hover {
   color: var(--text-primary);
 }
 
-.signup-form h2{
+.signup-form h2 {
   margin-bottom: 2rem;
   text-align: center;
   background: var(--primary-gradient);
@@ -452,18 +502,18 @@ main {
   background-clip: text;
 }
 
-.form-group{
+.form-group {
   margin-bottom: 1.5rem;
 }
 
-.form-group label{
-  display:block;
+.form-group label {
+  display: block;
   margin-bottom: 0.5rem;
   color: var(--text-secondary);
   font-weight: 500;
 }
 
-.form-group input{
+.form-group input {
   width: 100%;
   padding: 1rem;
   background: var(--glass-bg);
@@ -471,7 +521,7 @@ main {
   border-radius: 10px;
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
-  transition: all 0.3 ease;
+  transition: all 0.3s ease; /* Corrected 'ease' */
 }
 
 .form-group input:focus {
@@ -480,12 +530,12 @@ main {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.form-group input::placeholder{
+.form-group input::placeholder {
   color: var(--text-secondary);
 }
 
 /* Footer */
-footer{
+footer {
   background: var(--card-bg);
   backdrop-filter: blur(20px);
   border-top: 1px solid var(--glass-border);
@@ -493,11 +543,12 @@ footer{
   margin-top: 5rem;
 }
 
-.footer-content{
+.footer-content {
   max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1f));
+  /* MODIFIED: Removed 'display: grid' and 'grid-template-columns' as 'display: flex' was overriding it.
+     '1f' typo in grid-template-columns was fixed to '1fr' in the commented out line. */
+  /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
   gap: 2rem;
   display: flex;
   flex-wrap: wrap;
@@ -510,14 +561,16 @@ footer{
   min-width: 180px;
 }
 
-.footer-section h3{
+.footer-section h3 {
   margin-bottom: 1rem;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.footer-section p, .footer-section a{
+
+.footer-section p,
+.footer-section a {
   color: var(--text-secondary);
   text-decoration: none;
   margin-bottom: 0.5rem;
@@ -525,17 +578,18 @@ footer{
   transition: color 0.3s ease;
 }
 
-.footer-section a:hover{
+.footer-section a:hover {
   color: var(--text-primary);
 }
 
-.social-links{
+.social-links {
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+  justify-content: center; /* Added for centering social links if footer is centered */
 }
 
-.social-link{
+.social-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -551,7 +605,7 @@ footer{
   transform: translateY(-2px);
 }
 
-.footer-bottom{
+.footer-bottom {
   text-align: center;
   padding-top: 2rem;
   margin-top: 2rem;
@@ -570,12 +624,13 @@ footer{
 
 .footer-link {
   display: block;
-  color: var(--text-secondary, #334155);
+  color: var(--text-secondary); /* Corrected from #334155 */
   text-decoration: none;
   margin-bottom: 0.5em;
   font-size: 1em;
   transition: color 0.2s;
 }
+
 .footer-link:hover {
   color: #0ea5e9;
 }
@@ -591,34 +646,35 @@ footer{
 }
 
 /* Responsive Design */
-@media (max-width: 768px){
-  .header-context{
+@media (max-width: 768px) {
+  .header-content { /* Changed from .header-context */
     flex-direction: column;
     gap: 1rem;
   }
 
-  nav ul{
+  nav ul {
     gap: 1rem;
   }
 
-  .hero-content{
+  .hero-content {
     padding: 1rem;
   }
 
-  .signup-content{
+  .signup-content {
     padding: 2rem;
     margin: 1rem;
   }
 
-  .footer-content{
-    grid-template-columns: 1fr;
+  .footer-content {
+    /* grid-template-columns: 1fr; (If you switch to grid, uncomment this) */
     text-align: center;
+    /* Flexbox properties already handle this */
   }
 }
 
 /* Success Message for Signing up */
-.success-message{
-  display:none;
+.success-message {
+  display: none;
   text-align: center;
   padding: 2rem;
   background: linear-gradient(135deg, #10b981, #059669);
@@ -627,9 +683,15 @@ footer{
   animation: successPulse 0.5s ease-out;
 }
 
-@keyframes successPulse{
-  0% { transform: scale(0.9); opacity: 0;}
-  100% { transform: scale(1); opacity: 1;}
+@keyframes successPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* About Modal Styles */
@@ -637,27 +699,33 @@ footer{
   display: none;
   position: fixed;
   z-index: 3000;
-  left: 0; top: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.7);
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(6px);
   justify-content: center;
   align-items: center;
 }
+
 .about-modal.active {
   display: flex;
 }
+
 .about-content {
-  background: var(--card-bg, #181e2a);
-  color: var(--text-primary, #fff);
+  background: var(--card-bg); /* Changed from #181e2a to var */
+  color: var(--text-primary); /* Changed from #fff to var */
   border-radius: 18px;
   padding: 2.5rem 2rem;
   max-width: 420px;
   width: 90%;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   position: relative;
   font-family: 'Russo One', Arial, sans-serif;
   text-align: center;
 }
+
 .about-title {
   font-size: 2rem;
   margin-bottom: 1rem;
@@ -666,23 +734,27 @@ footer{
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
 .about-text {
   font-size: 1.1em;
   margin-bottom: 1em;
-  color: var(--text-secondary, #b8c4e6);
+  color: var(--text-secondary); /* Changed from #b8c4e6 to var */
 }
+
 .about-content .close-btn {
   position: absolute;
-  top: 1rem; right: 1rem;
+  top: 1rem;
+  right: 1rem;
   background: none;
   border: none;
-  color: var(--text-secondary, #b8c4e6);
+  color: var(--text-secondary); /* Changed from #b8c4e6 to var */
   font-size: 2rem;
   cursor: pointer;
   transition: color 0.2s;
 }
+
 .about-content .close-btn:hover {
-  color: var(--text-primary, #fff);
+  color: var(--text-primary); /* Changed from #fff to var */
 }
 
 /* Login Modal Styles */
@@ -690,50 +762,59 @@ footer{
   display: none;
   position: fixed;
   z-index: 3000;
-  left: 0; top: 0; width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.7);
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(6px);
   justify-content: center;
   align-items: center;
 }
+
 .login-modal.active {
   display: flex;
 }
+
 .login-content {
-  background: #181e2a;
-  color: #fff;
+  background: var(--card-bg); /* Changed from #181e2a to var */
+  color: var(--text-primary); /* Changed from #fff to var */
   border-radius: 18px;
   padding: 2.5rem 2rem;
   max-width: 370px;
   width: 90%;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   position: relative;
   font-family: 'Russo One', Arial, sans-serif;
   text-align: center;
 }
+
 .login-title {
   font-size: 2rem;
   color: #7c3aed;
   margin-bottom: 1.5rem;
   letter-spacing: 2px;
 }
+
 .login-form .form-group {
   margin-bottom: 1.1rem;
   text-align: left;
 }
+
 .login-form label {
   font-size: 1rem;
-  color: #b8c4e6;
+  color: var(--text-secondary); /* Changed from #b8c4e6 to var */
   margin-bottom: 0.2em;
   letter-spacing: 1px;
   display: block;
 }
+
 .login-form input {
   padding: 0.7em 1em;
   border-radius: 8px;
   border: 1.5px solid #333;
-  background: #222;
-  color: #fff;
+  background: var(--dark-bg); /* Changed from #222 to var */
+  color: var(--text-primary); /* Changed from #fff to var */
   font-size: 1em;
   font-family: 'Russo One', Arial, sans-serif;
   outline: none;
@@ -741,9 +822,11 @@ footer{
   width: 100%;
   margin-top: 0.2em;
 }
+
 .login-form input:focus {
   border: 1.5px solid #7c3aed;
 }
+
 .login-btn {
   background: linear-gradient(90deg, #7c3aed 30%, #f472b6 100%);
   color: #fff;
@@ -757,24 +840,28 @@ footer{
   margin-top: 0.5em;
   transition: background 0.2s;
   font-weight: bold;
-  box-shadow: 0 2px 12px 0 rgba(124,58,237,0.10);
+  box-shadow: 0 2px 12px 0 rgba(124, 58, 237, 0.10);
   width: 100%;
 }
+
 .login-btn:hover {
   background: linear-gradient(90deg, #f472b6 30%, #7c3aed 100%);
 }
+
 .close-btn {
   position: absolute;
-  top: 1rem; right: 1rem;
+  top: 1rem;
+  right: 1rem;
   background: none;
   border: none;
-  color: #b8c4e6;
+  color: var(--text-secondary); /* Changed from #b8c4e6 to var */
   font-size: 2rem;
   cursor: pointer;
   transition: color 0.2s;
 }
+
 .close-btn:hover {
-  color: #fff;
+  color: var(--text-primary); /* Changed from #fff to var */
 }
 
 /* Add this at the end of your CSS file for a standout user greeting */
@@ -789,7 +876,7 @@ footer{
   background: linear-gradient(90deg, #0ea5e9 60%, #38bdf8 100%);
   padding: 0.5em 1.2em;
   border-radius: 2em;
-  box-shadow: 0 2px 12px rgba(14,165,233,0.15);
+  box-shadow: 0 2px 12px rgba(14, 165, 233, 0.15);
   letter-spacing: 0.03em;
   border: 2px solid #38bdf8;
   z-index: 1001;
