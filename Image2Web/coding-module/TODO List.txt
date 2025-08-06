@@ -1,0 +1,44 @@
+File Hierarchy according to Claude:
+
+image2web_coding/
+├── main.py                 # Entry point
+├── json_parser.py         # Parse CNN output
+├── layout_engine.py       # Calculate layouts
+├── code_generator.py      # Generate HTML/CSS
+├── theme_manager.py       # Theme system controller
+├── config.py             # Constants and mappings
+├── utils.py              # Helper functions
+├── exceptions.py         # Custom exceptions
+├── validators.py         # Validation logic
+├── themes/               # Theme definitions
+│   ├── __init__.py
+│   ├── base_theme.py
+│   ├── espresso_theme.py
+│   ├── space_theme.py
+│   └── theme_loader.py
+├── templates/            # HTML templates (optional)
+├── tests/               # Unit tests
+└── requirements.txt     # Dependencies
+
+Complete Pipeline steps:
+1. Read the JSON file
+	Load the file from disk
+	Handle file errors
+2. Parse the JSON data
+	Extract element information (lable, coordinates)
+	Calculate dimensions(width, height)
+	Convert Coordinates to usable format
+3. Plan the layout
+	Decide Positioning strategy(absolute, relative, etc.)
+	Handle Overlapping elements
+	group related elements if needed
+4. Generate HTML structure
+	Create appropriate HTML tags based on element basis
+5. Generate CSS styling
+	Position elements using coordinates
+	Apply basic styling for each element type
+	Add theme styling(espresso, space, etc.)
+6. Combine and output
+	Merge the HTML + CSS into final code
+	Save to file
+	
