@@ -556,7 +556,7 @@ footer {
   font-size: 2rem;
   color: var(--primary-blue);
   cursor: pointer;
-  margin-left: auto;
+  margin-left: 1em;
 }
 
 @media (max-width: 600px) {
@@ -751,4 +751,40 @@ footer {
         padding: 1.2rem;
         font-size: 1.1rem;
     }
+}
+
+/* Hamburger menu button */
+#nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--primary-blue, #38bdf8);
+  cursor: pointer;
+  margin-left: 1em;
+}
+
+/* Responsive nav for mobile */
+@media (max-width: 800px) {
+  nav ul {
+    flex-direction: column;
+    background: #181f2a;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vw;
+    padding: 1em 0;
+    display: none;
+    z-index: 1001;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  }
+  nav ul.open {
+    display: flex;
+  }
+  #nav-toggle {
+    display: block;
+  }
+  .header-content {
+    flex-wrap: wrap;
+  }
 }

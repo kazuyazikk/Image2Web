@@ -171,15 +171,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
 
-    if (navToggle && navMenu) { // Check if elements exist before adding listener
+    if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
             navMenu.classList.toggle('open');
-            // Optional: Toggle aria-expanded for accessibility
+            // Toggle aria-expanded for accessibility
             const isExpanded = navMenu.classList.contains('open');
             navToggle.setAttribute('aria-expanded', isExpanded);
         });
 
-        // Optional: Close menu when a nav item (button inside li) is clicked
+        // Optional: Close menu when a nav item is clicked
         navMenu.querySelectorAll('.nav-item button').forEach(button => {
             button.addEventListener('click', () => {
                 navMenu.classList.remove('open');
