@@ -188,6 +188,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Google Sign-In ---
+    const googleBtn = document.getElementById('google-signin-btn');
+    if (googleBtn) {
+        googleBtn.addEventListener('click', function() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    // Save user info to Firestore if new
+                    const user = result.user;
+                    if (user) {
+                        const usersRef = firebase.firestore().collection('users').doc(user.uid);
+                        usersRef.get().then(doc => {
+                            if (!doc.exists) {
+                                usersRef.set({
+                                    username: user.displayName || 'Google User',
+                                    email: user.email,
+                                    createdAt: new Date(),
+                                    provider: 'google'
+                                });
+                            }
+                        });
+                    }
+                    closeLogin();
+                    if (typeof firebase.analytics !== 'undefined') {
+                        firebase.analytics().logEvent('login', { method: 'google' });
+                    }
+                    alert('Logged in with Google!');
+                })
+                .catch((error) => {
+                    alert('Google Sign-In Error: ' + error.message);
+                    console.error('Google Sign-In Error:', error);
+                });
+        });
+    }
+
 
     // Signup form handler
     const signupForm = document.getElementById('signupForm');
