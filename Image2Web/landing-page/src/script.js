@@ -261,6 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Toggle aria-expanded for accessibility
             const isExpanded = navMenu.classList.contains('open');
             navToggle.setAttribute('aria-expanded', isExpanded);
+            // Blur background when menu is open
+            if (isExpanded) {
+                document.body.classList.add('menu-blur');
+            } else {
+                document.body.classList.remove('menu-blur');
+            }
         });
 
         // Optional: Close menu when a nav item is clicked
@@ -268,6 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', () => {
                 navMenu.classList.remove('open');
                 navToggle.setAttribute('aria-expanded', false);
+                document.body.classList.remove('menu-blur');
             });
         });
     }

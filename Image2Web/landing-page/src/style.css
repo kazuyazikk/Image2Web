@@ -120,7 +120,10 @@ nav ul {
   font-size: 2em;
   cursor: pointer;
   z-index: 1003; /* Ensure it's on top */
-  position: relative; /* In case it needs to be explicitly positioned */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 25px;
 }
 
 /* Hero Section Styles */
@@ -400,11 +403,23 @@ footer {
   /* Hamburger menu toggle - VISIBLE on mobile */
   #nav-toggle {
     display: block; /* Show the hamburger icon on mobile */
-    position: absolute; /* Position relative to .header-content */
-    top: 25px; /* Adjust this to control vertical position */
-    right: 20px; /* Adjust this to control horizontal position */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 25px;
     font-size: 2.5em; /* Make it more prominent */
     z-index: 1003; /* Ensure it's on top of everything */
+  }
+  /* Blur background when nav is open */
+  body.menu-blur main,
+  body.menu-blur header,
+  body.menu-blur footer {
+    filter: blur(6px) brightness(0.7);
+    transition: filter 0.3s;
+  }
+  body.menu-blur #nav-toggle,
+  body.menu-blur nav ul.open {
+    filter: none;
   }
 
   #user-greeting {
