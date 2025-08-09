@@ -46,7 +46,14 @@ function closeForgotPassword() {
 // Optional: Close modals when clicking outside of them
 window.onclick = function(event) {
     if (event.target.classList && event.target.classList.contains("signup-modal")) closeSignup();
-    if (event.target.classList && event.target.classList.contains("login-modal")) closeLogin();
+    // Only close login modal if it's the login modal and not the forgot password modal
+    if (event.target.classList && event.target.classList.contains("login-modal")) {
+        if (event.target.id === "forgotPasswordModal") {
+            closeForgotPassword();
+        } else if (event.target.id === "loginModal") {
+            closeLogin();
+        }
+    }
     if (event.target.classList && event.target.classList.contains("about-modal")) closeAbout();
 };
 
