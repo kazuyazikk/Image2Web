@@ -112,14 +112,15 @@ nav ul {
 }
 
 /* Hamburger menu toggle - HIDDEN by default on desktop */
+/* Hamburger menu button - single definition */
 #nav-toggle {
-  display: none; /* Hidden on desktop */
+  display: none;
   background: none;
   border: none;
-  color: var(--primary-blue);
-  font-size: 2em;
+  font-size: 2.5em;
+  color: var(--primary-blue, #38bdf8);
   cursor: pointer;
-  z-index: 1003; /* Ensure it's on top */
+  z-index: 1003;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -402,13 +403,7 @@ footer {
 
   /* Hamburger menu toggle - VISIBLE on mobile */
   #nav-toggle {
-    display: block; /* Show the hamburger icon on mobile */
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 25px;
-    font-size: 2.5em; /* Make it more prominent */
-    z-index: 1003; /* Ensure it's on top of everything */
+    display: block;
   }
   /* Blur background when nav is open */
   body.menu-blur main,
@@ -563,16 +558,7 @@ footer {
   }
 }
 
-/* Hamburger menu for mobile */
-#nav-toggle {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: var(--primary-blue);
-  cursor: pointer;
-  margin-left: 1em;
-}
+/* (removed duplicate hamburger menu for mobile) */
 
 @media (max-width: 600px) {
   .header-content {
