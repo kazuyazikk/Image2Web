@@ -30,8 +30,14 @@ function closeAbout() {
 
 // Forgot Password modal logic
 function openForgotPassword() {
-    document.getElementById('forgotPasswordModal').style.display = 'block';
+    // Always close login modal first
+    closeLogin();
+    const forgotModal = document.getElementById('forgotPasswordModal');
+    forgotModal.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    // Focus the email input for accessibility
+    const emailInput = document.getElementById('forgot-email');
+    if (emailInput) emailInput.focus();
 }
 function closeForgotPassword() {
     document.getElementById('forgotPasswordModal').style.display = 'none';
