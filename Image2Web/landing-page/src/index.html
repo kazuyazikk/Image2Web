@@ -86,6 +86,17 @@
       <button id="nav-toggle" aria-label="Open navigation" aria-expanded="false" style="display:block;">
         &#9776;
       </button>
+      <!-- Mobile/Tablet Only Navbar -->
+      <nav class="mobile-navbar" id="mobile-navbar">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Open mobile menu">&#9776;</button>
+        <ul class="mobile-nav-links" id="mobile-nav-links">
+          <li><a href="#" onclick="navigate('home')">Home</a></li>
+          <li><a href="contributors.html">Contributors</a></li>
+          <li><a href="workspace.html">Workspace</a></li>
+          <li id="mobile-auth-link"><a href="#" onclick="openLogin()">Login</a></li>
+          <li id="mobile-user-link" style="display:none;"><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 

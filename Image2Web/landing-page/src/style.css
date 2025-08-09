@@ -1,3 +1,63 @@
+/* --- Mobile/Tablet Only Navbar --- */
+.mobile-navbar {
+  display: none;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  color: #0ea5e9;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1201;
+}
+
+.mobile-nav-links {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: #222;
+  width: 200px;
+  padding: 1rem;
+  border-radius: 0 0 0 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  z-index: 1200;
+}
+
+.mobile-nav-links.show {
+  display: flex;
+}
+
+.mobile-nav-links a {
+  color: #fff;
+  text-decoration: none;
+  padding: 0.75em 0;
+  font-size: 1.1em;
+  border-bottom: 1px solid #333;
+}
+
+.mobile-nav-links a:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  nav, #nav-menu, #nav-toggle, #user-greeting {
+    display: none !important;
+  }
+  .mobile-navbar {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .menu-toggle {
+    display: block;
+  }
+}
 /* General Body and Container Styles */
 :root {
   --background-dark: #12002f;
