@@ -15,14 +15,16 @@ document.addEventListener("DOMContentLoaded", function() {
             const email = document.getElementById("forgot-email").value;
             firebase.auth().sendPasswordResetEmail(email)
                 .then(() => {
-                    alert("Password reset email sent to " + email);
-                    if (email.endsWith("@gmail.com")) {
-                        window.location.href = "https://mail.google.com";
-                    } else if (email.endsWith("@yahoo.com")) {
-                        window.location.href = "https://mail.yahoo.com";
-                    } else {
-                        window.location.href = "https://outlook.live.com";
-                    }
+                    alert("Password reset email sent to " + email + "! You will be redirected to your email provider.");
+                    setTimeout(function() {
+                        if (email.endsWith("@gmail.com")) {
+                            window.location.href = "https://mail.google.com";
+                        } else if (email.endsWith("@yahoo.com")) {
+                            window.location.href = "https://mail.yahoo.com";
+                        } else {
+                            window.location.href = "https://outlook.live.com";
+                        }
+                    }, 2000); // 2 second delay
                 })
                 .catch((error) => {
                     alert(error.message);
@@ -339,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert("Signup Error: " + error.message);
                     console.error("Firebase Auth Signup Error:", error);
                 });
-        });
+    }
     }
 
     // Login form handler
