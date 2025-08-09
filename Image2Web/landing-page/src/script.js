@@ -117,30 +117,6 @@ function navigate(page) {
             html = `
                 <section class="hero">
                   <div class="hero-content">
-                // --- Mobile/Tablet Only Menu Toggle ---
-                const menuToggle = document.getElementById('menu-toggle');
-                const mobileNavLinks = document.getElementById('mobile-nav-links');
-                if (menuToggle && mobileNavLinks) {
-                    menuToggle.addEventListener('click', function() {
-                        mobileNavLinks.classList.toggle('show');
-                    });
-                }
-
-                // Sync login/logout state for mobile menu
-                function syncMobileAuthLinks(isLoggedIn) {
-                    const mobileAuth = document.getElementById('mobile-auth-link');
-                    const mobileUser = document.getElementById('mobile-user-link');
-                    if (isLoggedIn) {
-                        if (mobileAuth) mobileAuth.style.display = 'none';
-                        if (mobileUser) mobileUser.style.display = '';
-                    } else {
-                        if (mobileAuth) mobileAuth.style.display = '';
-                        if (mobileUser) mobileUser.style.display = 'none';
-                    }
-                }
-
-                // Example: Call this after login/logout events
-                window.syncMobileAuthLinks = syncMobileAuthLinks;
                     <div class="hero-label">Contributors</div>
                     <ul class="contributors-list">
                       <li>Moyano, Sarge Dave M.</li>
