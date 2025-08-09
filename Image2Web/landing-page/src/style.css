@@ -15,12 +15,6 @@
   --border-color: #334155;
   --danger-red: #ef4444;
 }
-}
-  display: flex;
-  background-color: var(--modal-bg);
-  border: none;
-  color: var(--text-secondary);
-}
 
 .form-group input {
   width: 100%;
