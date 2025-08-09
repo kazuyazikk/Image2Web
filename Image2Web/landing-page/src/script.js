@@ -28,6 +28,21 @@ function closeAbout() {
     document.getElementById("aboutModal").style.display = "none";
 }
 
+// Forgot Password modal logic
+function openForgotPassword() {
+    document.getElementById('forgotPasswordModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+function closeForgotPassword() {
+    document.getElementById('forgotPasswordModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    // Hide messages
+    const succ = document.getElementById('forgot-success');
+    const err = document.getElementById('forgot-error');
+    if (succ) succ.style.display = 'none';
+    if (err) err.style.display = 'none';
+}
+
 // Optional: Close modals when clicking outside of them
 window.onclick = function(event) {
     if (event.target.classList && event.target.classList.contains("signup-modal")) closeSignup();
@@ -161,6 +176,28 @@ if (typeof firebase !== 'undefined' && firebase.auth) {
 
 // --- DOMContentLoaded for main event listeners ---
 document.addEventListener('DOMContentLoaded', () => {
+    // Forgot Password form handler
+    const forgotForm = document.getElementById('forgotPasswordForm');
+    if (forgotForm) {
+        forgotForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgot-email').value;
+            const succ = document.getElementById('forgot-success');
+            const err = document.getElementById('forgot-error');
+            if (succ) succ.style.display = 'none';
+            if (err) err.style.display = 'none';
+            firebase.auth().sendPasswordResetEmail(email)
+                .then(() => {
+                    if (succ) succ.style.display = 'block';
+                })
+                .catch((error) => {
+                    if (err) {
+                        err.textContent = error.message;
+                        err.style.display = 'block';
+                    }
+                });
+        });
+    }
     // Initial load
     // Check if 'content' element exists before trying to navigate, as it might not be present on all pages (e.g., workspace.html)
     if (document.getElementById('content')) {
