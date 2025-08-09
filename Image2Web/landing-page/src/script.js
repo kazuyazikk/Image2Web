@@ -62,6 +62,16 @@ function closeAbout() {
     document.getElementById("aboutModal").style.display = "none";
 }
 
+// Ensure modal functions are accessible from HTML onclick attributes
+window.openSignup = openSignup;
+window.closeSignup = closeSignup;
+window.openLogin = openLogin;
+window.closeLogin = closeLogin;
+window.openAbout = openAbout;
+window.closeAbout = closeAbout;
+window.openForgotPassword = openForgotPassword;
+window.closeForgotPassword = closeForgotPassword;
+
 // Forgot Password modal logic
 function openForgotPassword() {
     // Always close login modal first
