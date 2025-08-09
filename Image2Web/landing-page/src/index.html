@@ -181,6 +181,22 @@
     </div>
   </div>
 
+  <!-- Forgot Password Modal -->
+  <div class="forgot-password-modal" id="forgotPasswordModal" style="display:none;">
+    <div class="forgot-password-content">
+      <button class="close-btn" onclick="closeForgotPassword()">&times;</button>
+      <form id="forgotPasswordForm">
+        <h2>Forgot Password</h2>
+        <p>Enter your email to receive a password reset link.</p>
+        <div class="form-group">
+          <label for="forgot-email">Email</label>
+          <input type="email" id="forgot-email" name="forgot-email" placeholder="Enter your email" required>
+        </div>
+        <button type="submit" class="login-btn" style="width:100%;">Send Reset Link</button>
+      </form>
+    </div>
+  </div>
+
   <div class="about-modal" id="aboutModal">
     <div class="about-content">
       <button class="close-btn" onclick="closeAbout()">&times;</button>

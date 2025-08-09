@@ -1,3 +1,35 @@
+// Forgot Password Modal Functions
+function openForgotPassword() {
+    document.getElementById("forgotPasswordModal").style.display = "block";
+}
+function closeForgotPassword() {
+    document.getElementById("forgotPasswordModal").style.display = "none";
+}
+
+// Forgot Password Form Handler
+document.addEventListener("DOMContentLoaded", function() {
+    var forgotForm = document.getElementById("forgotPasswordForm");
+    if (forgotForm) {
+        forgotForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const email = document.getElementById("forgot-email").value;
+            firebase.auth().sendPasswordResetEmail(email)
+                .then(() => {
+                    alert("Password reset email sent to " + email);
+                    if (email.endsWith("@gmail.com")) {
+                        window.location.href = "https://mail.google.com";
+                    } else if (email.endsWith("@yahoo.com")) {
+                        window.location.href = "https://mail.yahoo.com";
+                    } else {
+                        window.location.href = "https://outlook.live.com";
+                    }
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+    }
+});
 // This file contains the JavaScript code for the landing page.
 // It handles user interactions, dynamic content updates, and other client-side logic.
 
