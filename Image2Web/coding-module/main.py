@@ -23,7 +23,7 @@ def display_elements(data):
     print(f"Shape Type: {data['shape_type']}")
     print(f"Point: {data['points']}")
     print(f"Group ID: {data['group_id']}")
-    print(f"-" * 30)
+    print(f"-" * 30) #Line break
     
 if __name__ == "__main__":
     json_data = read_json_file("sample_output.json") #replace with your actual file path
