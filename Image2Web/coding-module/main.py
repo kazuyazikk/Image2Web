@@ -14,6 +14,59 @@ def read_json_file(file_path):
         print(f"Error: The file {file_path} is not a valid JSON file.")
         return None
     
+def parse_elements(data):
+    """Parse JSON elements into a structured format with positioning info."""
+    elements = []
+    
+    #Handle both a single statement dict or a list of elements.
+    if isinstance(data, dict):
+        data = [data]
+    for item in data:
+        label = item.get("label", "unknown")
+        shape_type = item.get("shape_type", "unknown")
+        group_id = item.get("group_id")
+        flags = item.get("flags", [])
+        points = item.get(points, [])
+        
+        if len(points) == 2:
+            x1, y1 = points[0]
+            x2, y2 = points[1]
+            width = x2 -x1
+            height = y2 - y1
+            
+            element_info = {
+                "label" : label,
+                "shape_type" : shape_type,
+                "group_id" : group_id,
+                "flags" : flags,
+                "x" : x1,
+                "y" : y1,
+                "width" : width,
+                "height" : height,
+                "positioning" : "absolute"
+            }
+            elements.append(element_info)
+    return elements
+        
+def generate_html (elements):
+    """Generate HTML from parsed elements."""
+    html_elements = []
+    for el in elements:
+        tag = None
+        if el["label"] == "checkbox":
+            tag = f'<input type = "checkbox" style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px;">'
+        elif el["label"] == "button":
+            tag = f'<button style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px;">Click</button>'
+        elif el["label"] == "textbox":
+            tag = f'<input type="text" style="position:absolute; left:{el["y"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px;">'
+        #TODO: Put in the remaining Elements from the HTML here
+        else:
+            tag = f'<div style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; border:1px solid black;">{el["label"]}</div>'
+        html_elements.append(tag)
+    html_content = "<!DOCTYPE html>\n<html>\n<body>\n" + "\n".join(html_elements) + "\n</body>\n</html>"
+    return html_content
+
+
 def display_elements(data):
     """Display the parsed elements for debugging."""
     if not data:
