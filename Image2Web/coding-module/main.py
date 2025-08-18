@@ -81,4 +81,11 @@ def display_elements(data):
 if __name__ == "__main__":
     json_data = read_json_file("sample_output.json") #replace with your actual file path
     if json_data:
-        display_elements(json_data)
+        # display_elements(json_data)
+        elements = parse_elements(json_data)
+        html_content = generate_html(elements)
+        
+        #Save to file
+        with open("output.html", "w") as f:
+            f.write(html_content)
+        print("HTML file generated!")
