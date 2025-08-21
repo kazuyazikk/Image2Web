@@ -1,0 +1,37 @@
+[
+  {
+    "label": "navbar",
+    "points": [[50.0, 40.0], [220.0, 70.0]],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "paragraph",
+    "points": [[50.0, 90.0], [170.0, 280.0]],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "image",
+    "points": [[190.0, 90.0], [310.0, 210.0]],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "checkbox",
+    "points": [[50.0, 300.0], [70.0, 320.0]],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "button",
+    "points": [[50.0, 340.0], [200.0, 380.0]],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  }
+]
