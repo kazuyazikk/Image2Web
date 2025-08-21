@@ -1,4 +1,21 @@
 import json
+import shutil
+import os
+from html_generator import generate_html, generate_just_html
+
+def duplicate_css_file():
+    source_file = "resources/espresso.css"
+    duplicate_file = "duplicate_espresso.css"
+    
+    try:
+        if not os.path.exists(source_file):
+            raise FileNotFoundError(f"Source file '{source_file}' does not exist.")
+        shutil.copy(source_file, duplicate_file)
+        print(f"css File duplicated succesfully! -> {duplicate_file}")
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+    except Exception as e:
+        print(f"Unexpected Error: {e}")
 
 def read_json_file(file_path):
     """Reads and parse the JSON file from the CNN module."""
@@ -48,35 +65,52 @@ def parse_elements(data):
             elements.append(element_info)
     return elements
         
-def generate_html (elements):
-    """Generate HTML from parsed elements."""
-    html_elements = []
-    for el in elements:
-        #In here We have the elements that will be on the Generated HTML file.
-        #We have: Checkbox, Button, Textbox, image, text, navbar, and paragraph.
-        tag = None
-        if el["label"] == "checkbox":
-            tag = f'<input type = "checkbox" style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px;">'
-        elif el["label"] == "button":
-            tag = f'<button style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px;">Click</button>'
-        elif el["label"] == "textbox":
-            tag = f'<input type="text" style="position:absolute; left:{el["y"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px;">'
-        elif el["label"] == "image":
-            placeholder_url = f"https://via.placeholder.com/{int(el['width'])}x{int(el['height'])}/cccccc/666666?text=Image"
-            tag = f'<img src="{placeholder_url}" alt="Image" style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; object-fit:cover;">'
-        #Might want to include heading tags (h1,h2,h3,etc.)
-        elif el["label"] == "text":
-            tag = f'<span style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; display:flex; align-items:center;">Sample Text</span>'
-        elif el["label"] == "navbar":
-            tag = f'<nav style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; background-color:#f8f9fa; border:1px solid #dee2e6; display:flex; align-items:center; padding:0 15px;"><a href="#" style="margin-right:20px; text-decoration:none; color:#007bff;">Home</a><a href="#" style="margin-right:20px; text-decoration:none; color:#007bff;">About</a><a href="#" style="text-decoration:none; color:#007bff;">Contact</a></nav>'
-        elif el["label"] == "paragraph":
-            tag = f'<p style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; margin:0; padding:10px; overflow:hidden;">This is a sample paragraph text that demonstrates how text content would appear in this element.</p>'
-        else:
-            tag = f'<div style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; border:1px solid black;">{el["label"]}</div>'
-        html_elements.append(tag)
-    html_content = "<!DOCTYPE html>\n<html>\n<body>\n" + "\n".join(html_elements) + "\n</body>\n</html>"
-    return html_content
-
+def generate_css_file(elements, css_file):
+    """Append CSS positioning rules for each element into the duplicated CSS file."""
+    try:
+        with open(css_file, "a") as f:
+            for i, el in enumerate(elements):
+                class_name = f"{el['label']}_{i}"
+                css_rule = (
+                    f".{class_name} {{\n"
+                    f"  position: {el['positioning']};\n"
+                    f"  left: {el['x']}px;\n"
+                    f"  top: {el['y']}px;\n"
+                    f"  width: {el['width']}px;\n"
+                    f"  height: {el['height']}px;\n"
+                )
+                # Add label-specific extras
+                if el["label"] == "image":
+                    css_rule += "  object-fit:cover;\n"
+                elif el["label"] == "text":
+                    css_rule += "  display:flex; align-items:center;\n"
+                elif el["label"] == "paragraph":
+                    css_rule += "  margin:0; padding:10px; overflow:hidden;\n"
+                elif el["label"] == "navbar":
+                    css_rule += (
+                        "  background-color: #f8f9fa;\n"
+                        "  border: 1px solid #dee2e6;\n"
+                        "  display: flex;\n"
+                        "  align-items: center;\n"
+                        "  padding: 0 15px;\n"
+                    )
+                    css_rule += "}\n"
+                    css_rule += (
+                        f".{class_name} a {{\n"
+                        "  margin-right: 20px;\n"
+                        "  text-decoration: none;\n"
+                        "  color: #007bff;\n"
+                        "}\n\n"
+                    )
+                    continue
+                else:
+                    css_rule +="  border:1px solid black;\n"
+                #Close rule
+                css_rule += "}\n\n"
+                f.write(css_rule)
+        print(f"CSS rules appended successfully -> {css_file}")
+    except Exception as e:
+        print(f"Error writing CSS: {e}")
 
 def display_elements(data):
     """Display the parsed elements for debugging."""
@@ -94,7 +128,16 @@ if __name__ == "__main__":
     if json_data:
         # display_elements(json_data)
         elements = parse_elements(json_data)
+        #html_content = generate_just_html(elements)
         html_content = generate_html(elements)
+        
+        # Duplicate the css file
+        duplicate_css_file()
+        
+        #Append auto-generated rules
+        generate_css_file(elements, "duplicate_espresso.css")
+        #TODO: Remove the magic variables in the future when we integrate frontend and backend
+        #Magic Variables: html_generator, Generating css file, Duplicating css file
         
         #Save to file
         with open("output.html", "w") as f:

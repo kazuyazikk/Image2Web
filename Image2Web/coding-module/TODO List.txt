@@ -21,20 +21,20 @@ image2web_coding/
 └── requirements.txt     # Dependencies
 
 Complete Pipeline steps:
-1. Read the JSON file
+1. Read the JSON file				Done
 	Load the file from disk
 	Handle file errors
-2. Parse the JSON data
+2. Parse the JSON data				Done
 	Extract element information (lable, coordinates)
 	Calculate dimensions(width, height)
 	Convert Coordinates to usable format
-3. Plan the layout
+3. Plan the layout					Done
 	Decide Positioning strategy(absolute, relative, etc.)
 	Handle Overlapping elements
 	group related elements if needed
-4. Generate HTML structure
+4. Generate HTML structure			Done
 	Create appropriate HTML tags based on element basis
-5. Generate CSS styling
+5. Generate CSS styling				Done
 	Position elements using coordinates
 	Apply basic styling for each element type
 	Add theme styling(espresso, space, etc.)

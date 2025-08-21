@@ -1,0 +1,58 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root{
+  --cream: #FFF8F0;
+  --light-brown: #D4A574;
+  --medium-brown: #B8956A;
+  --dark-brown: #8B4513;
+  --chocolate: #5D4037;
+  --espresso: #3E2723;
+}
+
+body{
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+  color: var(--espresso);
+  background: var(--cream);
+  overflow-x: hidden;
+}
+.paragraph_1 {
+  position: absolute;
+  left: 50.0px;
+  top: 90.0px;
+  width: 120.0px;
+  height: 190.0px;
+  margin:0; padding:10px; overflow:hidden;
+}
+
+.image_2 {
+  position: absolute;
+  left: 190.0px;
+  top: 90.0px;
+  width: 120.0px;
+  height: 120.0px;
+  object-fit:cover;
+}
+
+.checkbox_3 {
+  position: absolute;
+  left: 50.0px;
+  top: 300.0px;
+  width: 20.0px;
+  height: 20.0px;
+  border:1px solid black;
+}
+
+.button_4 {
+  position: absolute;
+  left: 50.0px;
+  top: 340.0px;
+  width: 150.0px;
+  height: 40.0px;
+  border:1px solid black;
+}
+

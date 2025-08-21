@@ -1,0 +1,22 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root{
+  --cream: #FFF8F0;
+  --light-brown: #D4A574;
+  --medium-brown: #B8956A;
+  --dark-brown: #8B4513;
+  --chocolate: #5D4037;
+  --espresso: #3E2723;
+}
+
+body{
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+  color: var(--espresso);
+  background: var(--cream);
+  overflow-x: hidden;
+}
