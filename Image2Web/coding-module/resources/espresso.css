@@ -1,3 +1,5 @@
+/* This is a comment and it is not affected by the code whatsoever */
+/* This is the start of a base design */
 *{
   margin: 0;
   padding: 0;
@@ -20,3 +22,97 @@ body{
   background: var(--cream);
   overflow-x: hidden;
 }
+
+.button-base {
+  display: inline-block;
+  /* padding: 18px 40px; */
+  background: var(--cream);
+  color: var(--espresso);
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.button-base:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  background: var(--light-brown);
+  color: var(--cream);
+}
+
+.textbox-base {
+  border: 2px solid var(--medium-brown);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  color: var(--espresso);
+  background-color: var(--cream);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.textbox-base:focus {
+  outline: none;
+  border-color: var(--dark-brown);
+  box-shadow: 0 0 6px rgba(139, 69, 19, 0.5); /* dark brown glow */
+}
+
+
+.navbar-base {
+  background-color: var(--medium-brown);
+  border-bottom: 3px solid var(--dark-brown);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  font-family: 'Georgia', serif;
+}
+
+.navbar-base a {
+  margin-right: 25px;
+  text-decoration: none;
+  color: var(--cream);
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar-base a:hover {
+  color: var(--light-brown);
+}
+
+.paragraph-base {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--chocolate);
+  font-family: 'Georgia', serif;
+  margin: 0;
+  padding: 12px;
+  background: var(--cream);
+  border-left: 4px solid var(--medium-brown);
+  border-radius: 4px;
+}
+
+.text-base {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--espresso);
+  font-family: 'Georgia', serif;
+}
+
+.image-base {
+  object-fit: cover;
+  border-radius: 6px;
+  border: 3px solid var(--medium-brown);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.checkbox-base {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--dark-brown); /* supported in modern browsers */
+  cursor: pointer;
+}
+/* End of base design */
+/* Below are the specific locations of the detected elements */

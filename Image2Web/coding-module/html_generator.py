@@ -1,4 +1,5 @@
 #TODO: Fix the Path to referencing the generated CSS files
+#TODO: Add the Textfield in the HTML Generator
 
 def generate_just_html (elements):
     """Generate HTML from parsed elements."""
@@ -49,21 +50,21 @@ def generate_html (elements):
         class_name = f"{el['label']}_{i}"
         tag = None
         if el["label"] == "checkbox":
-            tag = f'<input type = "checkbox" class="{class_name}">'
+            tag = f'<input type = "checkbox" class="checkbox-base {class_name}">'
         elif el["label"] == "button":
-            tag = f'<button class="{class_name}">Click</button>'
+            tag = f'<button class="button-base {class_name}">Click</button>'
         elif el["label"] == "textbox":
-            tag = f'<input type="text" class="{class_name}">'
+            tag = f'<input type="text" class="textbox-base {class_name}">'
         elif el["label"] == "image":
             placeholder_url = f"https://via.placeholder.com/{int(el['width'])}x{int(el['height'])}/cccccc/666666?text=Image"
-            tag = f'<img src="{placeholder_url}" alt="Image" class="{class_name}">'
+            tag = f'<img src="{placeholder_url}" alt="Image" class="image-base {class_name}">'
         #Might want to include heading tags (h1,h2,h3,etc.)
         elif el["label"] == "text":
-            tag = f'<span class="{class_name}">Sample Text</span>'
+            tag = f'<span class="text-base {class_name}">Sample Text</span>'
         elif el["label"] == "navbar":
-            tag = f'<nav class="{class_name}"><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></nav>'
+            tag = f'<nav class="navbar-base {class_name}"><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></nav>'
         elif el["label"] == "paragraph":
-            tag = f'<p class="{class_name}">This is a sample paragraph text that demonstrates how text content would appear in this element.</p>'
+            tag = f'<p class="paragraph-base {class_name}">This is a sample paragraph text that demonstrates how text content would appear in this element.</p>'
         else:
             tag = f'<div class="{class_name}">{el["label"]}</div>'
         html_elements.append(tag)
