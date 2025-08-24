@@ -1,35 +1,128 @@
 [
   {
     "label": "navbar",
-    "points": [[50.0, 40.0], [220.0, 70.0]],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {}
-  },
-  {
-    "label": "paragraph",
-    "points": [[50.0, 90.0], [170.0, 280.0]],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {}
-  },
-  {
-    "label": "image",
-    "points": [[190.0, 90.0], [310.0, 210.0]],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {}
-  },
-  {
-    "label": "checkbox",
-    "points": [[50.0, 300.0], [70.0, 320.0]],
+    "points": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        800.0,
+        46.875
+      ]
+    ],
     "group_id": null,
     "shape_type": "rectangle",
     "flags": {}
   },
   {
     "label": "button",
-    "points": [[50.0, 340.0], [200.0, 380.0]],
+    "points": [
+      [
+        62.5,
+        93.75
+      ],
+      [
+        250.0,
+        140.625
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "button",
+    "points": [
+      [
+        312.5,
+        93.75
+      ],
+      [
+        500.0,
+        140.625
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "checkbox",
+    "points": [
+      [
+        62.5,
+        175.78125
+      ],
+      [
+        125.0,
+        222.65625
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "textbox",
+    "points": [
+      [
+        62.5,
+        281.25
+      ],
+      [
+        468.75,
+        328.125
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "paragraph",
+    "points": [
+      [
+        62.5,
+        375.0
+      ],
+      [
+        703.125,
+        585.9375
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "image",
+    "points": [
+      [
+        546.875,
+        175.78125
+      ],
+      [
+        781.25,
+        351.5625
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "text",
+    "points": [
+      [
+        156.25,
+        609.375
+      ],
+      [
+        625.0,
+        656.25
+      ]
+    ],
     "group_id": null,
     "shape_type": "rectangle",
     "flags": {}

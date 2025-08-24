@@ -135,11 +135,11 @@ if __name__ == "__main__":
         duplicate_css_file()
         
         #Append auto-generated rules
-        generate_css_file(elements, "duplicate_espresso.css")
+        generate_css_file(elements, "generated_files/duplicate_espresso.css")
         #TODO: Remove the magic variables in the future when we integrate frontend and backend
         #Magic Variables: html_generator, Generating css file, Duplicating css file
         
         #Save to file
-        with open("output.html", "w") as f:
+        with open("generated_files/output.html", "w") as f:
             f.write(html_content)
         print("HTML file generated!")

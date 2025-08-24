@@ -116,3 +116,129 @@ body{
 }
 /* End of base design */
 /* Below are the specific locations of the detected elements */
+.button_1 {
+  position: absolute;
+  left: 62.5px;
+  top: 93.75px;
+  width: 187.5px;
+  height: 46.875px;
+  border:1px solid black;
+}
+
+.button_2 {
+  position: absolute;
+  left: 312.5px;
+  top: 93.75px;
+  width: 187.5px;
+  height: 46.875px;
+  border:1px solid black;
+}
+
+.checkbox_3 {
+  position: absolute;
+  left: 62.5px;
+  top: 175.78125px;
+  width: 62.5px;
+  height: 46.875px;
+  border:1px solid black;
+}
+
+.textbox_4 {
+  position: absolute;
+  left: 62.5px;
+  top: 281.25px;
+  width: 406.25px;
+  height: 46.875px;
+  border:1px solid black;
+}
+
+.paragraph_5 {
+  position: absolute;
+  left: 62.5px;
+  top: 375.0px;
+  width: 640.625px;
+  height: 210.9375px;
+  margin:0; padding:10px; overflow:hidden;
+}
+
+.image_6 {
+  position: absolute;
+  left: 546.875px;
+  top: 175.78125px;
+  width: 234.375px;
+  height: 175.78125px;
+  object-fit:cover;
+}
+
+.text_7 {
+  position: absolute;
+  left: 156.25px;
+  top: 609.375px;
+  width: 468.75px;
+  height: 46.875px;
+  display:flex; align-items:center;
+}
+
+.button_1 {
+  position: absolute;
+  left: 62.5px;
+  top: 93.75px;
+  width: 187.5px;
+  height: 46.875px;
+  border:1px solid black;
+}
+
+.button_2 {
+  position: absolute;
+  left: 312.5px;
+  top: 93.75px;
+  width: 187.5px;
+  height: 46.875px;
+  border:1px solid black;
+}
+
+.checkbox_3 {
+  position: absolute;
+  left: 62.5px;
+  top: 175.78125px;
+  width: 62.5px;
+  height: 46.875px;
+  border:1px solid black;
+}
+
+.textbox_4 {
+  position: absolute;
+  left: 62.5px;
+  top: 281.25px;
+  width: 406.25px;
+  height: 46.875px;
+  border:1px solid black;
+}
+
+.paragraph_5 {
+  position: absolute;
+  left: 62.5px;
+  top: 375.0px;
+  width: 640.625px;
+  height: 210.9375px;
+  margin:0; padding:10px; overflow:hidden;
+}
+
+.image_6 {
+  position: absolute;
+  left: 546.875px;
+  top: 175.78125px;
+  width: 234.375px;
+  height: 175.78125px;
+  object-fit:cover;
+}
+
+.text_7 {
+  position: absolute;
+  left: 156.25px;
+  top: 609.375px;
+  width: 468.75px;
+  height: 46.875px;
+  display:flex; align-items:center;
+}
+

@@ -1,5 +1,4 @@
 #TODO: Fix the Path to referencing the generated CSS files
-#TODO: Add the Textfield in the HTML Generator
 
 def generate_just_html (elements):
     """Generate HTML from parsed elements."""
@@ -54,7 +53,7 @@ def generate_html (elements):
         elif el["label"] == "button":
             tag = f'<button class="button-base {class_name}">Click</button>'
         elif el["label"] == "textbox":
-            tag = f'<input type="text" class="textbox-base {class_name}">'
+            tag = f'<input type="text" class="textbox-base {class_name}" placeholder="Enter your text here">'
         elif el["label"] == "image":
             placeholder_url = f"https://via.placeholder.com/{int(el['width'])}x{int(el['height'])}/cccccc/666666?text=Image"
             tag = f'<img src="{placeholder_url}" alt="Image" class="image-base {class_name}">'
