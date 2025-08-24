@@ -5,7 +5,7 @@ from html_generator import generate_html, generate_just_html
 
 def duplicate_css_file():
     source_file = "resources/espresso.css"
-    duplicate_file = "duplicate_espresso.css"
+    duplicate_file = "generated_files/duplicate_espresso.css"
     
     try:
         if not os.path.exists(source_file):

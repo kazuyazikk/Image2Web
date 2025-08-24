@@ -43,7 +43,7 @@ body{
   color: var(--cream);
 }
 
-.textbox-base {
+.textfield-base {
   border: 2px solid var(--medium-brown);
   border-radius: 6px;
   padding: 10px 14px;
@@ -53,7 +53,7 @@ body{
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.textbox-base:focus {
+.textfield-base:focus {
   outline: none;
   border-color: var(--dark-brown);
   box-shadow: 0 0 6px rgba(139, 69, 19, 0.5); /* dark brown glow */
@@ -116,129 +116,57 @@ body{
 }
 /* End of base design */
 /* Below are the specific locations of the detected elements */
-.button_1 {
+.button_0 {
   position: absolute;
-  left: 62.5px;
-  top: 93.75px;
-  width: 187.5px;
-  height: 46.875px;
+  left: 1495px;
+  top: 380px;
+  width: 92px;
+  height: 33px;
   border:1px solid black;
 }
 
-.button_2 {
+.checkbox_1 {
   position: absolute;
-  left: 312.5px;
-  top: 93.75px;
-  width: 187.5px;
-  height: 46.875px;
+  left: 315px;
+  top: 369px;
+  width: 126px;
+  height: 51px;
   border:1px solid black;
 }
 
-.checkbox_3 {
+.image_2 {
   position: absolute;
-  left: 62.5px;
-  top: 175.78125px;
-  width: 62.5px;
-  height: 46.875px;
-  border:1px solid black;
-}
-
-.textbox_4 {
-  position: absolute;
-  left: 62.5px;
-  top: 281.25px;
-  width: 406.25px;
-  height: 46.875px;
-  border:1px solid black;
-}
-
-.paragraph_5 {
-  position: absolute;
-  left: 62.5px;
-  top: 375.0px;
-  width: 640.625px;
-  height: 210.9375px;
-  margin:0; padding:10px; overflow:hidden;
-}
-
-.image_6 {
-  position: absolute;
-  left: 546.875px;
-  top: 175.78125px;
-  width: 234.375px;
-  height: 175.78125px;
+  left: 239px;
+  top: 143px;
+  width: 1409px;
+  height: 176px;
   object-fit:cover;
 }
 
-.text_7 {
+.paragraph_4 {
   position: absolute;
-  left: 156.25px;
-  top: 609.375px;
-  width: 468.75px;
-  height: 46.875px;
-  display:flex; align-items:center;
-}
-
-.button_1 {
-  position: absolute;
-  left: 62.5px;
-  top: 93.75px;
-  width: 187.5px;
-  height: 46.875px;
-  border:1px solid black;
-}
-
-.button_2 {
-  position: absolute;
-  left: 312.5px;
-  top: 93.75px;
-  width: 187.5px;
-  height: 46.875px;
-  border:1px solid black;
-}
-
-.checkbox_3 {
-  position: absolute;
-  left: 62.5px;
-  top: 175.78125px;
-  width: 62.5px;
-  height: 46.875px;
-  border:1px solid black;
-}
-
-.textbox_4 {
-  position: absolute;
-  left: 62.5px;
-  top: 281.25px;
-  width: 406.25px;
-  height: 46.875px;
-  border:1px solid black;
-}
-
-.paragraph_5 {
-  position: absolute;
-  left: 62.5px;
-  top: 375.0px;
-  width: 640.625px;
-  height: 210.9375px;
+  left: 199px;
+  top: 482px;
+  width: 577px;
+  height: 411px;
   margin:0; padding:10px; overflow:hidden;
 }
 
-.image_6 {
+.text_5 {
   position: absolute;
-  left: 546.875px;
-  top: 175.78125px;
-  width: 234.375px;
-  height: 175.78125px;
-  object-fit:cover;
+  left: 842px;
+  top: 32px;
+  width: 194px;
+  height: 40px;
+  display:flex; align-items:center;
 }
 
-.text_7 {
+.textfield_6 {
   position: absolute;
-  left: 156.25px;
-  top: 609.375px;
-  width: 468.75px;
-  height: 46.875px;
-  display:flex; align-items:center;
+  left: 1055px;
+  top: 626px;
+  width: 746px;
+  height: 53px;
+  border:1px solid black;
 }
 

@@ -1,46 +1,14 @@
 [
   {
-    "label": "navbar",
-    "points": [
-      [
-        0.0,
-        0.0
-      ],
-      [
-        800.0,
-        46.875
-      ]
-    ],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {}
-  },
-  {
     "label": "button",
     "points": [
       [
-        62.5,
-        93.75
+        1495,
+        380
       ],
       [
-        250.0,
-        140.625
-      ]
-    ],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {}
-  },
-  {
-    "label": "button",
-    "points": [
-      [
-        312.5,
-        93.75
-      ],
-      [
-        500.0,
-        140.625
+        1587,
+        413
       ]
     ],
     "group_id": null,
@@ -51,44 +19,12 @@
     "label": "checkbox",
     "points": [
       [
-        62.5,
-        175.78125
+        315,
+        369
       ],
       [
-        125.0,
-        222.65625
-      ]
-    ],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {}
-  },
-  {
-    "label": "textbox",
-    "points": [
-      [
-        62.5,
-        281.25
-      ],
-      [
-        468.75,
-        328.125
-      ]
-    ],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {}
-  },
-  {
-    "label": "paragraph",
-    "points": [
-      [
-        62.5,
-        375.0
-      ],
-      [
-        703.125,
-        585.9375
+        441,
+        420
       ]
     ],
     "group_id": null,
@@ -99,12 +35,44 @@
     "label": "image",
     "points": [
       [
-        546.875,
-        175.78125
+        239,
+        143
       ],
       [
-        781.25,
-        351.5625
+        1648,
+        319
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "navbar",
+    "points": [
+      [
+        1141,
+        451
+      ],
+      [
+        1678,
+        548
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "paragraph",
+    "points": [
+      [
+        199,
+        482
+      ],
+      [
+        776,
+        893
       ]
     ],
     "group_id": null,
@@ -115,12 +83,28 @@
     "label": "text",
     "points": [
       [
-        156.25,
-        609.375
+        842,
+        32
       ],
       [
-        625.0,
-        656.25
+        1036,
+        72
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {}
+  },
+  {
+    "label": "textfield",
+    "points": [
+      [
+        1055,
+        626
+      ],
+      [
+        1801,
+        679
       ]
     ],
     "group_id": null,

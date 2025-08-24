@@ -1,17 +1,15 @@
-#TODO: Fix the Path to referencing the generated CSS files
-
 def generate_just_html (elements):
     """Generate HTML from parsed elements."""
     html_elements = []
     for el in elements:
         #In here We have the elements that will be on the Generated HTML file.
-        #We have: Checkbox, Button, Textbox, image, text, navbar, and paragraph.
+        #We have: Checkbox, Button, Textfield, image, text, navbar, and paragraph.
         tag = None
         if el["label"] == "checkbox":
             tag = f'<input type = "checkbox" style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px;">'
         elif el["label"] == "button":
             tag = f'<button style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px;">Click</button>'
-        elif el["label"] == "textbox":
+        elif el["label"] == "textfield":
             tag = f'<input type="text" style="position:absolute; left:{el["y"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px;">'
         elif el["label"] == "image":
             placeholder_url = f"https://via.placeholder.com/{int(el['width'])}x{int(el['height'])}/cccccc/666666?text=Image"
@@ -45,15 +43,15 @@ def generate_html (elements):
     html_elements = []
     for i, el in enumerate(elements):
         #In here We have the elements that will be on the Generated HTML file.
-        #We have: Checkbox, Button, Textbox, image, text, navbar, and paragraph.
+        #We have: Checkbox, Button, Textfield, image, text, navbar, and paragraph.
         class_name = f"{el['label']}_{i}"
         tag = None
         if el["label"] == "checkbox":
             tag = f'<input type = "checkbox" class="checkbox-base {class_name}">'
         elif el["label"] == "button":
             tag = f'<button class="button-base {class_name}">Click</button>'
-        elif el["label"] == "textbox":
-            tag = f'<input type="text" class="textbox-base {class_name}" placeholder="Enter your text here">'
+        elif el["label"] == "textfield":
+            tag = f'<input type="text" class="textfield-base {class_name}" placeholder="Enter your text here">'
         elif el["label"] == "image":
             placeholder_url = f"https://via.placeholder.com/{int(el['width'])}x{int(el['height'])}/cccccc/666666?text=Image"
             tag = f'<img src="{placeholder_url}" alt="Image" class="image-base {class_name}">'
