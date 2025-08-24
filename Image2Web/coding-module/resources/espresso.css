@@ -43,6 +43,13 @@ body{
   color: var(--cream);
 }
 
+.button-base:active{
+  transform: scale(0.95);
+  background: var(--dark-brown);
+  color: var(--cream);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) inset;
+}
+
 .textfield-base {
   border: 2px solid var(--medium-brown);
   border-radius: 6px;

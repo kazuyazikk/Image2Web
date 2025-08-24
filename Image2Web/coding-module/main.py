@@ -44,6 +44,10 @@ def parse_elements(data):
         group_id = item.get("group_id")
         flags = item.get("flags", [])
         points = item.get("points", [])
+        unit = item.get("unit")
+        
+        if(unit is None):
+            unit = "px"
         
         if len(points) == 2:
             x1, y1 = points[0]
@@ -51,6 +55,7 @@ def parse_elements(data):
             width = x2 -x1
             height = y2 - y1
             
+        
             element_info = {
                 "label" : label,
                 "shape_type" : shape_type,
@@ -60,7 +65,8 @@ def parse_elements(data):
                 "y" : y1,
                 "width" : width,
                 "height" : height,
-                "positioning" : "absolute"
+                "positioning" : "absolute",
+                "unit" : unit
             }
             elements.append(element_info)
     return elements
@@ -74,10 +80,10 @@ def generate_css_file(elements, css_file):
                 css_rule = (
                     f".{class_name} {{\n"
                     f"  position: {el['positioning']};\n"
-                    f"  left: {el['x']}px;\n"
-                    f"  top: {el['y']}px;\n"
-                    f"  width: {el['width']}px;\n"
-                    f"  height: {el['height']}px;\n"
+                    f"  left: {el['x']}{el['unit']};\n"
+                    f"  top: {el['y']}{el['unit']};\n"
+                    f"  width: {el['width']}{el['unit']};\n"
+                    f"  height: {el['height']}{el['unit']};\n"
                 )
                 # Add label-specific extras
                 if el["label"] == "image":
