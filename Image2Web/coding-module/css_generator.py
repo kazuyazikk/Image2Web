@@ -58,30 +58,8 @@ def generate_css_file(elements, css_file):
                     #f.write(css_rule)
                     continue
                 elif el["label"] == "checkbox_with_label":
-                    css_rule += (
-                        "  display: flex;\n"
-                        "  align-items: center;\n"
-                        "  gap: 8px;\n"                 
-                        "  font-size: 1rem;\n"
-                        "  color: var(--espresso);\n"
-                        "  cursor: pointer;\n"
-                        "  user-select: none;\n"        
-                    )
-                    css_rule += "}\n"
-
-                    # Input styling nested inside
-                    css_rule += (
-                        f".{class_name} input[type='checkbox'] {{\n"
-                        "  width: 18px;\n"
-                        "  height: 18px;\n"
-                        "  accent-color: var(--dark-brown);\n" 
-                        "  cursor: pointer;\n"
-                        "  transition: transform 0.2s ease;\n"
-                        "}\n"
-                        f".{class_name} input[type='checkbox']:hover {{\n"
-                        "  transform: scale(1.1);\n"
-                        "}\n\n"
-                    )
+                    #Just continue
+                    css_rule += "}\n\n"
                     f.write(css_rule)
                     continue
                 else:

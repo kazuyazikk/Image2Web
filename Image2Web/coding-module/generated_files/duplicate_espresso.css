@@ -156,23 +156,6 @@ body{
   top: 27.17%;
   width: 27.500000000000004%;
   height: 4.989999999999995%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  color: var(--espresso);
-  cursor: pointer;
-  user-select: none;
-}
-.checkbox_with_label_0 input[type='checkbox'] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--dark-brown);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.checkbox_with_label_0 input[type='checkbox']:hover {
-  transform: scale(1.1);
 }
 
 .checkbox_with_label_1 {
@@ -181,23 +164,6 @@ body{
   top: 38.16%;
   width: 21.380000000000003%;
   height: 4.280000000000001%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  color: var(--espresso);
-  cursor: pointer;
-  user-select: none;
-}
-.checkbox_with_label_1 input[type='checkbox'] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--dark-brown);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.checkbox_with_label_1 input[type='checkbox']:hover {
-  transform: scale(1.1);
 }
 
 .checkbox_with_label_2 {
@@ -206,23 +172,6 @@ body{
   top: 57.03%;
   width: 23.900000000000002%;
   height: 4.539999999999999%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  color: var(--espresso);
-  cursor: pointer;
-  user-select: none;
-}
-.checkbox_with_label_2 input[type='checkbox'] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--dark-brown);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.checkbox_with_label_2 input[type='checkbox']:hover {
-  transform: scale(1.1);
 }
 
 .checkbox_with_label_3 {
@@ -231,23 +180,6 @@ body{
   top: 48.47%;
   width: 22.450000000000003%;
   height: 3.6499999999999986%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-  color: var(--espresso);
-  cursor: pointer;
-  user-select: none;
-}
-.checkbox_with_label_3 input[type='checkbox'] {
-  width: 18px;
-  height: 18px;
-  accent-color: var(--dark-brown);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-.checkbox_with_label_3 input[type='checkbox']:hover {
-  transform: scale(1.1);
 }
 
 .image_4 {
