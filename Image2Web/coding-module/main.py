@@ -130,7 +130,7 @@ def display_elements(data):
     print(f"-" * 30) #Line break
     
 if __name__ == "__main__":
-    json_data = read_json_file("sample_output.json") #replace with your actual file path
+    json_data = read_json_file("sample_output.json") #TODO:replace with your actual file path
     if json_data:
         # display_elements(json_data)
         elements = parse_elements(json_data)
