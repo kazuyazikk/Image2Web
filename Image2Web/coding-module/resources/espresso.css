@@ -121,5 +121,32 @@ body{
   accent-color: var(--dark-brown); /* supported in modern browsers */
   cursor: pointer;
 }
+
+.label-base {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--espresso);
+  margin-bottom: 6px;
+  display: inline-block;
+}
+.checkbox-label-base{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: var(--chocolate);
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox-label-base input[type="checkbox"]{
+  accent-color: var(--dark-brown);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.checkbox-label-base input[type="checkbox"]:hover{
+  transform: scale(1.1);
+}
 /* End of base design */
 /* Below are the specific locations of the detected elements */

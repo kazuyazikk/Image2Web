@@ -121,59 +121,168 @@ body{
   accent-color: var(--dark-brown); /* supported in modern browsers */
   cursor: pointer;
 }
+
+.label-base {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--espresso);
+  margin-bottom: 6px;
+  display: inline-block;
+}
+.checkbox-label-base{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: var(--chocolate);
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox-label-base input[type="checkbox"]{
+  accent-color: var(--dark-brown);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.checkbox-label-base input[type="checkbox"]:hover{
+  transform: scale(1.1);
+}
 /* End of base design */
 /* Below are the specific locations of the detected elements */
-.button_0 {
+.checkbox_with_label_0 {
   position: absolute;
-  left: 1495px;
-  top: 380px;
-  width: 92px;
-  height: 33px;
-  border:1px solid black;
+  left: 13.77%;
+  top: 27.17%;
+  width: 27.500000000000004%;
+  height: 4.989999999999995%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: var(--espresso);
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox_with_label_0 input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--dark-brown);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.checkbox_with_label_0 input[type='checkbox']:hover {
+  transform: scale(1.1);
 }
 
-.checkbox_1 {
+.checkbox_with_label_1 {
   position: absolute;
-  left: 315px;
-  top: 369px;
-  width: 126px;
-  height: 51px;
-  border:1px solid black;
+  left: 17.25%;
+  top: 38.16%;
+  width: 21.380000000000003%;
+  height: 4.280000000000001%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: var(--espresso);
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox_with_label_1 input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--dark-brown);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.checkbox_with_label_1 input[type='checkbox']:hover {
+  transform: scale(1.1);
 }
 
-.image_2 {
+.checkbox_with_label_2 {
   position: absolute;
-  left: 239px;
-  top: 143px;
-  width: 1409px;
-  height: 176px;
+  left: 16.84%;
+  top: 57.03%;
+  width: 23.900000000000002%;
+  height: 4.539999999999999%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: var(--espresso);
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox_with_label_2 input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--dark-brown);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.checkbox_with_label_2 input[type='checkbox']:hover {
+  transform: scale(1.1);
+}
+
+.checkbox_with_label_3 {
+  position: absolute;
+  left: 16.82%;
+  top: 48.47%;
+  width: 22.450000000000003%;
+  height: 3.6499999999999986%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: var(--espresso);
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox_with_label_3 input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--dark-brown);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.checkbox_with_label_3 input[type='checkbox']:hover {
+  transform: scale(1.1);
+}
+
+.image_4 {
+  position: absolute;
+  left: 6.33%;
+  top: 70.12%;
+  width: 72.88%;
+  height: 8.759999999999991%;
   object-fit:cover;
 }
 
-.paragraph_4 {
+.paragraph_6 {
   position: absolute;
-  left: 199px;
-  top: 482px;
-  width: 577px;
-  height: 411px;
+  left: 61.64%;
+  top: 8.47%;
+  width: 28.730000000000004%;
+  height: 52.59%;
   margin:0; padding:10px; overflow:hidden;
 }
 
-.text_5 {
+.text_7 {
   position: absolute;
-  left: 842px;
-  top: 32px;
-  width: 194px;
-  height: 40px;
+  left: 30.65%;
+  top: 82.54%;
+  width: 11.090000000000003%;
+  height: 2.2299999999999898%;
   display:flex; align-items:center;
 }
 
-.textfield_6 {
+.textfield_8 {
   position: absolute;
-  left: 1055px;
-  top: 626px;
-  width: 746px;
-  height: 53px;
+  left: 11.28%;
+  top: 15.93%;
+  width: 29.61%;
+  height: 6.469999999999999%;
   border:1px solid black;
 }
 

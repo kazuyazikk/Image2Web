@@ -62,6 +62,10 @@ def generate_html (elements):
             tag = f'<nav class="navbar-base {class_name}"><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></nav>'
         elif el["label"] == "paragraph":
             tag = f'<p class="paragraph-base {class_name}">{label_description(el["label"])}</p>'
+        elif el["label"] == "checkbox_with_label":
+            tag = f"""<label class="checkbox-label-base {class_name}">
+            <input type="checkbox"> This is a checkbox and a label
+            </label>"""
         else:
             tag = f'<div class="{class_name}">{el["label"]}</div>'
         html_elements.append(tag)
