@@ -665,3 +665,71 @@ footer {
         font-size: 1.1rem;
     }
 }
+
+/* Inspector/Code/CSS Pane Styles */
+.two-pane-layout {
+  display: flex;
+  gap: 32px;
+  margin-top: 32px;
+}
+.inspector-pane, .code-pane, .css-pane {
+  flex: 1;
+  background: #232946;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+.inspector-pane {
+  align-items: center;
+  justify-content: center;
+  flex: 1.5; /* Make inspector broader than code/css panes */
+}
+.code-pane, .css-pane {
+  flex: 1;
+}
+.inspector-pane h3,
+.code-pane h3,
+.css-pane h3 {
+  color: #38bdf8;
+  margin-bottom: 16px;
+}
+#inspector-preview {
+  width: 98%;
+  height: 320px;
+  background: #181823;
+  border: 2px dashed #38bdf8;
+  border-radius: 8px;
+}
+.code-pane textarea,
+.css-pane textarea {
+  width: 100%;
+  height: 220px;
+  border-radius: 8px;
+  padding: 12px;
+  background: #181823;
+  color: #fff;
+  font-size: 1em;
+  border: 1px solid #38bdf8;
+  margin-bottom: 16px;
+}
+#saveHtmlBtn2 {
+  background: #a259ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1em;
+  cursor: pointer;
+  align-self: flex-end;
+}
+#saveCssBtn {
+  background: #38bdf8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1em;
+  cursor: pointer;
+  align-self: flex-end;
+}

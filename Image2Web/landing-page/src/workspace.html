@@ -452,19 +452,7 @@
         <section class="workspace-section-card">
           <h2>Generate Code from Wireframe</h2>
 
-          <div class="form-group">
-            <label for="selectModel">Select Model</label>
-            <select id="selectModel">
-              <option value="gemini-google">Gemini Google</option>
-              <option value="openai-gpt4o">OpenAI GPT-4o</option>
-            </select>
-          </div>
 
-          <div class="form-group">
-            <label for="websiteDescription">Description of your website</label>
-            <textarea id="websiteDescription" rows="5"
-              placeholder="e.g., A minimalist portfolio website for a graphic designer, with a dark theme and subtle animations."></textarea>
-          </div>
 
           <div class="image-upload-area" id="dropArea">
             <label for="imageUpload" class="upload-label">
@@ -485,11 +473,93 @@
         </section>
 
         <section class="workspace-section-card code-inspector-section">
-          <h2>Inspector</h2>
-          <div id="codeDisplay" class="code-display empty-state">
-            <p>Generated code will appear here.</p>
+          <!-- Two-pane Inspector/Code section -->
+          <div class="two-pane-layout">
+            <!-- Inspector (left) -->
+            <div class="inspector-pane">
+              <h3>Inspector</h3>
+              <iframe id="inspector-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            </div>
+            <!-- Code (middle) -->
+            <div class="code-pane">
+              <h3>Code (HTML)</h3>
+              <textarea id="workspace-html-editor">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Page Title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;This is a Heading&lt;/h1&gt;
+  &lt;p&gt;This is a paragraph.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</textarea>
+              <button id="saveHtmlBtn2" class="download-code-btn">Save as HTML file</button>
+            </div>
+            <!-- CSS (right) -->
+            <div class="css-pane">
+              <h3>Code (CSS)</h3>
+              <textarea id="workspace-css-editor">body {\n  background: #fff;\n  color: #232946;\n}\nh1 {\n  color: #38bdf8;\n}</textarea>
+              <button id="saveCssBtn" class="download-code-btn">Save as CSS file</button>
+            </div>
           </div>
-          <button id="saveHtmlBtn" class="download-code-btn" style="display: none;">Save as HTML file</button>
+          <script>
+            // Save as HTML file functionality for workspace editor
+            document.getElementById('saveHtmlBtn2').onclick = function() {
+              const code = document.getElementById('workspace-html-editor').value;
+              const blob = new Blob([code], { type: 'text/html' });
+              const a = document.createElement('a');
+              a.href = URL.createObjectURL(blob);
+              a.download = 'workspace.html';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              // Save HTML to Firestore
+              const db = firebase.firestore();
+              db.collection('html_css_files').add({
+                type: 'html',
+                content: code,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+              }).then(() => {
+                console.log('HTML saved to Firestore!');
+              }).catch((error) => {
+                console.error('Error saving HTML to Firestore:', error);
+              });
+            };
+            // Save as CSS file functionality
+            document.getElementById('saveCssBtn').onclick = function() {
+              const css = document.getElementById('workspace-css-editor').value;
+              const blob = new Blob([css], { type: 'text/css' });
+              const a = document.createElement('a');
+              a.href = URL.createObjectURL(blob);
+              a.download = 'workspace.css';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              // Save CSS to Firestore
+              const db = firebase.firestore();
+              db.collection('html_css_files').add({
+                type: 'css',
+                content: css,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+              }).then(() => {
+                console.log('CSS saved to Firestore!');
+              }).catch((error) => {
+                console.error('Error saving CSS to Firestore:', error);
+              });
+            };
+            // Realtime Inspector Preview
+            function updateInspectorPreview() {
+              const html = document.getElementById('workspace-html-editor').value;
+              const css = document.getElementById('workspace-css-editor').value;
+              const iframe = document.getElementById('inspector-preview');
+              const doc = `<!DOCTYPE html><html><head><style>${css}</style></head><body>${html}</body></html>`;
+              iframe.srcdoc = doc;
+            }
+            document.getElementById('workspace-html-editor').addEventListener('input', updateInspectorPreview);
+            document.getElementById('workspace-css-editor').addEventListener('input', updateInspectorPreview);
+            // Initial preview
+            updateInspectorPreview();
+          </script>
         </section>
       </main>
     </div>
@@ -891,5 +961,6 @@
   <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
     &#9776;
   </button>
-</body> 
+</body>
+
 </html>

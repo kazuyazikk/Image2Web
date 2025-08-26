@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
+  #user-links { display: none; }
     /* Widget Styles */
     .widget {
       background: #f8fafc;
@@ -93,7 +94,7 @@
           <li class="nav-item" data-page="workspace"><button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button></li>
           <li class="nav-item"><button class="nav-btn" onclick="window.location.href='Editor.html'">HTML/CSS Editor</button></li>
           <li class="nav-item" id="auth-links"><button class="nav-btn" onclick="openLogin()">Login</button></li>
-          <li class="nav-item" id="user-links" style="display:none;"><button class="nav-btn" onclick="logout()">Logout</button></li>
+          <li class="nav-item" id="user-links"><button class="nav-btn" onclick="logout()">Logout</button></li>
         </ul>
       </nav>
       <div id="user-greeting">Hi, <span id="user-name"></span></div>
