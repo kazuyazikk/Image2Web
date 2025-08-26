@@ -48,6 +48,29 @@
 
 <body>
   <header>
+    <nav>
+      <ul id="nav-menu" style="list-style:none;display:flex;gap:1em;padding:1em 0;margin:0;justify-content:center;">
+  <li class="nav-item"><button class="nav-btn" onclick="window.location.href='index.html'">Home</button></li>
+  <li class="nav-item"><button class="nav-btn" onclick="window.location.href='contributors.html'">Contributors</button></li>
+  <li class="nav-item"><button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button></li>
+  <li class="nav-item"><button class="nav-btn" onclick="window.location.href='Editor.html'">HTML/CSS Editor</button></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" style="text-align:center;padding:2em 0;">
+      <h1 style="font-family:'Russo One',Arial,sans-serif;font-size:2.5em;margin-bottom:0.5em;">Welcome to Image2Web</h1>
+      <p style="font-size:1.2em;margin-bottom:2em;">Upload images and convert them into beautiful, responsive websites with ease.</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1em;">
+  <button class="hero-btn" style="padding:0.7em 2em;font-size:1em;">Get Started</button>
+  <button class="github-btn" style="padding:0.7em 2em;font-size:1em;background:#333;color:#fff;" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')">View us on Github!</button>
+      </div>
+    </section>
+    <section class="editor-embed" style="margin:2em 0;">
+  <!-- Editor embed removed. Use nav button to transition to Editor.html page. -->
+    </section>
+  </main>
+  <header>
     <div class="header-content">
       <div class="logo">
         <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,10 +94,6 @@
           </li>
           <li class="nav-item" data-page="workspace">
             <button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button>
-          </li>
-          <li class="nav-item" data-page="editor">
-            <!-- UPDATED: Open local Editor.html -->
-            <button class="nav-btn" onclick="window.open('Editor.html', '_blank')">HTML/CSS Editor</button>
           </li>
           <li class="nav-item" id="auth-links">
             <button class="nav-btn" onclick="openLogin()">Login</button>
@@ -117,17 +136,10 @@
             </svg>
             View us on Github!
           </button>
-          <!-- UPDATED: Open local Editor.html -->
-          <button class="hero-btn" style="background:#0ea5e9;color:#fff;" onclick="window.open('Editor.html', '_blank')">Open HTML/CSS Editor</button>
         </div>
       </div>
     </section>
   </main>
-  <section class="editor-embed" style="margin:2em 0;">
-    <h2 style="text-align:center;">Try the HTML/CSS Editor</h2>
-    <!-- EMBEDDED: Editor.html in an iframe -->
-    <iframe src="Editor.html" width="100%" height="700" style="border:1px solid #ccc;border-radius:8px;" title="HTML/CSS Editor"></iframe>
-  </section>
   <div class="signup-modal" id="signupModal">
     <div class="signup-content">
       <button class="close-btn" onclick="closeSignup()">&times;</button>
