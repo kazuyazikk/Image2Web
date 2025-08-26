@@ -43,34 +43,36 @@
       transition: background 0.2s, color 0.2s;
       outline: none;
     }
+
+    /* Modal Styles Fix */
+    .login-modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background: rgba(0,0,0,0.2);
+      align-items: center;
+      justify-content: center;
+    }
+    .login-content {
+      background: #fff;
+      margin: 5% auto;
+      padding: 2em;
+      border-radius: 8px;
+      max-width: 400px;
+      box-shadow: 0 2px 16px rgba(30,41,59,0.12);
+      position: relative;
+    }
   </style>
 </head>
 
 <body>
-  <header>
-    <nav>
-      <ul id="nav-menu" style="list-style:none;display:flex;gap:1em;padding:1em 0;margin:0;justify-content:center;">
-  <li class="nav-item"><button class="nav-btn" onclick="window.location.href='index.html'">Home</button></li>
-  <li class="nav-item"><button class="nav-btn" onclick="window.location.href='contributors.html'">Contributors</button></li>
-  <li class="nav-item"><button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button></li>
-  <li class="nav-item"><button class="nav-btn" onclick="window.location.href='Editor.html'">HTML/CSS Editor</button></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <section class="hero" style="text-align:center;padding:2em 0;">
-      <h1 style="font-family:'Russo One',Arial,sans-serif;font-size:2.5em;margin-bottom:0.5em;">Welcome to Image2Web</h1>
-      <p style="font-size:1.2em;margin-bottom:2em;">Upload images and convert them into beautiful, responsive websites with ease.</p>
-      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1em;">
-  <button class="hero-btn" style="padding:0.7em 2em;font-size:1em;">Get Started</button>
-  <button class="github-btn" style="padding:0.7em 2em;font-size:1em;background:#333;color:#fff;" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')">View us on Github!</button>
-      </div>
-    </section>
-    <section class="editor-embed" style="margin:2em 0;">
-  <!-- Editor embed removed. Use nav button to transition to Editor.html page. -->
-    </section>
-  </main>
-  <header>
+  <!-- HEADER -->
+  <header class="main-header">
     <div class="header-content">
       <div class="logo">
         <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -85,61 +87,38 @@
         </div>
       </div>
       <nav>
-        <ul id="nav-menu">
-          <li class="nav-item active" data-page="home" onclick="navigate('home')">
-            <button class="nav-btn">Home</button>
-          </li>
-          <li class="nav-item" data-page="contributors" onclick="window.location.href='contributors.html'">
-            <button class="nav-btn">Contributors</button>
-          </li>
-          <li class="nav-item" data-page="workspace">
-            <button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button>
-          </li>
-          <li class="nav-item" id="auth-links">
-            <button class="nav-btn" onclick="openLogin()">Login</button>
-          </li>
-          <li class="nav-item" id="user-links" style="display: none;">
-            <button class="nav-btn" onclick="logout()">Logout</button>
-          </li>
+        <ul id="nav-menu" class="nav-menu-layout">
+          <li class="nav-item" data-page="home"><button class="nav-btn" onclick="window.location.href='index.html'">Home</button></li>
+          <li class="nav-item" data-page="contributors"><button class="nav-btn" onclick="window.location.href='contributors.html'">Contributors</button></li>
+          <li class="nav-item" data-page="workspace"><button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button></li>
+          <li class="nav-item"><button class="nav-btn" onclick="window.location.href='Editor.html'">HTML/CSS Editor</button></li>
+          <li class="nav-item" id="auth-links"><button class="nav-btn" onclick="openLogin()">Login</button></li>
+          <li class="nav-item" id="user-links" style="display:none;"><button class="nav-btn" onclick="logout()">Logout</button></li>
         </ul>
       </nav>
-      <div id="user-greeting">
-        Hi, <span id="user-name"></span>
-      </div>
-      <button id="nav-toggle" aria-label="Open navigation" aria-expanded="false" style="display:block;">
-        &#9776;
-      </button>
+      <div id="user-greeting">Hi, <span id="user-name"></span></div>
+      <button id="nav-toggle" aria-label="Open navigation" aria-expanded="false">&#9776;</button>
     </div>
   </header>
 
+  <!-- HERO SECTION -->
   <main>
     <section class="hero">
       <div class="hero-content">
         <div class="hero-label">Digital Insights</div>
         <h1 class="hero-title">The Future<br>of Technology</h1>
-        <p style="font-size: 1.2rem; margin-bottom: 2rem; color: var(--text-secondary);">
-          Upload Images and convert them into beautiful, responsive websites with ease.
-        </p>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem">
-          <button class="hero-btn" onclick="openSignup()" aria-label="Get Started">Get Started</button>
-          <button class="github-btn" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')"
-            aria-label="View us on Github">
-            <svg height="22" width="22" viewBox="0 0 16 16" fill="currentColor"
-              style="vertical-align:middle; margin-right:8px;">
-              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-                0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2
-                -3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65
-                7.65 0 0 1 8 4.77c.68.003 1.36.092 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08
-                2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01
-                1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-            </svg>
+        <p class="hero-desc">Upload images and convert them into beautiful, responsive websites with ease.</p>
+        <div class="hero-btn-group">
+          <button class="hero-btn" onclick="openSignup()">Get Started</button>
+          <button class="github-btn" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')">
             View us on Github!
           </button>
         </div>
       </div>
     </section>
   </main>
+
+  <!-- SIGNUP MODAL -->
   <div class="signup-modal" id="signupModal">
     <div class="signup-content">
       <button class="close-btn" onclick="closeSignup()">&times;</button>
@@ -147,19 +126,17 @@
         <h2>Join Image2Web</h2>
         <div class="form-group">
           <label for="username">Username</label>
-          <input id="signup-username" name="username" type="text" placeholder="Enter your username" required>
+          <input id="signup-username" name="username" type="text" required>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="signup-email" name="email" type="email" placeholder="Enter your email" required>
+          <input id="signup-email" name="email" type="email" required>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input id="signup-password" name="password" type="password" placeholder="Enter your password" required>
+          <input id="signup-password" name="password" type="password" required>
         </div>
-        <button type="submit" class="signup-btn" style="width: 100%; margin: 0;">
-          Create Account
-        </button>
+        <button type="submit" class="signup-btn">Create Account</button>
         <div class="success-message" id="successMessage" style="display:none;">
           <h3>🎉 Welcome to CODE4WEB!</h3>
           <p>Your account has been created successfully.</p>
@@ -168,6 +145,7 @@
     </div>
   </div>
 
+  <!-- LOGIN MODAL -->
   <div class="login-modal" id="loginModal">
     <div class="login-content">
       <button class="close-btn" onclick="closeLogin()">&times;</button>
@@ -175,89 +153,66 @@
         <h2 class="login-title">Login to Image2Web</h2>
         <div class="form-group">
           <label for="login-username">Email</label>
-          <input type="email" id="login-username" name="login-username" placeholder="Enter your email" required>
+          <input type="email" id="login-username" required>
         </div>
         <div class="form-group">
           <label for="login-password">Password</label>
-          <input type="password" id="login-password" name="login-password" placeholder="Enter your password" required>
+          <input type="password" id="login-password" required>
         </div>
-        <button type="submit" class="login-btn" style="width: 100%; margin: 0;">
-          Login
-        </button>
-        <button type="button" class="login-btn" id="google-signin-btn" style="width: 100%; margin: 10px 0 0 0; background: #fff; color: #444; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; gap: 8px;">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" style="width:22px; height:22px;"> Sign in with Google
+        <button type="submit" class="login-btn">Login</button>
+        <button type="button" class="login-btn" id="google-signin-btn">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo"> Sign in with Google
         </button>
         <div style="text-align:center; margin-top:1em;">
-          <button type="button" class="signup-link-btn"
-            style="background:none;border:none;color:#0ea5e9;cursor:pointer;font-size:1em;"
-            onclick="closeLogin(); openSignup();">
-            Don't have an account? Sign up now!
-          </button>
+          <button type="button" class="signup-link-btn" onclick="closeLogin(); openSignup();">Don't have an account? Sign up now!</button>
           <br />
-          <button type="button" class="forgot-link-btn"
-            style="background:none;border:none;color:#0ea5e9;cursor:pointer;font-size:1em;"
-            type="button" onclick="openForgotPassword(); return false;">
-            Forgot password?
-          </button>
+          <button type="button" class="forgot-link-btn" onclick="openForgotPassword()">Forgot password?</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- ABOUT MODAL -->
   <div class="about-modal" id="aboutModal">
     <div class="about-content">
       <button class="close-btn" onclick="closeAbout()">&times;</button>
-      <h2 class="about-title">About Image2Web</h2>
-      <p class="about-text">
-        Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease. Our
-        mission is to empower developers and designers to bring their ideas to life faster and more efficiently.
-      </p>
-      <p class="about-text">
-        <strong>Team:</strong> Moyano, Sarge Dave M. • Mallari, Merick Joshua • Quiambao, Christian Joshua • Dizon,
-        Robby
-      </p>
+      <h2>About Image2Web</h2>
+      <p>Image2Web is a project dedicated to transforming wireframes into beautiful, responsive websites with ease.</p>
+      <p><strong>Team:</strong> Moyano, Sarge Dave M. • Mallari, Merick Joshua • Quiambao, Christian Joshua • Dizon, Robby</p>
     </div>
   </div>
 
+  <!-- FOOTER -->
   <footer>
     <div class="footer-content">
       <div class="footer-section">
-        <h3 class="footer-title">About Image2Web</h3>
-        <p class="footer-text">
-          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds.
-          Built for developers and designers by SeroTech.
-        </p>
-        <div class="social-links">
-        </div>
+        <h3>About Image2Web</h3>
+        <p>Image2Web helps you turn wireframes and images into real, responsive websites in seconds.</p>
       </div>
       <div class="footer-section">
-        <h3 class="footer-title">Quick Links</h3>
-        <a href="#" class="footer-link">Home</a>
-        <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
-        <a href="#" class="footer-link">Blog</a>
+  <h3>Quick Links</h3>
+  <a href="index.html">Home</a>
+  <a href="#" onclick="openAbout(); return false;">About</a>
+  <a href="workspace.html">Workspace</a>
+  <a href="contributors.html">Contributors</a>
       </div>
       <div class="footer-section">
-        <a href="#" class="footer-link">Documentation</a>
-        <a href="#" class="footer-link">Tutorials</a>
-      </div>
-      <div class="footer-section">
-        <h3 class="footer-title">Contact</h3>
-        <p class="footer-text">📧 our email</p>
-        <p class="footer-text">📍 A Wireframe to Website Generator</p>
+        <h3>Contact</h3>
+        <p>📧 our email</p>
+        <p>📍 A Wireframe to Website Generator</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-text">&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
+      <p>&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
     </div>
   </footer>
 
-  <div id="loading-spinner"
-    style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">
-    <div
-      style="border:8px solid #eee;border-top:8px solid #0ea5e9;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;">
-    </div>
+  <!-- LOADING SPINNER -->
+  <div id="loading-spinner" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">
+    <div style="border:8px solid #eee;border-top:8px solid #0ea5e9;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;"></div>
   </div>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -273,12 +228,10 @@
       measurementId: "G-LF3Y1S5M47"
     };
     firebase.initializeApp(firebaseConfig);
-    // Only initialize analytics if firebase object is properly defined
     if (typeof firebase.analytics === 'function') {
-        firebase.analytics();
+      firebase.analytics();
     }
   </script>
   <script src="script.js" defer></script>
-
 </body>
 </html>

@@ -16,6 +16,249 @@
   --danger-red: #ef4444;
 }
 
+body {
+  font-family: 'Russo One', Arial, sans-serif;
+  margin: 0;
+  background: var(--background-dark, #12002f);
+  color: var(--text-primary, #f8fafc);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+main {
+  background: var(--background-light, #2c004f);
+  min-height: 80vh;
+}
+}
+
+/* Header Styles */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32px 48px 0 48px;
+  background: transparent;
+  position: relative; /* Ensure header is a positioning context for absolute children */
+  z-index: 1000; /* Ensure header is on top of content */
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative; /* Crucial for absolute positioning of nav-toggle and potentially the menu */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo .brand {
+  font-family: 'Russo One', sans-serif;
+  font-size: 2.5em;
+  color: var(--text-primary);
+  white-space: nowrap; /* Prevent brand text from wrapping */
+}
+
+.logo .slogan {
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  white-space: nowrap; /* Prevent slogan text from wrapping */
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item button {
+  background: transparent;
+  border: 2px solid var(--primary-blue);
+  color: var(--primary-blue);
+  font-family: 'Russo One', Arial, sans-serif;
+  font-weight: bold;
+  font-size: 1.1em;
+  border-radius: 1.5em;
+  padding: 0.4em 1.5em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+
+.nav-item button:hover {
+  background: var(--primary-blue);
+  color: var(--button-text);
+}
+
+.nav-item.active button {
+  background: var(--primary-blue);
+  color: var(--button-text);
+  border-color: var(--primary-blue);
+}
+
+#user-greeting {
+  color: var(--text-primary);
+  font-size: 1.1em;
+  margin-left: 20px; /* Adjust spacing for desktop */
+  display: none; /* Hidden by default, shown by JS on login */
+}
+
+#user-name {
+  font-weight: bold;
+  color: var(--secondary-blue);
+}
+
+/* Hamburger menu toggle - HIDDEN by default on desktop */
+#nav-toggle {
+  display: none; /* Hidden on desktop */
+  background: none;
+  border: none;
+  color: var(--primary-blue);
+  font-size: 2em;
+  cursor: pointer;
+  z-index: 1003; /* Ensure it's on top */
+  position: relative; /* In case it needs to be explicitly positioned */
+}
+
+/* Hero Section Styles */
+.hero {
+  flex-grow: 1; /* Allows main content to take available space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.hero-content {
+  max-width: 800px;
+  width: 100%;
+}
+
+.hero-label {
+  color: var(--primary-blue);
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.hero-title {
+  font-family: 'Russo One', sans-serif;
+  font-size: 4em;
+  color: var(--text-primary);
+  margin: 0 0 20px 0;
+  line-height: 1.2;
+}
+
+.hero-btn {
+  background: var(--primary-blue);
+  color: var(--button-text);
+  border: none;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 20px;
+}
+
+.hero-btn:hover {
+  background: var(--secondary-blue);
+}
+
+.github-btn {
+  background: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.github-btn:hover {
+  background: var(--border-color);
+  border-color: var(--primary-blue);
+}
+
+/* Modal Styles */
+.signup-modal,
+.login-modal,
+.about-modal {
+  display: none;
+  position: fixed;
+  z-index: 1001; /* Ensure modals are above header and menu */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--modal-bg);
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-content,
+.login-content,
+.about-content {
+  background-color: var(--modal-content-bg);
+  margin: auto;
+  padding: 40px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  position: relative;
+  text-align: center;
+}
+
+.close-btn {
+  color: var(--text-secondary);
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
+.signup-form,
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.signup-form h2,
+.login-form h2 {
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  text-align: left;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+}
+
 .form-group input {
   width: 100%;
   padding: 12px;
@@ -161,23 +404,11 @@ footer {
   /* Hamburger menu toggle - VISIBLE on mobile */
   #nav-toggle {
     display: block; /* Show the hamburger icon on mobile */
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 25px;
+    position: absolute; /* Position relative to .header-content */
+    top: 25px; /* Adjust this to control vertical position */
+    right: 20px; /* Adjust this to control horizontal position */
     font-size: 2.5em; /* Make it more prominent */
     z-index: 1003; /* Ensure it's on top of everything */
-  }
-  /* Blur background when nav is open */
-  body.menu-blur main,
-  body.menu-blur header,
-  body.menu-blur footer {
-    filter: blur(6px) brightness(0.7);
-    transition: filter 0.3s;
-  }
-  body.menu-blur #nav-toggle,
-  body.menu-blur nav ul.open {
-    filter: none;
   }
 
   #user-greeting {
@@ -303,97 +534,6 @@ footer {
   }
 }
 
-/* Responsive Header */
-@media (max-width: 900px) {
-  .header-content {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem 1rem 0 1rem;
-    gap: 1rem;
-  }
-  nav ul {
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-  #user-greeting {
-    margin-left: 0;
-    margin-top: 0.5em;
-  }
-}
-
-/* Hamburger menu for mobile */
-#nav-toggle {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: var(--primary-blue);
-  cursor: pointer;
-  margin-left: 1em;
-}
-
-@media (max-width: 600px) {
-  .header-content {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 0.5rem 0.5rem 0 0.5rem;
-  }
-  nav {
-    width: 100%;
-  }
-  nav ul {
-    flex-direction: column;
-    width: 100%;
-    gap: 0.5rem;
-    align-items: flex-start;
-    padding-left: 0;
-  }
-  .nav-item {
-    width: 100%;
-  }
-  .nav-btn {
-    width: 100%;
-    margin-left: 0;
-    margin-bottom: 0.5em;
-    text-align: left;
-  }
-  #nav-toggle {
-    display: block;
-  }
-}
-
-/* Responsive Hero */
-@media (max-width: 900px) {
-  .hero-content {
-    padding: 1.5rem 1rem;
-    margin: 1rem 0;
-  }
-  .hero-title {
-    font-size: 2rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .hero-content {
-    padding: 1rem 0.5rem;
-  }
-  .hero-title {
-    font-size: 1.3rem;
-  }
-}
-
-/* Responsive Footer */
-@media (max-width: 900px) {
-  .footer-content {
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 0 1rem;
-  }
-  .footer-section {
-    min-width: unset;
-  }
-}
 
 /* ------------------------------------------- */
 /* CONTRIBUTORS PAGE SPECIFIC STYLES           */
@@ -525,4 +665,3 @@ footer {
         font-size: 1.1rem;
     }
 }
-
