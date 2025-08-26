@@ -48,6 +48,7 @@ function closeSignup() {
 }
 
 function openLogin() {
+    alert('openLogin() called');
     document.getElementById("loginModal").style.display = "block";
     document.body.style.overflow = "hidden";
 }
