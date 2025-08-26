@@ -472,6 +472,59 @@
           <p id="statusMessage"></p>
         </section>
 
+        <!-- Import/Export Controls -->
+        <div class="import-export-controls" style="display: flex; gap: 16px; margin-bottom: 24px;">
+          <button id="importBtn" class="download-code-btn">Import from Firestore</button>
+          <button id="exportBtn" class="download-code-btn">Export All as ZIP</button>
+        </div>
+        <script>
+          // Import from Firestore
+          document.getElementById('importBtn').onclick = function() {
+            const db = firebase.firestore();
+            db.collection('html_css_files').orderBy('timestamp', 'desc').get().then((querySnapshot) => {
+              let html = '';
+              let css = '';
+              querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.type === 'html') html = data.content;
+                if (data.type === 'css') css = data.content;
+              });
+              document.getElementById('workspace-html-editor').value = html;
+              document.getElementById('workspace-css-editor').value = css;
+              updateInspectorPreview();
+              alert('Imported latest HTML and CSS from Firestore!');
+            }).catch((error) => {
+              alert('Error importing from Firestore: ' + error.message);
+            });
+          };
+          // Export all HTML/CSS as ZIP
+          document.getElementById('exportBtn').onclick = async function() {
+            const db = firebase.firestore();
+            const querySnapshot = await db.collection('html_css_files').orderBy('timestamp', 'desc').get();
+            const files = [];
+            querySnapshot.forEach((doc, i) => {
+              const data = doc.data();
+              const ext = data.type === 'html' ? 'html' : 'css';
+              files.push({
+                name: `file_${i+1}.${ext}`,
+                content: data.content
+              });
+            });
+            // Create ZIP
+            const zip = new JSZip();
+            files.forEach(f => zip.file(f.name, f.content));
+            const blob = await zip.generateAsync({type: 'blob'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'exported_files.zip';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          };
+        </script>
+        <!-- Make sure to include JSZip library -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
         <section class="workspace-section-card code-inspector-section">
           <!-- Two-pane Inspector/Code section -->
           <div class="two-pane-layout">
