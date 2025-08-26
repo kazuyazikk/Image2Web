@@ -477,6 +477,55 @@
           <button id="importBtn" class="download-code-btn">Import from Firestore</button>
           <button id="exportBtn" class="download-code-btn">Export All as ZIP</button>
         </div>
+        <!-- File Picker for Export -->
+        <div id="filePickerContainer" style="margin-bottom: 16px;"></div>
+        <button id="refreshFilesBtn" class="download-code-btn" style="margin-bottom: 16px;">Refresh File List</button>
+        <script>
+          // Render file picker list
+          function renderFilePicker() {
+            const db = firebase.firestore();
+            db.collection('html_css_files').orderBy('timestamp', 'desc').get().then((querySnapshot) => {
+              const container = document.getElementById('filePickerContainer');
+              container.innerHTML = '<strong>Select files to export:</strong><form id="filePickerForm">';
+              querySnapshot.forEach((doc, i) => {
+                const data = doc.data();
+                const ext = data.type === 'html' ? 'html' : 'css';
+                const label = data.filename ? data.filename : `file_${i+1}.${ext}`;
+                container.innerHTML += `<div><label><input type="checkbox" name="file" value="${doc.id}"> ${label} (${ext})</label></div>`;
+              });
+              container.innerHTML += '</form>';
+            });
+          }
+          // Initial render
+          renderFilePicker();
+          document.getElementById('refreshFilesBtn').onclick = renderFilePicker;
+          // Export selected files as ZIP
+          document.getElementById('exportBtn').onclick = async function() {
+            const db = firebase.firestore();
+            const checked = Array.from(document.querySelectorAll('#filePickerForm input[type=checkbox]:checked')).map(cb => cb.value);
+            if (checked.length === 0) {
+              alert('Please select at least one file to export.');
+              return;
+            }
+            const zip = new JSZip();
+            for (const id of checked) {
+              const doc = await db.collection('html_css_files').doc(id).get();
+              if (doc.exists) {
+                const data = doc.data();
+                const ext = data.type === 'html' ? 'html' : 'css';
+                const name = data.filename ? data.filename : `${id}.${ext}`;
+                zip.file(name, data.content);
+              }
+            }
+            const blob = await zip.generateAsync({type: 'blob'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'selected_files.zip';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          };
+        </script>
         <script>
           // Import from Firestore
           document.getElementById('importBtn').onclick = function() {
