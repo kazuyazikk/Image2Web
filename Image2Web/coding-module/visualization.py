@@ -425,3 +425,4 @@ def visualize_prediction(image_name: str, save_json: bool = True, debug_associat
         save_path = os.path.join(OUTPUT_DIR, json_filename)
         predictions_to_json(final_boxes, save_path, pil_img.width, pil_img.height)
         print(f"Saved enhanced predictions JSON to: {save_path}")
+

@@ -6,14 +6,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     gcc \
     g++ \
-    libgl1-mesa-glx \
+    curl \
     libglib2.0-0 \
     libsm6 \
     libxext6 \
-    libxrender-dev \
+    libxrender1 \
     libgomp1 \
     libgfortran5 \
-    libjpeg-dev \
+    libjpeg62-turbo-dev \
     libpng-dev \
     libfreetype6-dev \
     pkg-config \
