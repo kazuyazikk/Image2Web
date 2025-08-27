@@ -12,8 +12,7 @@ import math
 model = None # Makes model global variable
 
 # CONFIG
-MODEL_PATH = "./best_model.keras"
-IMAGE_DIR = "./image/"
+MODEL_PATH = "./wireframe_detection_model.keras"
 OUTPUT_DIR = "./output/"
 CLASS_NAMES = ["button", "checkbox", "image", "navbar", "paragraph", "text", "textfield"]
 
@@ -354,7 +353,7 @@ def debug_checkbox_text_association(final_boxes, image_name, orig_w, orig_h):
 
 # Visualize predictions
 def visualize_prediction(image_name: str, save_json: bool = True, debug_associations: bool = False):
-    image_path = os.path.join(IMAGE_DIR, image_name)
+    image_path = os.path.join(image_name)
     pil_img, final_boxes = get_predictions(image_path)
 
     # Debug checkbox-text associations if requested
@@ -426,12 +425,3 @@ def visualize_prediction(image_name: str, save_json: bool = True, debug_associat
         save_path = os.path.join(OUTPUT_DIR, json_filename)
         predictions_to_json(final_boxes, save_path, pil_img.width, pil_img.height)
         print(f"Saved enhanced predictions JSON to: {save_path}")
-
-
-
-# Main
-if __name__ == "__main__":
-    print("Loading model...")
-    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
-
-    visualize_prediction(".jpg", save_json=False, debug_associations=False)
