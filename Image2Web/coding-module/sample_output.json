@@ -1,134 +1,61 @@
 [
   {
-    "label": "checkbox_with_label",
+    "label": "button",
     "points": [
       [
-        13.77,
-        27.17
+        25.52,
+        22.53
       ],
       [
-        41.27,
-        32.16
+        33.67,
+        28.44
       ]
     ],
     "group_id": null,
     "shape_type": "rectangle",
     "flags": {},
-    "unit": "%",
-    "layout": "horizontal",
-    "checkbox_box": {
-      "x1": 13.77,
-      "y1": 28.62,
-      "x2": 23.04,
-      "y2": 32.16
-    },
-    "text_box": {
-      "x1": 25.88,
-      "y1": 27.17,
-      "x2": 41.27,
-      "y2": 31.54
-    }
+    "unit": "%"
   },
   {
     "label": "checkbox_with_label",
     "points": [
       [
-        17.25,
-        38.16
+        9.08,
+        23.2
       ],
       [
-        38.63,
-        42.44
+        25.98,
+        34.73
       ]
     ],
     "group_id": null,
     "shape_type": "rectangle",
     "flags": {},
     "unit": "%",
-    "layout": "horizontal",
+    "layout": "vertical",
     "checkbox_box": {
-      "x1": 17.25,
-      "y1": 40.08,
-      "x2": 23.05,
-      "y2": 42.44
+      "x1": 9.08,
+      "y1": 23.2,
+      "x2": 16.53,
+      "y2": 28.5
     },
     "text_box": {
-      "x1": 27.58,
-      "y1": 38.16,
-      "x2": 38.63,
-      "y2": 40.61
-    }
-  },
-  {
-    "label": "checkbox_with_label",
-    "points": [
-      [
-        16.84,
-        57.03
-      ],
-      [
-        40.74,
-        61.57
-      ]
-    ],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {},
-    "unit": "%",
-    "layout": "horizontal",
-    "checkbox_box": {
-      "x1": 16.84,
-      "y1": 58.99,
-      "x2": 22.93,
-      "y2": 61.57
-    },
-    "text_box": {
-      "x1": 24.33,
-      "y1": 57.03,
-      "x2": 40.74,
-      "y2": 59.43
-    }
-  },
-  {
-    "label": "checkbox_with_label",
-    "points": [
-      [
-        16.82,
-        48.47
-      ],
-      [
-        39.27,
-        52.12
-      ]
-    ],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {},
-    "unit": "%",
-    "layout": "horizontal",
-    "checkbox_box": {
-      "x1": 16.82,
-      "y1": 49.92,
-      "x2": 23.33,
-      "y2": 52.12
-    },
-    "text_box": {
-      "x1": 25.98,
-      "y1": 48.47,
-      "x2": 39.27,
-      "y2": 50.74
+      "x1": 9.46,
+      "y1": 30.72,
+      "x2": 25.98,
+      "y2": 34.73
     }
   },
   {
     "label": "image",
     "points": [
       [
-        6.33,
-        70.12
+        8.32,
+        37.27
       ],
       [
-        79.21,
-        78.88
+        45.1,
+        63.62
       ]
     ],
     "group_id": null,
@@ -140,12 +67,12 @@
     "label": "navbar",
     "points": [
       [
-        9.06,
-        3.86
+        8.22,
+        4.84
       ],
       [
-        42.36,
-        14.23
+        43.73,
+        12.27
       ]
     ],
     "group_id": null,
@@ -157,29 +84,12 @@
     "label": "paragraph",
     "points": [
       [
-        61.64,
-        8.47
+        51.23,
+        5.08
       ],
       [
-        90.37,
-        61.06
-      ]
-    ],
-    "group_id": null,
-    "shape_type": "rectangle",
-    "flags": {},
-    "unit": "%"
-  },
-  {
-    "label": "text",
-    "points": [
-      [
-        30.65,
-        82.54
-      ],
-      [
-        41.74,
-        84.77
+        95.53,
+        62.54
       ]
     ],
     "group_id": null,
@@ -191,12 +101,12 @@
     "label": "textfield",
     "points": [
       [
-        11.28,
-        15.93
+        6.96,
+        14.52
       ],
       [
-        40.89,
-        22.4
+        44.66,
+        20.27
       ]
     ],
     "group_id": null,

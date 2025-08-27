@@ -150,71 +150,47 @@ body{
 }
 /* End of base design */
 /* Below are the specific locations of the detected elements */
-.checkbox_with_label_0 {
+.button_0 {
   position: absolute;
-  left: 13.77%;
-  top: 27.17%;
-  width: 27.500000000000004%;
-  height: 4.989999999999995%;
+  left: 25.52%;
+  top: 22.53%;
+  width: 8.150000000000002%;
+  height: 5.91%;
+  border:1px solid black;
 }
 
 .checkbox_with_label_1 {
   position: absolute;
-  left: 17.25%;
-  top: 38.16%;
-  width: 21.380000000000003%;
-  height: 4.280000000000001%;
+  left: 9.08%;
+  top: 23.2%;
+  width: 16.9%;
+  height: 11.529999999999998%;
 }
 
-.checkbox_with_label_2 {
+.image_2 {
   position: absolute;
-  left: 16.84%;
-  top: 57.03%;
-  width: 23.900000000000002%;
-  height: 4.539999999999999%;
-}
-
-.checkbox_with_label_3 {
-  position: absolute;
-  left: 16.82%;
-  top: 48.47%;
-  width: 22.450000000000003%;
-  height: 3.6499999999999986%;
-}
-
-.image_4 {
-  position: absolute;
-  left: 6.33%;
-  top: 70.12%;
-  width: 72.88%;
-  height: 8.759999999999991%;
+  left: 8.32%;
+  top: 37.27%;
+  width: 36.78%;
+  height: 26.349999999999994%;
   object-fit:cover;
 }
 
-.paragraph_6 {
+.paragraph_4 {
   position: absolute;
-  left: 61.64%;
-  top: 8.47%;
-  width: 28.730000000000004%;
-  height: 52.59%;
+  left: 51.23%;
+  top: 5.08%;
+  width: 44.300000000000004%;
+  height: 57.46%;
   margin:0; padding:10px; overflow:hidden;
 }
 
-.text_7 {
+.textfield_5 {
   position: absolute;
-  left: 30.65%;
-  top: 82.54%;
-  width: 11.090000000000003%;
-  height: 2.2299999999999898%;
-  display:flex; align-items:center;
-}
-
-.textfield_8 {
-  position: absolute;
-  left: 11.28%;
-  top: 15.93%;
-  width: 29.61%;
-  height: 6.469999999999999%;
+  left: 6.96%;
+  top: 14.52%;
+  width: 37.699999999999996%;
+  height: 5.75%;
   border:1px solid black;
 }
 
