@@ -1,2 +1,7 @@
 flask
 google-cloud-storage
+tensorflow
+numpy
+matplotlib
+pillow
+werkzeug

@@ -1,11 +1,15 @@
 import tensorflow as tf
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")  # Disable GUI backend for Cloud Run
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from PIL import Image, ImageOps
 import json
 import os
 import math
+import io
+from flask import Flask, request, jsonify
 
 # CONFIG
 MODEL_PATH = "C:/Users/CJREBORN2ND/Desktop/SCHOOL/4thYear/Image2Web-FINAL/runs/wireframe_fixed/best_model.keras"
