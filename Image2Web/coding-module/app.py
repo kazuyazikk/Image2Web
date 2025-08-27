@@ -29,7 +29,9 @@ def generate():
     if not json_data:
         return jsonify({"error": "No JSON input"}), 400
 
-    # Run your existing generator
+    #TODO: Include the detection module here
+
+    # Run your existing coding generator
     elements = main.parse_elements(json_data)
     html_content = main.generate_html(elements)
     main.duplicate_css_file()
