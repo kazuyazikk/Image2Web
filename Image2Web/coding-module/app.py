@@ -12,14 +12,12 @@ app = Flask(__name__)
 # Configure the firebase storage bucket (same bucket as the Firebase project)
 BUCKET_NAME = os.environ.get("BUCKET_NAME", "your-project-id.appspot.com")
 
-
 def upload_to_storage(local_file, dest_path):
     client = storage.Client()
     bucket = client.bucket(BUCKET_NAME)
     blob = bucket.blob(dest_path)
     blob.upload_from_filename(local_file)
     return blob.public_url
-
 
 @app.route("/generate", methods=["POST"])
 def generate():
@@ -31,7 +29,7 @@ def generate():
     5. Return file URLs to frontend
     """
     try:
-        load_model_if_needed() #Ensure the model is loaded before using
+        load_model_if_needed() # Ensure the model is loaded before using
         # Check if an image file was uploaded
         if 'image' not in request.files:
             return jsonify({"error": "No image file provided"}), 400
@@ -105,7 +103,6 @@ def generate():
         print(f"Error in generate endpoint: {str(e)}")
         return jsonify({"error": f"Processing failed: {str(e)}"}), 500
 
-
 @app.route("/detect", methods=["POST"])
 def detect_only():
     """
@@ -165,10 +162,14 @@ def detect_only():
         print(f"Error in detect endpoint: {str(e)}")
         return jsonify({"error": f"Detection failed: {str(e)}"}), 500
 
+@app.route("/health", methods=["GET"])
+def health():
+    """Health check endpoint for Cloud Run"""
+    return jsonify({"status": "healthy", "timestamp": time.time()})
 
 @app.route("/", methods=["GET"])
 def home():
-    return "Image2Web API is running! Endpoints: /generate (POST), /detect (POST)"
+    return "Image2Web API is running! Endpoints: /generate (POST), /detect (POST), /health (GET)"
 
 model_loaded = False
 
@@ -176,19 +177,22 @@ def load_model_if_needed():
     global model_loaded
     if not model_loaded:
         print("Loading model...")
-        visualization.model = visualization.tf.keras.models.load_model(
-            visualization.MODEL_PATH, compile=False
-        )
-        model_loaded = True
-        print("Model Loaded successfully!")
+        try:
+            visualization.model = visualization.tf.keras.models.load_model(
+                visualization.MODEL_PATH, compile=False
+            )
+            model_loaded = True
+            print("Model loaded successfully!")
+        except Exception as e:
+            print(f"Error loading model: {str(e)}")
+            raise
 
-# Load model when the app starts
-@app.before_first_request
-def initialize():
-    # Don't preload the model here anymore
-    pass
+def create_app():
+    """Application factory for better organization"""
+    return app
 
 if __name__ == "__main__":
     # Load model for local testing
     load_model_if_needed()
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port, debug=False)
