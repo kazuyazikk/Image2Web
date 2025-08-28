@@ -55,7 +55,6 @@ build/
 # Local dataset and outputs (don't copy to container)
 dataset_root/
 predictions_json/
-generated_files/
 
 # Docker
 Dockerfile
