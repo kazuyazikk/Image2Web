@@ -31,6 +31,7 @@ def generate():
     5. Return file URLs to frontend
     """
     try:
+        load_model_if_needed() #Ensure the model is loaded before using
         # Check if an image file was uploaded
         if 'image' not in request.files:
             return jsonify({"error": "No image file provided"}), 400
@@ -111,6 +112,7 @@ def detect_only():
     Endpoint to only run wireframe detection and return JSON
     """
     try:
+        load_model_if_needed() # Ensure the model is loaded before using
         # Check if an image file was uploaded
         if 'image' not in request.files:
             return jsonify({"error": "No image file provided"}), 400
@@ -168,19 +170,25 @@ def detect_only():
 def home():
     return "Image2Web API is running! Endpoints: /generate (POST), /detect (POST)"
 
+model_loaded = False
+
+def load_model_if_needed():
+    global model_loaded
+    if not model_loaded:
+        print("Loading model...")
+        visualization.model = visualization.tf.keras.models.load_model(
+            visualization.MODEL_PATH, compile=False
+        )
+        model_loaded = True
+        print("Model Loaded successfully!")
 
 # Load model when the app starts
 @app.before_first_request
 def initialize():
-    # Load the model in your visualization module
-    print("Loading model...")
-    visualization.model = visualization.tf.keras.models.load_model(visualization.MODEL_PATH, compile=False)
-    print("Model loaded successfully!")
-
+    # Don't preload the model here anymore
+    pass
 
 if __name__ == "__main__":
     # Load model for local testing
-    print("Loading model...")
-    visualization.model = visualization.tf.keras.models.load_model(visualization.MODEL_PATH, compile=False)
-    print("Model loaded successfully!")
+    load_model_if_needed()
     app.run(host="0.0.0.0", port=8080, debug=True)
