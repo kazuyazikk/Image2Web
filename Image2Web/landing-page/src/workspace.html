@@ -290,6 +290,28 @@
       /* Center the title */
     }
 
+    /* Two-pane layout and larger Inspector preview */
+    .two-pane-layout {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .inspector-pane h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: var(--primary-blue);
+    }
+
+    #inspector-preview {
+      width: 100%;
+      height: 700px;
+      background: #fff;
+      border: 2px dashed #38bdf8;
+      border-radius: 8px;
+    }
+
     .code-display {
       background-color: var(--input-bg);
       color: var(--text-primary);
