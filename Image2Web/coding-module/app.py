@@ -12,6 +12,7 @@ app = Flask(__name__)
 # Configure the firebase storage bucket (same bucket as the Firebase project)
 BUCKET_NAME = os.environ.get("BUCKET_NAME", "your-project-id.appspot.com")
 
+
 def upload_to_storage(local_file, dest_path):
     client = storage.Client()
     bucket = client.bucket(BUCKET_NAME)
@@ -19,7 +20,9 @@ def upload_to_storage(local_file, dest_path):
     blob.upload_from_filename(local_file)
     return blob.public_url
 
-@app.route("/generate", methods=["POST"])
+
+@app.route("/generate", methods=["POST"])  # Original path
+@app.route("/api/generate", methods=["POST"])  # Alias for Firebase Hosting rewrite
 def generate():
     """
     1. Receive image from frontend
@@ -29,7 +32,7 @@ def generate():
     5. Return file URLs to frontend
     """
     try:
-        load_model_if_needed() # Ensure the model is loaded before using
+        load_model_if_needed()  # Ensure the model is loaded before using
         # Check if an image file was uploaded
         if 'image' not in request.files:
             return jsonify({"error": "No image file provided"}), 400
@@ -103,13 +106,15 @@ def generate():
         print(f"Error in generate endpoint: {str(e)}")
         return jsonify({"error": f"Processing failed: {str(e)}"}), 500
 
-@app.route("/detect", methods=["POST"])
+
+@app.route("/detect", methods=["POST"])  # Original path
+@app.route("/api/detect", methods=["POST"])  # Alias for Firebase Hosting rewrite
 def detect_only():
     """
     Endpoint to only run wireframe detection and return JSON
     """
     try:
-        load_model_if_needed() # Ensure the model is loaded before using
+        load_model_if_needed()  # Ensure the model is loaded before using
         # Check if an image file was uploaded
         if 'image' not in request.files:
             return jsonify({"error": "No image file provided"}), 400
@@ -162,37 +167,62 @@ def detect_only():
         print(f"Error in detect endpoint: {str(e)}")
         return jsonify({"error": f"Detection failed: {str(e)}"}), 500
 
-@app.route("/health", methods=["GET"])
+
+@app.route("/health", methods=["GET"])  # Original path
+@app.route("/api/health", methods=["GET"])  # Alias for Firebase Hosting rewrite
 def health():
     """Health check endpoint for Cloud Run"""
     return jsonify({"status": "healthy", "timestamp": time.time()})
+
 
 @app.route("/", methods=["GET"])
 def home():
     return "Image2Web API is running! Endpoints: /generate (POST), /detect (POST), /health (GET)"
 
+
 model_loaded = False
+
 
 def load_model_if_needed():
     global model_loaded
     if not model_loaded:
         print("Loading model...")
         try:
-            visualization.model = visualization.tf.keras.models.load_model(
-                visualization.MODEL_PATH, compile=False
-            )
+            # Try Keras 3 first (for models saved with keras.src.models.functional)
+            try:
+                import keras
+                print(f"Using Keras version: {keras.__version__}")
+                visualization.model = keras.models.load_model(
+                    visualization.MODEL_PATH,
+                    compile=False,
+                    safe_mode=False
+                )
+                print("Model loaded with Keras 3")
+            except Exception as keras_err:
+                print(f"Keras 3 load failed: {keras_err}")
+                # Fallback to tf.keras
+                import tensorflow as tf
+                print(f"Falling back to TensorFlow version: {tf.__version__}")
+                visualization.model = tf.keras.models.load_model(
+                    visualization.MODEL_PATH, 
+                    compile=False,
+                    custom_objects={}
+                )
+                print("Model loaded with tf.keras")
+
             model_loaded = True
             print("Model loaded successfully!")
         except Exception as e:
             print(f"Error loading model: {str(e)}")
             raise
 
+
 def create_app():
     """Application factory for better organization"""
     return app
 
+
 if __name__ == "__main__":
-    # Load model for local testing
-    load_model_if_needed()
+    # Don't load model at startup - load it lazily when needed
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port, debug=False)

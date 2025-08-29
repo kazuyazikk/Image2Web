@@ -28,7 +28,7 @@ RUN mkdir -p generated_files output
 
 # Set environment variables
 ENV MODEL_PATH=/app/wireframe_detection_model.keras
-ENV BUCKET_NAME=your-project-id.appspot.com
+ENV BUCKET_NAME=image2web-1a6c0.appspot.com
 ENV PYTHONUNBUFFERED=1
 ENV PORT=8080
 

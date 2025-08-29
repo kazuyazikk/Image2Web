@@ -314,7 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-
 // =================== SPINNER (optional) =================== //
 function showSpinner() {
   const spinner = document.getElementById('loading-spinner');
@@ -324,3 +323,4 @@ function hideSpinner() {
   const spinner = document.getElementById('loading-spinner');
   if (spinner) spinner.style.display = 'none';
 }
+

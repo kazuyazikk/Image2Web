@@ -2,6 +2,14 @@
   "projects": {
     "default": "image2web-1a6c0"
   },
-  "targets": {},
+  "targets": {
+    "image2web-1a6c0": {
+      "hosting": {
+        "web": [
+          "image2web-1a6c0"
+        ]
+      }
+    }
+  },
   "etags": {}
 }

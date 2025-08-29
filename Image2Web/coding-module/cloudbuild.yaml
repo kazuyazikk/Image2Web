@@ -1,0 +1,5 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/image2web-1a6c0/html-generator', '.']
+images:
+  - 'gcr.io/image2web-1a6c0/html-generator'

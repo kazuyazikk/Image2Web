@@ -949,79 +949,130 @@
           return;
         }
 
-        const selectedModel = selectModel.value;
-        const description = websiteDescription.value.trim();
-
-        if (!description) {
-          statusMessage.textContent = 'Please provide a description of your website.';
-          statusMessage.style.color = '#f5576c';
-          return;
-        }
-
-        statusMessage.textContent = `Generating code using ${selectedModel}... This may take a moment.`;
+        const file = imageUpload.files[0];
+        statusMessage.textContent = 'Detecting elements in your wireframe...';
         statusMessage.style.color = '#ffe066';
         loadingSpinner.style.display = 'flex';
-
-        const file = imageUpload.files[0];
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('model', selectedModel);
-        formData.append('description', description);
+        generateCodeBtn.disabled = true;
 
         try {
-          // Replace with your actual API endpoint for code generation
-          const response = await fetch('/api/generate-code', {
+          // Step 1: Detect elements using /api/detect
+          const detectFormData = new FormData();
+          detectFormData.append('image', file);
+          
+          const detectResponse = await fetch('/api/detect', {
             method: 'POST',
-            body: formData,
-            // headers: { 'Authorization': `Bearer ${YOUR_AUTH_TOKEN}` } // Add if authentication is needed
+            body: detectFormData
           });
 
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+          if (!detectResponse.ok) {
+            throw new Error(`Detection failed: ${detectResponse.status}`);
           }
 
-          const result = await response.json(); // Assuming backend returns JSON with 'htmlCode'
-
-          if (result && result.htmlCode) {
-            codeDisplay.innerHTML = `<pre><code>${escapeHtml(result.htmlCode)}</code></pre>`;
-            codeDisplay.classList.remove('empty-state');
-            saveHtmlBtn.style.display = 'block';
-            statusMessage.textContent = 'Code generated successfully! 🎉';
-            statusMessage.style.color = '#10b981';
-
-            // --- Save project to Firestore after successful generation ---
-            const user = firebase.auth().currentUser;
-            if (user) {
-              const db = firebase.firestore();
-              await db.collection('users').doc(user.uid).collection('projects').add({
-                name: file.name.split('.')[0] || 'Generated Design',
-                description: description,
-                modelUsed: selectedModel,
-                htmlCode: result.htmlCode, // You might store the code or a reference to it
-                // You might also upload the image to storage and save its URL here
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                websiteUrl: '#' // Placeholder, if you host generated sites, put URL here
-              });
-              console.log("Project saved to Firestore!");
-              // No need to call addProjectCard here, as previous_designs.html will load them.
-            } else {
-              console.warn("User not logged in, project not saved to Firestore.");
-            }
-
-          } else {
-            throw new Error('No HTML code received from the server.');
+          const detectResult = await detectResponse.json();
+          
+          if (!detectResult.success) {
+            throw new Error(detectResult.error || 'Detection failed');
           }
+
+          // Show detection results
+          statusMessage.textContent = `Detected ${detectResult.elements.length} elements! Generating website...`;
+          statusMessage.style.color = '#10b981';
+
+          // Step 2: Generate website using /api/generate
+          const generateFormData = new FormData();
+          generateFormData.append('image', file);
+          
+          const generateResponse = await fetch('/api/generate', {
+            method: 'POST',
+            body: generateFormData
+          });
+
+          if (!generateResponse.ok) {
+            throw new Error(`Generation failed: ${generateResponse.status}`);
+          }
+
+          const generateResult = await generateResponse.json();
+          
+          if (!generateResult.success) {
+            throw new Error(generateResult.error || 'Generation failed');
+          }
+
+          // Success! Show results
+          statusMessage.textContent = 'Website generated successfully! 🎉';
+          statusMessage.style.color = '#10b981';
+
+          // Display the generated HTML in the workspace editor
+          const htmlEditor = document.getElementById('workspace-html-editor');
+          const cssEditor = document.getElementById('workspace-css-editor');
+          
+          // Fetch the generated HTML content
+          try {
+            const htmlResponse = await fetch(generateResult.html_url);
+            const htmlContent = await htmlResponse.text();
+            htmlEditor.value = htmlContent;
+          } catch (htmlError) {
+            console.warn('Could not fetch HTML content:', htmlError);
+            htmlEditor.value = `<!-- Generated HTML from wireframe -->\n<!-- HTML file available at: ${generateResult.html_url} -->\n<div>Website generated successfully!</div>`;
+          }
+
+          // Fetch the generated CSS content
+          try {
+            const cssResponse = await fetch(generateResult.css_url);
+            const cssContent = await cssResponse.text();
+            cssEditor.value = cssContent;
+          } catch (cssError) {
+            console.warn('Could not fetch CSS content:', cssError);
+            cssEditor.value = `/* Generated CSS from wireframe */\n/* CSS file available at: ${generateResult.css_url} */\nbody { background: #fff; }`;
+          }
+
+          // Update the preview
+          updateInspectorPreview();
+
+          // Save project to Firestore
+          const user = firebase.auth().currentUser;
+          if (user) {
+            const db = firebase.firestore();
+            await db.collection('users').doc(user.uid).collection('projects').add({
+              name: file.name.split('.')[0] || 'Generated Design',
+              description: `Wireframe converted to website with ${detectResult.elements.length} detected elements`,
+              modelUsed: 'Image2Web Wireframe Detector',
+              htmlUrl: generateResult.html_url,
+              cssUrl: generateResult.css_url,
+              detectedElements: detectResult.elements,
+              imageDimensions: detectResult.image_dimensions,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              websiteUrl: '#'
+            });
+            console.log("Project saved to Firestore!");
+          }
+
+          // Show download links
+          const downloadSection = document.createElement('div');
+          downloadSection.innerHTML = `
+            <div style="margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #0ea5e9;">
+              <h4 style="margin: 0 0 10px 0; color: #0ea5e9;">Generated Files</h4>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="${generateResult.html_url}" target="_blank" style="background: #0ea5e9; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-weight: 600;">📄 View HTML</a>
+                <a href="${generateResult.css_url}" target="_blank" style="background: #0ea5e9; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-weight: 600;">🎨 View CSS</a>
+              </div>
+              <p style="margin: 10px 0 0 0; font-size: 0.9em; color: #64748b;">
+                <strong>Detected elements:</strong> ${detectResult.elements.length} | 
+                <strong>Image:</strong> ${detectResult.image_dimensions.width} × ${detectResult.image_dimensions.height}px
+              </p>
+            </div>
+          `;
+          
+          // Insert after the status message
+          statusMessage.parentNode.insertBefore(downloadSection, statusMessage.nextSibling);
 
         } catch (error) {
-          console.error('Code generation failed:', error);
-          codeDisplay.innerHTML = `<p style="color: var(--danger-red);">Error generating code: ${error.message}</p>`;
-          codeDisplay.classList.remove('empty-state');
-          saveHtmlBtn.style.display = 'none';
-          statusMessage.textContent = `Generation failed: ${error.message}. Please try again.`;
+          console.error('Wireframe processing failed:', error);
+          statusMessage.textContent = `Error: ${error.message}. Please try again.`;
           statusMessage.style.color = '#f5576c';
         } finally {
           loadingSpinner.style.display = 'none';
+          generateCodeBtn.disabled = false;
         }
       });
 
