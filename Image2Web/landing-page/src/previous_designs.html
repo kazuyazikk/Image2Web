@@ -165,6 +165,22 @@
       font-size: 0.9rem;
       transition: filter 0.2s ease;
     }
+    button.project-link { border: none; cursor: pointer; }
+
+    /* Global primary pill button to match blue/white design */
+    .primary-btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: filter 0.2s ease;
+    }
+    .primary-btn:hover { filter: brightness(1.1); }
 
     .project-card .project-link:hover {
       filter: brightness(1.1);
@@ -302,6 +318,10 @@
     <main class="main-content-area">
       <section class="workspace-section-card projects-section">
         <h2>Your Generated Projects</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;">
+          <button id="refreshProjectsBtn" class="primary-btn">Refresh</button>
+          <button id="exportProjectsBtn" class="primary-btn">Export JSON</button>
+        </div>
         <div id="projectsList" class="projects-grid">
           <p style="color: var(--text-secondary);">No projects yet. Log in to view your designs or start a new conversion in the Workspace!</p>
         </div>
@@ -414,6 +434,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics-compat.js"></script>
   <script>
     const firebaseConfig = {
@@ -495,52 +516,88 @@
       }
 
       // Function to load existing projects for the logged-in user (from Firebase Firestore)
+      let currentProjects = [];
+
       async function loadPreviousDesigns(userId) {
         projectsList.innerHTML = '<p style="color: var(--text-secondary);">Loading your previous designs...</p>';
         try {
           const db = firebase.firestore();
-          // Ensure you have a 'projects' subcollection under each user's document
           const projectsRef = db.collection('users').doc(userId).collection('projects').orderBy('createdAt', 'desc');
           const snapshot = await projectsRef.get();
 
-          if (snapshot.empty) {
-            projectsList.innerHTML = '<p style="color: var(--text-secondary);">No projects yet. Start a new conversion in the Workspace!</p>';
-            return;
-          }
-
-          projectsList.innerHTML = ''; // Clear loading message
+          currentProjects = [];
           snapshot.forEach(doc => {
-            const project = doc.data();
-            addProjectCard(
-              project.name || `Design ${doc.id.substring(0, 5)}`, // Fallback name
-              project.createdAt ? new Date(project.createdAt.toDate()).toLocaleDateString() : 'N/A',
-              project.websiteUrl || '#' // Assuming you save a URL to the generated site
-            );
+            currentProjects.push({ id: doc.id, ...doc.data() });
           });
+
+          renderProjects();
         } catch (error) {
-          console.error("Error loading previous designs:", error);
+          console.error('Error loading previous designs:', error);
           projectsList.innerHTML = `<p style="color: var(--danger-red);">Error loading projects: ${error.message}</p>`;
         }
       }
 
-      // Function to dynamically add a project card
-      function addProjectCard(name, date, url) {
-        // Remove the "No projects yet" message if it exists
-        const noProjectsMessage = projectsList.querySelector('p');
-        if (noProjectsMessage && noProjectsMessage.textContent.includes('No projects yet')) {
-          noProjectsMessage.remove();
+      function renderProjects() {
+        if (currentProjects.length === 0) {
+          projectsList.innerHTML = '<p style="color: var(--text-secondary);">No projects yet. Start a new conversion in the Workspace!</p>';
+          return;
         }
 
-        const projectCard = document.createElement('div');
-        projectCard.classList.add('project-card');
-        projectCard.innerHTML = `
-          <h3>${name}</h3>
-          <p>Converted on: ${date}</p>
-          <p>Status: Completed</p>
-          <a href="${url}" class="project-link" target="_blank" rel="noopener noreferrer">View Website</a>
-        `;
-        projectsList.prepend(projectCard); // Add to the beginning of the list
+        const html = currentProjects.map(p => {
+          const created = p.createdAt ? new Date(p.createdAt.toDate()).toLocaleString() : 'N/A';
+          const thumb = p.originalImageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOTRBM0I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=';
+          const status = p.status || 'completed';
+          return `
+            <div class="project-card">
+              <div class="project-image"><img src="${thumb}" alt="${p.name}"/></div>
+              <h3>${p.name || 'Untitled'}</h3>
+              <p>Created: ${created}</p>
+              <p>Elements: ${p.elementCount || 0}</p>
+              <p>Status: <span class="status-badge ${status}">${status}</span></p>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <a class="project-link" href="${p.htmlUrl || '#'}" target="_blank">View HTML</a>
+                <a class="project-link" href="${p.cssUrl || '#'}" target="_blank">View CSS</a>
+                <button class="nav-btn" style="border-radius:16px;" onclick="openInWorkspace('${p.id}')">Open in Workspace</button>
+                <button class="nav-btn" style="border-radius:16px;background:#fee2e2;color:#991b1b;border-color:#fecaca" onclick="deleteProject('${p.id}')">Delete</button>
+              </div>
+            </div>`;
+        }).join('');
+        projectsList.innerHTML = html;
       }
+
+      window.openInWorkspace = function(projectId) {
+        const project = currentProjects.find(p => p.id === projectId);
+        if (!project) return;
+        try {
+          localStorage.setItem('image2web_project_to_load', JSON.stringify({ id: projectId }));
+          window.location.href = 'workspace.html';
+        } catch (e) {
+          console.error('Failed to stash project id for workspace:', e);
+          window.location.href = 'workspace.html';
+        }
+      }
+
+      window.deleteProject = async function(projectId) {
+        if (!confirm('Delete this project?')) return;
+        const user = firebase.auth().currentUser;
+        if (!user) return;
+        try {
+          const db = firebase.firestore();
+          await db.collection('users').doc(user.uid).collection('projects').doc(projectId).delete();
+          currentProjects = currentProjects.filter(p => p.id !== projectId);
+          renderProjects();
+        } catch (e) {
+          alert('Failed to delete: ' + e.message);
+        }
+      }
+
+      document.getElementById('refreshProjectsBtn').onclick = () => {
+        const user = firebase.auth().currentUser; if (user) loadPreviousDesigns(user.uid);
+      };
+      document.getElementById('exportProjectsBtn').onclick = () => {
+        const blob = new Blob([JSON.stringify(currentProjects, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'projects.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      };
 
       // Sidebar navigation active state for this page
       const sidebarNavItems = document.querySelectorAll('.sidebar-nav li');
