@@ -651,11 +651,31 @@
             };
             // Realtime Inspector Preview
             function updateInspectorPreview() {
-              const html = document.getElementById('workspace-html-editor').value;
-              const css = document.getElementById('workspace-css-editor').value;
-              const iframe = document.getElementById('inspector-preview');
-              const doc = `<!DOCTYPE html><html><head><style>${css}</style></head><body>${html}</body></html>`;
-              iframe.srcdoc = doc;
+              try {
+                const html = document.getElementById('workspace-html-editor').value;
+                const css = document.getElementById('workspace-css-editor').value;
+                const iframe = document.getElementById('inspector-preview');
+                
+                if (iframe) {
+                  const doc = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generated Website Preview</title>
+  <style>${css}</style>
+</head>
+<body>${html}</body>
+</html>`;
+                  
+                  iframe.srcdoc = doc;
+                  console.log('Live preview updated successfully');
+                } else {
+                  console.warn('Preview iframe not found');
+                }
+              } catch (error) {
+                console.error('Error updating preview:', error);
+              }
             }
             document.getElementById('workspace-html-editor').addEventListener('input', updateInspectorPreview);
             document.getElementById('workspace-css-editor').addEventListener('input', updateInspectorPreview);
@@ -998,33 +1018,115 @@
             throw new Error(generateResult.error || 'Generation failed');
           }
 
+          // Debug: Log what the API actually returned
+          console.log('API Response:', generateResult);
+          console.log('HTML content available:', !!generateResult.html_content);
+          console.log('CSS content available:', !!generateResult.css_content);
+          console.log('HTML URL:', generateResult.html_url);
+          console.log('CSS URL:', generateResult.css_url);
+
           // Success! Show results
           statusMessage.textContent = 'Website generated successfully! 🎉';
           statusMessage.style.color = '#10b981';
 
-          // Display the generated HTML in the workspace editor
+          // Display the generated HTML and CSS in the workspace editors
           const htmlEditor = document.getElementById('workspace-html-editor');
           const cssEditor = document.getElementById('workspace-css-editor');
           
-          // Fetch the generated HTML content
-          try {
-            const htmlResponse = await fetch(generateResult.html_url);
-            const htmlContent = await htmlResponse.text();
-            htmlEditor.value = htmlContent;
-          } catch (htmlError) {
-            console.warn('Could not fetch HTML content:', htmlError);
-            htmlEditor.value = `<!-- Generated HTML from wireframe -->\n<!-- HTML file available at: ${generateResult.html_url} -->\n<div>Website generated successfully!</div>`;
+          // Get the raw HTML and CSS content from the API response
+          // The API should return the actual content, not just URLs
+          let htmlContent = '';
+          let cssContent = '';
+          
+          // Try to get content from the API response if available
+          if (generateResult.html_content) {
+            htmlContent = generateResult.html_content;
+          } else if (generateResult.html_url) {
+            // Fallback: fetch from URL if content not provided directly
+            try {
+              const htmlResponse = await fetch(generateResult.html_url);
+              if (htmlResponse.ok) {
+                htmlContent = await htmlResponse.text();
+              }
+            } catch (htmlError) {
+              console.warn('Could not fetch HTML content:', htmlError);
+            }
           }
+          
+          if (generateResult.css_content) {
+            cssContent = generateResult.css_content;
+          } else if (generateResult.css_url) {
+            // Fallback: fetch from URL if content not provided directly
+            try {
+              const cssResponse = await fetch(generateResult.css_url);
+              if (cssResponse.ok) {
+                cssContent = await cssResponse.text();
+              }
+            } catch (cssError) {
+              console.warn('Could not fetch CSS content:', cssError);
+            }
+          }
+          
+          // Set default content if nothing was fetched
+          if (!htmlContent) {
+            htmlContent = `<!-- Generated HTML from wireframe -->
+<!-- HTML file available at: ${generateResult.html_url} -->
+<!-- Note: Raw HTML content not available from API. This is a fallback message. -->
+<!-- The actual generated HTML should appear here if the API is working correctly. -->
+<div style="padding: 20px; border: 2px dashed #ccc; text-align: center;">
+  <h3>HTML Generation Successful!</h3>
+  <p>Your wireframe has been converted to HTML.</p>
+  <p><strong>Detected Elements:</strong> ${detectResult.elements.length}</p>
+  <p><strong>HTML File:</strong> <a href="${generateResult.html_url}" target="_blank">View Generated HTML</a></p>
+  <p><em>Note: Raw HTML code should appear here. If you see this message, the API needs to be updated.</em></p>
+</div>`;
+          }
+          
+          if (!cssContent) {
+            cssContent = `/* Generated CSS from wireframe */
+/* CSS file available at: ${generateResult.css_url} */
+/* Note: Raw CSS content not available from API. This is a fallback message. */
+/* The actual generated CSS should appear here if the API is working correctly. */
 
-          // Fetch the generated CSS content
-          try {
-            const cssResponse = await fetch(generateResult.css_url);
-            const cssContent = await cssResponse.text();
-            cssEditor.value = cssContent;
-          } catch (cssError) {
-            console.warn('Could not fetch CSS content:', cssError);
-            cssEditor.value = `/* Generated CSS from wireframe */\n/* CSS file available at: ${generateResult.css_url} */\nbody { background: #fff; }`;
+body { 
+  background: #fff; 
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.fallback-message {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.fallback-message h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.fallback-message p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.fallback-message a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.fallback-message a:hover {
+  text-decoration: underline;
+}`;
           }
+          
+          // Populate the editors with the raw content
+          htmlEditor.value = htmlContent;
+          cssEditor.value = cssContent;
+          
+          console.log('HTML content populated:', htmlContent.length, 'characters');
+          console.log('CSS content populated:', cssContent.length, 'characters');
 
           // Update the preview
           updateInspectorPreview();
@@ -1033,18 +1135,32 @@
           const user = firebase.auth().currentUser;
           if (user) {
             const db = firebase.firestore();
-            await db.collection('users').doc(user.uid).collection('projects').add({
-              name: file.name.split('.')[0] || 'Generated Design',
-              description: `Wireframe converted to website with ${detectResult.elements.length} detected elements`,
-              modelUsed: 'Image2Web Wireframe Detector',
-              htmlUrl: generateResult.html_url,
-              cssUrl: generateResult.css_url,
-              detectedElements: detectResult.elements,
-              imageDimensions: detectResult.image_dimensions,
+            
+            // Only save essential, simple data to avoid Firestore issues
+            const projectData = {
+              name: String(file.name.split('.')[0] || 'Generated Design'),
+              description: String(`Wireframe converted to website with ${detectResult.elements.length} detected elements`),
+              modelUsed: String('Image2Web Wireframe Detector'),
+              htmlUrl: String(generateResult.html_url),
+              cssUrl: String(generateResult.css_url),
+              elementCount: Number(detectResult.elements.length),
+              imageDimensions: {
+                width: Number(detectResult.image_dimensions.width),
+                height: Number(detectResult.image_dimensions.height)
+              },
               createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-              websiteUrl: '#'
-            });
-            console.log("Project saved to Firestore!");
+              websiteUrl: String('#'),
+              note: 'Element details omitted due to Firestore data structure limitations'
+            };
+            
+            try {
+              await db.collection('users').doc(user.uid).collection('projects').add(projectData);
+              console.log("Project saved to Firestore successfully!");
+            } catch (firestoreError) {
+              console.error('Failed to save project to Firestore:', firestoreError);
+              // Don't crash the app - just log the error and continue
+              statusMessage.textContent = 'Code generated successfully! (Project save failed)';
+            }
           }
 
           // Show download links
@@ -1065,6 +1181,38 @@
           
           // Insert after the status message
           statusMessage.parentNode.insertBefore(downloadSection, statusMessage.nextSibling);
+
+          // Add visual feedback that the editors have been populated
+          htmlEditor.style.borderColor = '#10b981';
+          cssEditor.style.borderColor = '#10b981';
+          setTimeout(() => {
+            htmlEditor.style.borderColor = '';
+            cssEditor.style.borderColor = '';
+          }, 2000);
+
+          // Scroll to the code inspector section to show the generated code
+          const codeInspectorSection = document.querySelector('.code-inspector-section');
+          if (codeInspectorSection) {
+            codeInspectorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+
+          // Add a success message above the code inspector
+          const successMessage = document.createElement('div');
+          successMessage.innerHTML = `
+            <div style="margin-bottom: 20px; padding: 15px; background: #ecfdf5; border-radius: 8px; border-left: 4px solid #10b981;">
+              <h4 style="margin: 0 0 10px 0; color: #10b981;">✨ Code Generated Successfully!</h4>
+              <p style="margin: 0; color: #065f46;">
+                Your HTML and CSS code has been populated in the editors below. 
+                Edit the code to customize your website, and see live previews in real-time!
+              </p>
+            </div>
+          `;
+          
+          // Insert the success message above the code inspector
+          const codeInspectorTitle = document.querySelector('.code-inspector-section h2');
+          if (codeInspectorTitle) {
+            codeInspectorTitle.parentNode.insertBefore(successMessage, codeInspectorTitle.nextSibling);
+          }
 
         } catch (error) {
           console.error('Wireframe processing failed:', error);

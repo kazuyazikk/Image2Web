@@ -71,17 +71,38 @@ def generate():
             # Run your existing code generator
             elements = main.parse_elements(json_data)
             html_content = main.generate_html(elements)
-            main.duplicate_css_file()
-            main.generate_css_file(elements, "generated_files/duplicate_espresso.css")
+            
+            # Ensure the generated_files directory exists
+            os.makedirs("generated_files", exist_ok=True)
+            
+            # Create CSS file with fallback content if the espresso.css template is missing
+            css_content = ""
+            try:
+                main.duplicate_css_file()
+                main.generate_css_file(elements, "generated_files/duplicate_espresso.css")
+                
+                # Read the generated CSS to verify it has content
+                if os.path.exists("generated_files/duplicate_espresso.css"):
+                    with open("generated_files/duplicate_espresso.css", "r") as f:
+                        css_content = f.read()
+                    print(f"CSS file generated successfully with {len(css_content)} characters")
+                else:
+                    print("Warning: CSS file was not created")
+                    css_content = "/* Fallback CSS - template file not found */\nbody { background: #fff; }"
+            except Exception as e:
+                print(f"CSS generation error: {e}")
+                css_content = "/* Fallback CSS - generation failed */\nbody { background: #fff; }"
 
             # Save locally inside container
-            os.makedirs("generated_files", exist_ok=True)
             html_path = "generated_files/output.html"
             css_path = "generated_files/style.css"
 
             with open(html_path, "w") as f:
                 f.write(html_content)
-            os.rename("generated_files/duplicate_espresso.css", css_path)
+            
+            # Save CSS content directly instead of renaming
+            with open(css_path, "w") as f:
+                f.write(css_content)
 
             # Upload to Firebase Storage
             timestamp = int(time.time())
@@ -89,10 +110,38 @@ def generate():
             html_url = upload_to_storage(html_path, f"generated/{user_id}/{timestamp}/output.html")
             css_url = upload_to_storage(css_path, f"generated/{user_id}/{timestamp}/style.css")
 
+            # Update the HTML file to use the absolute CSS URL
+            with open(html_path, "r") as f:
+                html_content = f.read()
+            
+            # Replace the relative CSS link with the absolute URL
+            html_content = html_content.replace('href="style.css"', f'href="{css_url}"')
+            
+            with open(html_path, "w") as f:
+                f.write(html_content)
+
+            # Re-upload the updated HTML file with the correct CSS link
+            html_url = upload_to_storage(html_path, f"generated/{user_id}/{timestamp}/output.html")
+
+            # Read the final HTML and CSS content to return in the response
+            with open(html_path, "r") as f:
+                final_html_content = f.read()
+            
+            with open(css_path, "r") as f:
+                final_css_content = f.read()
+
+            # Debug: Print what we're about to return
+            print(f"API Response - HTML content length: {len(final_html_content)}")
+            print(f"API Response - CSS content length: {len(final_css_content)}")
+            print(f"API Response - HTML preview: {final_html_content[:200]}...")
+            print(f"API Response - CSS preview: {final_css_content[:200]}...")
+
             return jsonify({
                 "success": True,
                 "html_url": html_url,
                 "css_url": css_url,
+                "html_content": final_html_content,
+                "css_content": final_css_content,
                 "detected_elements": len(json_data),
                 "elements": json_data  # Include detected elements for debugging
             })

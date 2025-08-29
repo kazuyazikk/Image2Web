@@ -25,12 +25,12 @@ def generate_just_html (elements):
             tag = f'<div style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; border:1px solid black;">{el["label"]}</div>'
         html_elements.append(tag)
     html_content = f"""<!DOCTYPE html>
-<html lang="e">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generated UI</title>
-    <link rel="stylesheet" href="resources/espresso.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 {chr(10).join(html_elements)}
@@ -70,12 +70,12 @@ def generate_html (elements):
             tag = f'<div class="{class_name}">{el["label"]}</div>'
         html_elements.append(tag)
     html_content = f"""<!DOCTYPE html>
-<html lang="e">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generated UI</title>
-    <link rel="stylesheet" href="duplicate_espresso.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 {chr(10).join(html_elements)}
