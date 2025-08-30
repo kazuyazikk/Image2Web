@@ -1,0 +1,68 @@
+/* Espresso.css - Coffee-inspired UI Theme */
+:root {
+  --coffee-bg: #2d1e17;
+  --coffee-foam: #f3e9dc;
+  --coffee-brown: #6f4e37;
+  --coffee-cream: #c7b299;
+  --coffee-accent: #a47149;
+  --coffee-text: #f3e9dc;
+}
+body {
+  background: var(--coffee-bg);
+  color: var(--coffee-text);
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+.container, .card, .navbar {
+  background: var(--coffee-foam);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(47, 29, 23, 0.15);
+  color: var(--coffee-brown);
+}
+.navbar {
+  background: var(--coffee-brown);
+  color: var(--coffee-foam);
+  padding: 1em 2em;
+  font-weight: bold;
+}
+.navbar a {
+  color: var(--coffee-cream);
+  margin-right: 1.5em;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.navbar a:hover {
+  color: var(--coffee-accent);
+}
+.button, button {
+  background: var(--coffee-accent);
+  color: var(--coffee-foam);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.button:hover, button:hover {
+  background: var(--coffee-brown);
+}
+input, textarea, select {
+  background: var(--coffee-cream);
+  color: var(--coffee-brown);
+  border: 1px solid var(--coffee-accent);
+  border-radius: 4px;
+  padding: 0.5em;
+}
+.card {
+  padding: 1.5em;
+  margin: 1em 0;
+}
+h1, h2, h3, h4 {
+  color: var(--coffee-brown);
+}
+a {
+  color: var(--coffee-accent);
+}
+a:hover {
+  color: var(--coffee-brown);
+}
