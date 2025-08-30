@@ -277,12 +277,7 @@
       </div>
       <nav>
         <ul>
-          <li class="nav-item" data-page="home" onclick="window.location.href='index.html'">
-            <button class="nav-btn">Home</button>
-          </li>
-          <li class="nav-item" data-page="contributors" onclick="window.location.href='contributors.html'">
-            <button class="nav-btn">Contributors</button>
-          </li>
+
           <li class="nav-item" data-page="workspace" onclick="window.location.href='workspace.html'">
             <button class="nav-btn">Workspace</button>
           </li>
@@ -302,13 +297,13 @@
 
   <div class="main-wrapper">
     <aside class="sidebar">
-      <nav class="sidebar-nav">
-        <ul>
-          <li class="active" data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
-          <li data-page="workspace"><a href="workspace.html">Workspace</a></li>
-          <li data-page="contributors"><a href="contributors.html">Contributors</a></li>
-        </ul>
-      </nav>
+              <nav class="sidebar-nav">
+          <ul>
+            <li class="active" data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
+            <li data-page="workspace"><a href="workspace.html">Workspace</a></li>
+            <li data-page="tutorials"><a href="#">Tutorials/Guide</a></li>
+          </ul>
+        </nav>
       <div class="sidebar-user">
         <p>Username: <span id="sidebar-username">Guest</span></p>
         <button class="logout-btn" onclick="logout()">Logout</button>
@@ -410,7 +405,6 @@
         <a href="#" class="footer-link">Blog</a>
       </div>
       <div class="footer-section">
-        <a href="#" class="footer-link">Documentation</a>
         <a href="#" class="footer-link">Tutorials</a>
       </div>
       <div class="footer-section">
@@ -609,6 +603,14 @@
           item.classList.remove('active');
         }
       });
+    });
+  </script>
+  <script>
+    // Check authentication and redirect to workspace if logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof checkAuthAndRedirect === 'function') {
+        checkAuthAndRedirect();
+      }
     });
   </script>
   <button id="nav-toggle" aria-label="Open navigation" style="display:none;">

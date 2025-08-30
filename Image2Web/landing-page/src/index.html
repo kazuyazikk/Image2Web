@@ -60,13 +60,28 @@
       justify-content: center;
     }
     .login-content {
-      background: #fff;
+      background: #2c004f !important;
       margin: 5% auto;
       padding: 2em;
       border-radius: 8px;
       max-width: 400px;
       box-shadow: 0 2px 16px rgba(30,41,59,0.12);
       position: relative;
+      color: #f8fafc;
+    }
+    
+    .login-content input {
+      background: #1e1b4b !important;
+      color: #f8fafc !important;
+      border: 1px solid #334155 !important;
+    }
+    
+    .login-content label {
+      color: #f8fafc !important;
+    }
+    
+    .login-content h2 {
+      color: #f8fafc !important;
     }
   </style>
 </head>
@@ -90,9 +105,8 @@
       <nav>
         <ul id="nav-menu" class="nav-menu-layout">
           <li class="nav-item" data-page="home"><button class="nav-btn" onclick="window.location.href='index.html'">Home</button></li>
-          <li class="nav-item" data-page="contributors"><button class="nav-btn" onclick="window.location.href='contributors.html'">Contributors</button></li>
-          <li class="nav-item" data-page="workspace"><button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button></li>
-          <li class="nav-item"><button class="nav-btn" onclick="window.location.href='Editor.html'">HTML/CSS Editor</button></li>
+                  <li class="nav-item" data-page="workspace"><button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button></li>
+          
           <li class="nav-item" id="auth-links"><button class="nav-btn" onclick="openLogin()">Login</button></li>
           <li class="nav-item" id="user-links"><button class="nav-btn" onclick="logout()">Logout</button></li>
         </ul>
@@ -167,11 +181,13 @@
         <div style="text-align:center; margin-top:1em;">
           <button type="button" class="signup-link-btn" onclick="closeLogin(); openSignup();">Don't have an account? Sign up now!</button>
           <br />
-          <button type="button" class="forgot-link-btn" onclick="openForgotPassword()">Forgot password?</button>
+          <button type="button" class="forgot-link-btn" onclick="window.location.href='reset-password.html'">Forgot password?</button>
         </div>
       </form>
     </div>
   </div>
+
+
 
   <!-- ABOUT MODAL -->
   <div class="about-modal" id="aboutModal">
@@ -191,12 +207,13 @@
         <p>Image2Web helps you turn wireframes and images into real, responsive websites in seconds.</p>
       </div>
       <div class="footer-section">
-  <h3>Quick Links</h3>
-  <a href="index.html">Home</a>
-  <a href="#" onclick="openAbout(); return false;">About</a>
-  <a href="workspace.html">Workspace</a>
-  <a href="Editor.html">HTML/CSS Editor</a>
-  <a href="contributors.html">Contributors</a>
+        <h3 class="footer-title">Quick Links</h3>
+        <a href="#" class="footer-link" onclick="window.location.href='index.html'">Home</a>
+        <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
+        <a href="#" class="footer-link">Blog</a>
+      </div>
+      <div class="footer-section">
+        <a href="#" class="footer-link">Tutorials</a>
       </div>
       <div class="footer-section">
         <h3>Contact</h3>
@@ -235,5 +252,13 @@
     }
   </script>
   <script src="script.js" defer></script>
+  <script>
+    // Check authentication and redirect to workspace if logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof checkAuthAndRedirect === 'function') {
+        checkAuthAndRedirect();
+      }
+    });
+  </script>
 </body>
 </html>

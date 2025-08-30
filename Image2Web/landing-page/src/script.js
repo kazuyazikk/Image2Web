@@ -16,7 +16,31 @@ function closeSignup() {
 // Login
 function openLogin() {
   const el = document.getElementById('loginModal');
-  if (el) { el.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+  if (el) { 
+    el.style.display = 'flex'; 
+    document.body.style.overflow = 'hidden'; 
+    
+    // Force the violet theme by applying styles directly
+    const modalContent = el.querySelector('.login-content');
+    if (modalContent) {
+      modalContent.style.backgroundColor = '#2c004f';
+      modalContent.style.color = '#f8fafc';
+    }
+    
+    // Force input field styling
+    const inputs = el.querySelectorAll('input');
+    inputs.forEach(input => {
+      input.style.backgroundColor = '#1e1b4b';
+      input.style.color = '#f8fafc';
+      input.style.border = '1px solid #334155';
+    });
+    
+    // Force label styling
+    const labels = el.querySelectorAll('label');
+    labels.forEach(label => {
+      label.style.color = '#f8fafc';
+    });
+  }
 }
 function closeLogin() {
   const el = document.getElementById('loginModal');
@@ -34,29 +58,7 @@ function closeAbout() {
   if (el) el.style.display = 'none';
 }
 
-// Forgot Password
-function openForgotPassword() {
-  // Close login first (so we don't show two modals)
-  closeLogin();
-  const el = document.getElementById('forgotPasswordModal');
-  if (el) {
-    el.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    const input = document.getElementById('forgot-email');
-    if (input) input.focus();
-  } else {
-    alert('Forgot Password modal not found. Please add it to your HTML.');
-  }
-}
-function closeForgotPassword() {
-  const el = document.getElementById('forgotPasswordModal');
-  if (el) el.style.display = 'none';
-  document.body.style.overflow = 'auto';
-  const succ = document.getElementById('forgot-success');
-  const err = document.getElementById('forgot-error');
-  if (succ) succ.style.display = 'none';
-  if (err) err.style.display = 'none';
-}
+
 
 // Make callable from inline HTML onclick=""
 window.openSignup = openSignup;
@@ -65,8 +67,7 @@ window.openLogin = openLogin;
 window.closeLogin = closeLogin;
 window.openAbout = openAbout;
 window.closeAbout = closeAbout;
-window.openForgotPassword = openForgotPassword;
-window.closeForgotPassword = closeForgotPassword;
+
 
 // Close modals by clicking on the overlay only (not inside content)
 window.addEventListener('click', (e) => {
@@ -76,6 +77,22 @@ window.addEventListener('click', (e) => {
   if (e.target?.id === 'aboutModal') closeAbout();
 });
 
+// =================== AUTHENTICATION REDIRECT =================== //
+// Check if user is logged in and redirect to workspace if on any page except workspace
+function checkAuthAndRedirect() {
+  if (firebase && firebase.auth) {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // User is logged in, check if they're not already on workspace page
+        const currentPath = window.location.pathname;
+        if (!currentPath.includes('workspace.html')) {
+          // User is logged in but not on workspace, redirect to workspace
+          window.location.href = 'workspace.html';
+        }
+      }
+    });
+  }
+}
 
 // =================== NAVIGATION (optional SPA slots) =================== //
 function navigate(page) {

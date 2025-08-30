@@ -185,6 +185,22 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
 
+    // Authentication redirect function
+    function checkAuthAndRedirect() {
+      if (firebase && firebase.auth) {
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            // User is logged in, check if they're not already on workspace page
+            const currentPath = window.location.pathname;
+            if (!currentPath.includes('workspace.html')) {
+              // User is logged in but not on workspace, redirect to workspace
+              window.location.href = 'workspace.html';
+            }
+          }
+        });
+      }
+    }
+
     // Helper functions for modals (assuming they are in script.js or a global scope)
     function openLogin() {
       document.getElementById('loginModal').classList.add('active');
@@ -221,6 +237,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Check if user is logged in and redirect to workspace
+      checkAuthAndRedirect();
+      
       // User authentication check for header
       firebase.auth().onAuthStateChanged(user => {
         const authLinks = document.getElementById('auth-links');

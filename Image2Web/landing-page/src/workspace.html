@@ -431,12 +431,8 @@
       </div>
       <nav>
         <ul>
-          <li class="nav-item" data-page="home" onclick="window.location.href='index.html'">
-            <button class="nav-btn">Home</button>
-          </li>
-          <li class="nav-item" data-page="contributors" onclick="window.location.href='contributors.html'">
-            <button class="nav-btn">Contributors</button>
-          </li>
+
+
           <li class="nav-item active" data-page="workspace" onclick="window.location.href='workspace.html'">
             <button class="nav-btn">Workspace</button>
           </li>
@@ -461,7 +457,7 @@
           <ul>
             <li data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
             <li class="active" data-page="workspace"><a href="workspace.html">Workspace</a></li>
-            <li data-page="contributors"><a href="contributors.html">Contributors</a></li>
+            <li data-page="tutorials"><a href="#">Tutorials/Guide</a></li>
           </ul>
         </nav>
         <div class="sidebar-user">
@@ -477,7 +473,7 @@
 
 
           <div class="image-upload-area" id="dropArea">
-            <label for="imageUpload" class="upload-label">
+            <label for="imageUpload" class="upload-label" id="uploadLabel">
               <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path
                   d="M10 2a.75.75 0 01.75.75v6.5h6.5a.75.75 0 010 1.5h-6.5v6.5a.75.75 0 01-1.5 0v-6.5h-6.5a.75.75 0 010-1.5h6.5v-6.5A.75.75 0 0110 2z">
@@ -488,15 +484,15 @@
             <input type="file" id="imageUpload" accept="image/*" style="display: none;">
             <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
             <p id="fileName"></p>
+            <button id="removeImageBtn" class="download-code-btn" style="display: none; margin-top: 10px;">Remove Image</button>
           </div>
 
           <button id="generateCodeBtn" class="workspace-cta-btn" style="margin-top: 1rem;">Generate Code!</button>
           <p id="statusMessage"></p>
         </section>
 
-        <!-- Import/Export Controls -->
+        <!-- Export Controls -->
         <div class="import-export-controls" style="display: flex; gap: 16px; margin-bottom: 24px;">
-          <button id="importBtn" class="download-code-btn">Import from Firestore</button>
           <button id="exportBtn" class="download-code-btn">Export All as ZIP</button>
         </div>
         <!-- File Picker for Export -->
@@ -535,7 +531,17 @@
               if (doc.exists) {
                 const data = doc.data();
                 const ext = data.type === 'html' ? 'html' : 'css';
-                const name = data.filename ? data.filename : `${id}.${ext}`;
+                // Use proper filename or generate a meaningful one
+                let name;
+                if (data.filename && data.filename.trim() !== '') {
+                  name = data.filename;
+                } else if (data.timestamp) {
+                  const date = data.timestamp.toDate ? data.timestamp.toDate() : new Date();
+                  const timestamp = date.toISOString().slice(0, 19).replace(/:/g, '-');
+                  name = `generated_${timestamp}.${ext}`;
+                } else {
+                  name = `file_${id}.${ext}`;
+                }
                 zip.file(name, data.content);
               }
             }
@@ -548,51 +554,7 @@
             document.body.removeChild(a);
           };
         </script>
-        <script>
-          // Import from Firestore
-          document.getElementById('importBtn').onclick = function() {
-            const db = firebase.firestore();
-            db.collection('html_css_files').orderBy('timestamp', 'desc').get().then((querySnapshot) => {
-              let html = '';
-              let css = '';
-              querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                if (data.type === 'html') html = data.content;
-                if (data.type === 'css') css = data.content;
-              });
-              document.getElementById('workspace-html-editor').value = html;
-              document.getElementById('workspace-css-editor').value = css;
-              updateInspectorPreview();
-              alert('Imported latest HTML and CSS from Firestore!');
-            }).catch((error) => {
-              alert('Error importing from Firestore: ' + error.message);
-            });
-          };
-          // Export all HTML/CSS as ZIP
-          document.getElementById('exportBtn').onclick = async function() {
-            const db = firebase.firestore();
-            const querySnapshot = await db.collection('html_css_files').orderBy('timestamp', 'desc').get();
-            const files = [];
-            querySnapshot.forEach((doc, i) => {
-              const data = doc.data();
-              const ext = data.type === 'html' ? 'html' : 'css';
-              files.push({
-                name: `file_${i+1}.${ext}`,
-                content: data.content
-              });
-            });
-            // Create ZIP
-            const zip = new JSZip();
-            files.forEach(f => zip.file(f.name, f.content));
-            const blob = await zip.generateAsync({type: 'blob'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'exported_files.zip';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          };
-        </script>
+
         <!-- Make sure to include JSZip library -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
@@ -797,7 +759,6 @@
         <a href="#" class="footer-link">Blog</a>
       </div>
       <div class="footer-section">
-        <a href="#" class="footer-link">Documentation</a>
         <a href="#" class="footer-link">Tutorials</a>
       </div>
       <div class="footer-section">
@@ -892,6 +853,79 @@
       workspaceAuthorizedContent.style.display = 'none';
       accessDeniedMessage.style.display = 'none';
 
+      // Check if there's a project to load from previous designs
+      function checkForProjectToLoad() {
+        try {
+          const projectData = localStorage.getItem('image2web_project_to_load');
+          if (projectData) {
+            const project = JSON.parse(projectData);
+            console.log('Loading project from previous designs:', project);
+            
+            // Clear the localStorage
+            localStorage.removeItem('image2web_project_to_load');
+            
+            // Load the project data into the workspace
+            loadProjectIntoWorkspace(project.id);
+          }
+        } catch (error) {
+          console.error('Error loading project from localStorage:', error);
+          localStorage.removeItem('image2web_project_to_load');
+        }
+      }
+
+      // Function to load project data into workspace
+      async function loadProjectIntoWorkspace(projectId) {
+        try {
+          const user = firebase.auth().currentUser;
+          if (!user) return;
+
+          const db = firebase.firestore();
+          const projectDoc = await db.collection('users').doc(user.uid).collection('projects').doc(projectId).get();
+          
+          if (projectDoc.exists) {
+            const projectData = projectDoc.data();
+            console.log('Project data loaded:', projectData);
+            
+            // Update the workspace with project data
+            if (projectData.htmlUrl) {
+              try {
+                const htmlResponse = await fetch(projectData.htmlUrl);
+                if (htmlResponse.ok) {
+                  const htmlContent = await htmlResponse.text();
+                  document.getElementById('workspace-html-editor').value = htmlContent;
+                }
+              } catch (htmlError) {
+                console.warn('Could not fetch HTML content:', htmlError);
+              }
+            }
+            
+            if (projectData.cssUrl) {
+              try {
+                const cssResponse = await fetch(projectData.cssUrl);
+                if (cssResponse.ok) {
+                  const cssContent = await cssResponse.text();
+                  document.getElementById('workspace-css-editor').value = cssContent;
+                }
+              } catch (cssError) {
+                console.warn('Could not fetch CSS content:', cssError);
+              }
+            }
+            
+            // Update the preview
+            updateInspectorPreview();
+            
+            // Show success message
+            const statusMessage = document.getElementById('statusMessage');
+            if (statusMessage) {
+              statusMessage.textContent = `Project "${projectData.name || 'Untitled'}" loaded successfully! 🎉`;
+              statusMessage.style.color = '#10b981';
+            }
+          }
+        } catch (error) {
+          console.error('Error loading project into workspace:', error);
+        }
+      }
+
       // Firebase Authentication Check
       firebase.auth().onAuthStateChanged(user => {
         const authLinks = document.getElementById('auth-links');
@@ -911,6 +945,9 @@
           userGreeting.style.display = 'block';
           userNameSpan.textContent = user.displayName || user.email || 'User';
           sidebarUsernameSpan.textContent = user.displayName || user.email || 'User';
+
+          // Check if there's a project to load from previous designs
+          checkForProjectToLoad();
 
 
         } else {
@@ -974,13 +1011,33 @@
             imagePreview.style.display = 'block';
             fileNameDisplay.textContent = file.name;
             statusMessage.textContent = '';
+            
+            // Hide upload button and show remove button
+            document.getElementById('uploadLabel').style.display = 'none';
+            document.getElementById('removeImageBtn').style.display = 'inline-block';
           };
           reader.readAsDataURL(file);
         } else {
           imagePreview.src = '#';
           imagePreview.style.display = 'none';
           fileNameDisplay.textContent = '';
+          
+          // Show upload button and hide remove button
+          document.getElementById('uploadLabel').style.display = 'inline-flex';
+          document.getElementById('removeImageBtn').style.display = 'none';
         }
+      });
+
+      // Handle remove image button
+      document.getElementById('removeImageBtn').addEventListener('click', function() {
+        imageUpload.value = '';
+        imagePreview.src = '#';
+        imagePreview.style.display = 'none';
+        fileNameDisplay.textContent = '';
+        
+        // Show upload button and hide remove button
+        document.getElementById('uploadLabel').style.display = 'inline-flex';
+        document.getElementById('removeImageBtn').style.display = 'none';
       });
 
       // Handle Generate Code button click
