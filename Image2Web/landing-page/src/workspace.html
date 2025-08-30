@@ -487,7 +487,7 @@
             <button id="removeImageBtn" class="download-code-btn" style="display: none; margin-top: 10px;">Remove Image</button>
           </div>
 
-          <button id="generateCodeBtn" class="workspace-cta-btn" style="margin-top: 1rem;">Generate Code!</button>
+          <button id="generateCodeBtn" class="workspace-cta-btn">Generate Code!</button>
           <p id="statusMessage"></p>
         </section>
 
@@ -887,7 +887,10 @@
             console.log('Project data loaded:', projectData);
             
             // Update the workspace with project data
-            if (projectData.htmlUrl) {
+            // Prefer direct content if available, fallback to URLs
+            if (projectData.htmlContent) {
+              document.getElementById('workspace-html-editor').value = projectData.htmlContent;
+            } else if (projectData.htmlUrl) {
               try {
                 const htmlResponse = await fetch(projectData.htmlUrl);
                 if (htmlResponse.ok) {
@@ -898,8 +901,10 @@
                 console.warn('Could not fetch HTML content:', htmlError);
               }
             }
-            
-            if (projectData.cssUrl) {
+
+            if (projectData.cssContent) {
+              document.getElementById('workspace-css-editor').value = projectData.cssContent;
+            } else if (projectData.cssUrl) {
               try {
                 const cssResponse = await fetch(projectData.cssUrl);
                 if (cssResponse.ok) {
@@ -1222,6 +1227,8 @@ body {
               modelUsed: String('Image2Web Wireframe Detector'),
               htmlUrl: String(generateResult.html_url),
               cssUrl: String(generateResult.css_url),
+              htmlContent: htmlContent, // Store the actual HTML code
+              cssContent: cssContent,   // Store the actual CSS code
               elementCount: Number(detectResult.elements.length),
               imageDimensions: {
                 width: Number(detectResult.image_dimensions.width),

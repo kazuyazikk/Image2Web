@@ -1,3 +1,20 @@
+  <!-- Modal for Generated Code Preview -->
+  <div id="codeModal" class="modal" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100vw;height:100vh;overflow:auto;background:rgba(18,0,47,0.8);align-items:center;justify-content:center;">
+    <div class="modal-content" style="background:#f4faff;padding:32px 24px;border-radius:16px;max-width:800px;width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.25);margin:auto;position:relative;">
+      <button id="closeCodeModal" style="position:absolute;top:12px;right:18px;font-size:1.5em;background:none;border:none;cursor:pointer;color:#0ea5e9;">&times;</button>
+      <h2 style="color:#0ea5e9;margin-bottom:18px;">Generated Files</h2>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;justify-content:center;">
+        <div style="flex:1;min-width:260px;">
+          <h3 style="color:#38bdf8;">Code (HTML)</h3>
+          <textarea id="modalHtmlCode" readonly style="width:100%;height:180px;border-radius:8px;padding:12px;background:#181823;color:#fff;font-size:1em;border:1px solid #38bdf8;margin-bottom:16px;"></textarea>
+        </div>
+        <div style="flex:1;min-width:260px;">
+          <h3 style="color:#38bdf8;">Code (CSS)</h3>
+          <textarea id="modalCssCode" readonly style="width:100%;height:180px;border-radius:8px;padding:12px;background:#181823;color:#fff;font-size:1em;border:1px solid #38bdf8;margin-bottom:16px;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -551,8 +568,8 @@
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
                 <a class="project-link" href="${p.htmlUrl || '#'}" target="_blank">View HTML</a>
                 <a class="project-link" href="${p.cssUrl || '#'}" target="_blank">View CSS</a>
-                <button class="nav-btn" style="border-radius:16px;" onclick="openInWorkspace('${p.id}')">Open in Workspace</button>
-                <button class="nav-btn" style="border-radius:16px;background:#fee2e2;color:#991b1b;border-color:#fecaca" onclick="deleteProject('${p.id}')">Delete</button>
+                <button class="reset-btn primary-btn" onclick="openInWorkspace('${p.id}')">Open in Workspace</button>
+                <button class="reset-btn secondary-btn" style="color:#ef4444;border-color:#ef4444" onclick="deleteProject('${p.id}')">Delete</button>
               </div>
             </div>`;
         }).join('');
