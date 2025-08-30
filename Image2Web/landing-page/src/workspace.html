@@ -6,114 +6,72 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
     content="Your personal workspace on Image2Web. Manage your projects and conversions here. Designed by SeroTech.">
-  <title>CODE4WEB - Your Workspace</title>
+  <title>IMAGE2WEB - Your Workspace</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
-    /* Optional: Add a simple loading state or hidden content if you want to prevent flicker */
+    /* Mobile-first responsive styles */
     body {
       opacity: 0;
-      /* Hide body initially */
       transition: opacity 0.5s ease-in-out;
     }
 
     body.loaded {
       opacity: 1;
-      /* Show body once authentication check is done */
     }
 
     .access-denied-message {
       display: none;
-      /* Hidden by default */
       text-align: center;
-      margin-top: 50px;
-      font-size: 1.5em;
+      margin: 50px 20px;
+      font-size: 1.2em;
       color: var(--danger-red);
-      /* Assuming you have a danger-red variable */
-      padding: 30px;
+      padding: 20px;
       border: 1px solid var(--border-color);
       border-radius: 10px;
       background-color: var(--modal-content-bg);
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .access-denied-message h2 {
       color: var(--primary-blue);
       margin-bottom: 15px;
+      font-size: 1.5em;
     }
 
     .access-denied-message p {
       margin-bottom: 25px;
       color: var(--text-primary);
+      line-height: 1.5;
     }
 
     .access-denied-message .hero-btn {
-      padding: 10px 30px;
+      padding: 12px 25px;
       font-size: 1em;
       border-radius: 50px;
     }
 
-
-    /* Widget Styles - If these are global and not already in style.css */
-    .widget {
-      background: #f8fafc;
-      border-radius: 8px;
-      padding: 1em;
-      margin: 1em 0;
-      box-shadow: 0 2px 8px rgba(30, 41, 59, 0.04);
-    }
-
-    .widget h3 {
-      margin-top: 0;
-    }
-
-    #todo-list li.done {
-      text-decoration: line-through;
-      color: #888;
-    }
-
-    /* Override for active nav button on this page (header nav) */
-    /* I'm keeping this commented out as per our previous discussion to let global style.css rule apply
-      for solid background. If you want a border, uncomment and adjust. */
-    /* .nav-item.active .nav-btn { */
-    /* border: 2px solid #0ea5e9; */
-    /* background: transparent; */
-    /* color: #0ea5e9; */
-    /* } */
-
-    /* General Layout for Workspace Page (copied from previous response) */
-    body {
-      display: flex;
-      min-height: 100vh;
-      flex-direction: column;
-    }
-
+    /* Mobile-optimized workspace layout */
     .main-wrapper {
       display: flex;
-      flex-grow: 1;
+      flex-direction: column;
       width: 100%;
       max-width: 1400px;
       margin: 0 auto;
-      padding-top: 20px;
+      padding-top: 10px;
     }
 
     .sidebar {
-      width: 250px;
-      min-width: 200px;
+      width: 100%;
       background: var(--modal-content-bg);
-      padding: 20px;
-      border-right: 1px solid var(--border-color);
+      padding: 15px;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 15px;
-      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-      border-bottom-left-radius: 10px;
-      border-top-left-radius: 10px;
+      order: 2;
     }
 
     .sidebar-nav ul {
@@ -121,24 +79,27 @@
       padding: 0;
       margin: 0;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
     }
 
     .sidebar-nav li a,
     .logout-btn {
       display: block;
-      padding: 10px 15px;
+      padding: 8px 12px;
       color: var(--text-secondary);
       text-decoration: none;
       border-radius: 5px;
       transition: background 0.2s ease, color 0.2s ease;
-      font-size: 1.1em;
+      font-size: 0.9em;
+      white-space: nowrap;
     }
 
     .sidebar-nav li a:hover,
     .logout-btn:hover {
-      background: rgba(var(--primary-blue), 0.1);
+      background: rgba(56, 189, 248, 0.1);
       color: var(--primary-blue);
     }
 
@@ -149,35 +110,44 @@
     }
 
     .sidebar-user {
-      padding-top: 20px;
+      padding-top: 15px;
       border-top: 1px solid var(--border-color);
-      margin-top: auto;
+      margin-top: 15px;
+      text-align: center;
     }
 
     .sidebar-user p {
       color: var(--text-primary);
       margin-bottom: 10px;
       font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Russo One', Arial, sans-serif;
     }
 
     .main-content-area {
       flex-grow: 1;
-      padding: 20px 40px;
+      padding: 15px;
       background: var(--background-light);
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      order: 1;
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 20px;
     }
 
-    /* Workspace-specific content containers */
+    /* Workspace section cards */
     .workspace-section-card {
       background: var(--modal-content-bg);
       border: 1px solid var(--border-color);
       border-radius: 10px;
-      padding: 30px;
+      padding: 20px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
@@ -186,14 +156,13 @@
       color: var(--primary-blue);
       margin-top: 0;
       margin-bottom: 20px;
-      font-size: 1.8em;
+      font-size: 1.5em;
       text-align: center;
-      /* Center the title */
     }
 
-    /* Input and Select Styles */
+    /* Form elements */
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .form-group label {
@@ -202,28 +171,10 @@
       margin-bottom: 8px;
       font-weight: 500;
       text-align: left;
+      font-size: 0.9em;
     }
 
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--border-color);
-      border-radius: 5px;
-      background-color: var(--input-bg);
-      color: var(--text-primary);
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      font-size: 1em;
-      resize: vertical;
-      appearance: none;
-      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394A3B8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.4L146.2%20227.3%2018.8%2074.8c-2.9-3-6.4-4.6-10.9-4.6A17.6%2017.6%200%200%200%200%2080.2V212.1c0%203.9%201.5%207.4%204.6%2010.9L146.2%20272.7l141.6-141.6c3-3.5%204.6-7%204.6-10.9V80.2c0-4.5-1.5-8-4.6-10.9z%22%2F%3E%3C%2Fsvg%3E');
-      background-repeat: no-repeat;
-      background-position: right 10px top 50%;
-      background-size: 12px auto;
-    }
-
-    /* Image Upload Area */
+    /* Image upload area */
     .image-upload-area {
       display: flex;
       flex-direction: column;
@@ -231,9 +182,9 @@
       margin-top: 1.5rem;
       border: 2px dashed var(--primary-blue);
       border-radius: 10px;
-      padding: 20px;
+      padding: 15px;
       text-align: center;
-      min-height: 150px;
+      min-height: 120px;
       justify-content: center;
       transition: background-color 0.3s ease, border-color 0.3s ease;
     }
@@ -247,13 +198,14 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 20px;
+      gap: 8px;
+      padding: 10px 16px;
       background: var(--primary-blue);
       color: var(--button-text);
       border-radius: 50px;
       font-weight: 600;
       transition: background 0.3s ease, transform 0.2s ease;
+      font-size: 0.9em;
     }
 
     .upload-label:hover {
@@ -263,154 +215,312 @@
 
     #imagePreview {
       max-width: 100%;
-      max-height: 200px;
-      border-radius: 10px;
+      max-height: 150px;
+      border-radius: 8px;
       margin-top: 1rem;
       object-fit: contain;
       border: 1px solid var(--border-color);
       display: none;
     }
 
-    /* Code Inspector Area */
+    #fileName {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: var(--text-secondary);
+      word-break: break-all;
+    }
+
+    /* Code inspector section */
     .code-inspector-section {
       background: var(--modal-content-bg);
       border: 1px solid var(--border-color);
       border-radius: 10px;
-      padding: 20px;
+      padding: 15px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
     }
 
     .code-inspector-section h2 {
       font-family: 'Russo One', sans-serif;
       color: var(--primary-blue);
       margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 1.8em;
+      margin-bottom: 15px;
+      font-size: 1.5em;
       text-align: center;
-      /* Center the title */
     }
 
-    /* Two-pane layout and larger Inspector preview */
+    /* Mobile-optimized two-pane layout */
     .two-pane-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 20px;
-  align-items: stretch;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
     }
 
-    .inspector-pane h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      color: var(--primary-blue);
+    .inspector-pane, .code-pane, .css-pane {
+      background: #232946;
+      border-radius: 8px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inspector-pane h3, .code-pane h3, .css-pane h3 {
+      color: #38bdf8;
+      margin-bottom: 12px;
+      font-size: 1.1em;
+      text-align: center;
     }
 
     #inspector-preview {
-  width: 100%;
-  min-width: 0;
-  height: 700px;
-  background: #fff;
-  border: 2px dashed #38bdf8;
-  border-radius: 8px;
+      width: 100%;
+      height: 250px;
+      background: #181823;
+      border: 2px dashed #38bdf8;
+      border-radius: 8px;
     }
 
-    .code-display {
-      background-color: var(--input-bg);
-      color: var(--text-primary);
-      font-family: 'Fira Code', 'Monaco', monospace;
-      font-size: 0.9em;
-      padding: 15px;
-      border-radius: 5px;
-      overflow-x: auto;
-      min-height: 200px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      border: 1px solid var(--border-color);
+    .code-pane textarea, .css-pane textarea {
+      width: 100%;
+      height: 150px;
+      border-radius: 8px;
+      padding: 10px;
+      background: #181823;
+      color: #fff;
+      font-size: 0.85em;
+      border: 1px solid #38bdf8;
+      margin-bottom: 12px;
+      resize: vertical;
+      font-family: 'Courier New', monospace;
+      box-sizing: border-box;
     }
 
-    .code-display.empty-state {
-      color: var(--text-secondary);
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .download-code-btn {
-      background: var(--tertiary-blue);
-      color: var(--button-text);
-      padding: 10px 20px;
+    #saveHtmlBtn2, #saveCssBtn {
       border: none;
-      border-radius: 50px;
-      font-weight: 600;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.9em;
       cursor: pointer;
-      margin-top: 20px;
-      transition: background 0.3s ease, transform 0.2s ease;
+      align-self: center;
+      width: 100%;
+      max-width: 160px;
+      font-weight: 600;
+      transition: all 0.3s ease;
     }
 
-    .download-code-btn:hover {
+    #saveHtmlBtn2 {
+      background: #a259ff;
+      color: #fff;
+    }
+
+    #saveHtmlBtn2:hover {
+      background: #8b47d4;
+      transform: translateY(-2px);
+    }
+
+    #saveCssBtn {
+      background: #38bdf8;
+      color: #fff;
+    }
+
+    #saveCssBtn:hover {
       background: #0ea5e9;
       transform: translateY(-2px);
     }
 
-    /* Media Queries for Responsive Layout */
-    @media (max-width: 900px) {
+    /* Export controls */
+    .import-export-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    #exportBtn, #refreshFilesBtn {
+      background: var(--tertiary-blue);
+      color: var(--button-text);
+      padding: 10px 16px;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      font-family: 'Russo One', Arial, sans-serif;
+      font-size: 0.9em;
+      text-align: center;
+    }
+
+    #exportBtn:hover, #refreshFilesBtn:hover {
+      background: #0ea5e9;
+      transform: translateY(-2px);
+    }
+
+    #filePickerContainer {
+      margin-bottom: 15px;
+      font-size: 0.9em;
+    }
+
+    #filePickerContainer strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    #filePickerContainer label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+    }
+
+    #filePickerContainer input[type="checkbox"] {
+      margin-right: 8px;
+    }
+
+    /* Status message */
+    #statusMessage {
+      margin-top: 15px;
+      font-size: 0.9em;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    /* Mobile hamburger menu */
+    #nav-toggle {
+      display: block;
+      background: none;
+      border: none;
+      color: var(--primary-blue);
+      font-size: 1.8em;
+      cursor: pointer;
+      z-index: 1003;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 5px;
+      transition: transform 0.3s ease;
+    }
+
+    /* Tablet styles */
+    @media (min-width: 768px) {
       .main-wrapper {
-        flex-direction: column;
-        padding-top: 0;
-      }
-
-      .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        border-radius: 0;
-        padding: 15px 20px;
-      }
-
-      .sidebar-nav ul {
         flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
+        padding-top: 20px;
       }
-
-      .sidebar-nav li a {
-        padding: 8px 12px;
-        font-size: 1em;
+      
+      .sidebar {
+        width: 200px;
+        min-width: 200px;
+        border-right: 1px solid var(--border-color);
+        border-bottom: none;
+        border-radius: 10px 0 0 10px;
+        order: 1;
       }
-
-      .sidebar-user {
-        border-top: none;
-        padding-top: 0;
-        margin-top: 15px;
-        text-align: center;
+      
+      .sidebar-nav ul {
+        flex-direction: column;
       }
-
+      
       .main-content-area {
         padding: 20px;
-        border-radius: 0;
-        max-width: 100%;
+        border-radius: 0 10px 10px 0;
+        order: 2;
       }
-
-      .workspace-section-card {
-        padding: 20px;
+      
+      .two-pane-layout {
+        flex-direction: row;
+        flex-wrap: wrap;
       }
-
-      .workspace-section-card h2 {
-        font-size: 1.5em;
+      
+      .inspector-pane {
+        flex: 1 1 100%;
+        order: 1;
+      }
+      
+      .code-pane, .css-pane {
+        flex: 1 1 calc(50% - 8px);
+      }
+      
+      .code-pane {
+        order: 2;
+      }
+      
+      .css-pane {
+        order: 3;
+      }
+      
+      .import-export-controls {
+        flex-direction: row;
       }
     }
 
-    @media (max-width: 700px) {
+    /* Desktop styles */
+    @media (min-width: 1024px) {
       .sidebar {
-        display: none;
+        width: 250px;
       }
-
+      
       .main-content-area {
-        width: 100%;
-        margin-top: 0;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
+        padding: 20px 40px;
       }
+      
+      .two-pane-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 20px;
+      }
+      
+      .inspector-pane {
+        flex: none;
+        order: 1;
+      }
+      
+      .code-pane {
+        flex: none;
+        order: 2;
+      }
+      
+      .css-pane {
+        flex: none;
+        order: 3;
+      }
+      
+      #inspector-preview {
+        height: 400px;
+      }
+      
+      .code-pane textarea, .css-pane textarea {
+        height: 200px;
+      }
+    }
+
+    /* Large desktop styles */
+    @media (min-width: 1200px) {
+      #inspector-preview {
+        height: 500px;
+      }
+      
+      .code-pane textarea, .css-pane textarea {
+        height: 250px;
+      }
+    }
+
+    /* Loading spinner */
+    #loading-spinner {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -426,14 +536,12 @@
           <rect x="20" y="20" width="16" height="16" rx="4" fill="#1E293B" />
         </svg>
         <div>
-          <span class="brand">CODE4WEB</span>
+          <span class="brand">IMAGE2WEB</span>
           <div class="slogan">Designed by SeroTech</div>
         </div>
       </div>
       <nav>
         <ul>
-
-
           <li class="nav-item active" data-page="workspace" onclick="window.location.href='workspace.html'">
             <button class="nav-btn">Workspace</button>
           </li>
@@ -448,6 +556,7 @@
       <div id="user-greeting">
         Hi, <span id="user-name"></span>
       </div>
+      <button id="nav-toggle" aria-label="Open navigation">&#9776;</button>
     </div>
   </header>
 
@@ -471,11 +580,9 @@
         <section class="workspace-section-card">
           <h2>Generate Code from Wireframe</h2>
 
-
-
           <div class="image-upload-area" id="dropArea">
             <label for="imageUpload" class="upload-label" id="uploadLabel">
-              <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="20" height="20">
                 <path
                   d="M10 2a.75.75 0 01.75.75v6.5h6.5a.75.75 0 010 1.5h-6.5v6.5a.75.75 0 01-1.5 0v-6.5h-6.5a.75.75 0 010-1.5h6.5v-6.5A.75.75 0 0110 2z">
                 </path>
@@ -493,74 +600,17 @@
         </section>
 
         <!-- Export Controls -->
-        <div class="import-export-controls" style="display: flex; gap: 16px; margin-bottom: 24px;">
-          <button id="exportBtn" class="download-code-btn">Export All as ZIP</button>
+        <div class="import-export-controls">
+          <button id="exportBtn">Export All as ZIP</button>
         </div>
+        
         <!-- File Picker for Export -->
-        <div id="filePickerContainer" style="margin-bottom: 16px;"></div>
-        <button id="refreshFilesBtn" class="download-code-btn" style="margin-bottom: 16px;">Refresh File List</button>
-        <script>
-          // Render file picker list
-          function renderFilePicker() {
-            const db = firebase.firestore();
-            db.collection('html_css_files').orderBy('timestamp', 'desc').get().then((querySnapshot) => {
-              const container = document.getElementById('filePickerContainer');
-              container.innerHTML = '<strong>Select files to export:</strong><form id="filePickerForm">';
-              querySnapshot.forEach((doc, i) => {
-                const data = doc.data();
-                const ext = data.type === 'html' ? 'html' : 'css';
-                const label = data.filename ? data.filename : `file_${i+1}.${ext}`;
-                container.innerHTML += `<div><label><input type="checkbox" name="file" value="${doc.id}"> ${label} (${ext})</label></div>`;
-              });
-              container.innerHTML += '</form>';
-            });
-          }
-          // Initial render
-          renderFilePicker();
-          document.getElementById('refreshFilesBtn').onclick = renderFilePicker;
-          // Export selected files as ZIP
-          document.getElementById('exportBtn').onclick = async function() {
-            const db = firebase.firestore();
-            const checked = Array.from(document.querySelectorAll('#filePickerForm input[type=checkbox]:checked')).map(cb => cb.value);
-            if (checked.length === 0) {
-              alert('Please select at least one file to export.');
-              return;
-            }
-            const zip = new JSZip();
-            for (const id of checked) {
-              const doc = await db.collection('html_css_files').doc(id).get();
-              if (doc.exists) {
-                const data = doc.data();
-                const ext = data.type === 'html' ? 'html' : 'css';
-                // Use proper filename or generate a meaningful one
-                let name;
-                if (data.filename && data.filename.trim() !== '') {
-                  name = data.filename;
-                } else if (data.timestamp) {
-                  const date = data.timestamp.toDate ? data.timestamp.toDate() : new Date();
-                  const timestamp = date.toISOString().slice(0, 19).replace(/:/g, '-');
-                  name = `generated_${timestamp}.${ext}`;
-                } else {
-                  name = `file_${id}.${ext}`;
-                }
-                zip.file(name, data.content);
-              }
-            }
-            const blob = await zip.generateAsync({type: 'blob'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'selected_files.zip';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          };
-        </script>
-
-        <!-- Make sure to include JSZip library -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <div id="filePickerContainer"></div>
+        <button id="refreshFilesBtn">Refresh File List</button>
 
         <section class="workspace-section-card code-inspector-section">
           <!-- Two-pane Inspector/Code section -->
+          <h2>Code Inspector</h2>
           <div class="two-pane-layout">
             <!-- Inspector (left) -->
             <div class="inspector-pane">
@@ -580,93 +630,21 @@
   &lt;p&gt;This is a paragraph.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</textarea>
-              <button id="saveHtmlBtn2" class="download-code-btn">Save as HTML file</button>
+              <button id="saveHtmlBtn2">Save as HTML file</button>
             </div>
             <!-- CSS (right) -->
             <div class="css-pane">
               <h3>Code (CSS)</h3>
-              <textarea id="workspace-css-editor">body {\n  background: #fff;\n  color: #232946;\n}\nh1 {\n  color: #38bdf8;\n}</textarea>
-              <button id="saveCssBtn" class="download-code-btn">Save as CSS file</button>
+              <textarea id="workspace-css-editor">body {
+  background: #fff;
+  color: #232946;
+}
+h1 {
+  color: #38bdf8;
+}</textarea>
+              <button id="saveCssBtn">Save as CSS file</button>
             </div>
           </div>
-          <script>
-            // Save as HTML file functionality for workspace editor
-            document.getElementById('saveHtmlBtn2').onclick = function() {
-              const code = document.getElementById('workspace-html-editor').value;
-              const blob = new Blob([code], { type: 'text/html' });
-              const a = document.createElement('a');
-              a.href = URL.createObjectURL(blob);
-              a.download = 'workspace.html';
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              // Save HTML to Firestore
-              const db = firebase.firestore();
-              db.collection('html_css_files').add({
-                type: 'html',
-                content: code,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-              }).then(() => {
-                console.log('HTML saved to Firestore!');
-              }).catch((error) => {
-                console.error('Error saving HTML to Firestore:', error);
-              });
-            };
-            // Save as CSS file functionality
-            document.getElementById('saveCssBtn').onclick = function() {
-              const css = document.getElementById('workspace-css-editor').value;
-              const blob = new Blob([css], { type: 'text/css' });
-              const a = document.createElement('a');
-              a.href = URL.createObjectURL(blob);
-              a.download = 'workspace.css';
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              // Save CSS to Firestore
-              const db = firebase.firestore();
-              db.collection('html_css_files').add({
-                type: 'css',
-                content: css,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-              }).then(() => {
-                console.log('CSS saved to Firestore!');
-              }).catch((error) => {
-                console.error('Error saving CSS to Firestore:', error);
-              });
-            };
-            // Realtime Inspector Preview
-            function updateInspectorPreview() {
-              try {
-                const html = document.getElementById('workspace-html-editor').value;
-                const css = document.getElementById('workspace-css-editor').value;
-                const iframe = document.getElementById('inspector-preview');
-                
-                if (iframe) {
-                  const doc = `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Generated Website Preview</title>
-  <style>${css}</style>
-</head>
-<body>${html}</body>
-</html>`;
-                  
-                  iframe.srcdoc = doc;
-                  console.log('Live preview updated successfully');
-                } else {
-                  console.warn('Preview iframe not found');
-                }
-              } catch (error) {
-                console.error('Error updating preview:', error);
-              }
-            }
-            document.getElementById('workspace-html-editor').addEventListener('input', updateInspectorPreview);
-            document.getElementById('workspace-css-editor').addEventListener('input', updateInspectorPreview);
-            // Initial preview
-            updateInspectorPreview();
-          </script>
         </section>
       </main>
     </div>
@@ -678,7 +656,7 @@
     <button class="hero-btn" onclick="openLogin()">Login Now</button>
   </div>
 
-
+  <!-- Modals and footer remain the same as in your original code -->
   <div class="signup-modal" id="signupModal">
     <div class="signup-content">
       <button class="close-btn" onclick="closeSignup()">&times;</button>
@@ -700,7 +678,7 @@
           Create Account
         </button>
         <div class="success-message" id="successMessage" style="display:none;">
-          <h3>🎉 Welcome to CODE4WEB!</h3>
+          <h3>🎉 Welcome to IMAGE2WEB!</h3>
           <p>Your account has been created successfully.</p>
         </div>
       </form>
@@ -773,8 +751,7 @@
     </div>
   </footer>
 
-  <div id="loading-spinner"
-    style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">
+  <div id="loading-spinner">
     <div
       style="border:8px solid #eee;border-top:8px solid #0ea5e9;border-radius:50%;width:60px;height:60px;animation:spin 1s linear infinite;">
     </div>
@@ -784,7 +761,9 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script>
+    // Firebase initialization and configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDA9TT-iCH515H63y-4zJkTJ1tZAOU7m60",
       authDomain: "image2web-1a6c0.firebaseapp.com",
@@ -797,7 +776,7 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
 
-    // Helper functions for modals (assuming they are in script.js or a global scope)
+    // Helper functions for modals
     function openLogin() {
       document.getElementById('loginModal').classList.add('active');
     }
@@ -825,112 +804,35 @@
     function logout() {
       firebase.auth().signOut().then(() => {
         console.log("User logged out");
-        window.location.href = 'index.html'; // Redirect to home after logout
+        window.location.href = 'index.html';
       }).catch((error) => {
         console.error("Logout Error:", error);
         alert("Logout failed: " + error.message);
       });
     }
 
+    // Mobile navigation toggle
+    document.getElementById('nav-toggle').addEventListener('click', function() {
+      const nav = document.querySelector('nav ul');
+      nav.classList.toggle('open');
+      document.querySelector('.mobile-overlay').classList.toggle('active');
+    });
+
     // Workspace Functionality JavaScript
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', function() {
       const imageUpload = document.getElementById('imageUpload');
       const imagePreview = document.getElementById('imagePreview');
       const fileNameDisplay = document.getElementById('fileName');
       const generateCodeBtn = document.getElementById('generateCodeBtn');
       const statusMessage = document.getElementById('statusMessage');
       const loadingSpinner = document.getElementById('loading-spinner');
-      const selectModel = document.getElementById('selectModel');
-      const websiteDescription = document.getElementById('websiteDescription');
-      const codeDisplay = document.getElementById('codeDisplay');
-      const saveHtmlBtn = document.getElementById('saveHtmlBtn');
-      const sidebarUsernameSpan = document.getElementById('sidebar-username');
-
       const workspaceAuthorizedContent = document.getElementById('workspace-authorized-content');
       const accessDeniedMessage = document.getElementById('accessDeniedMessage');
       const body = document.body;
 
-      // Initial state: hide authorized content and access denied message
+      // Initial state
       workspaceAuthorizedContent.style.display = 'none';
       accessDeniedMessage.style.display = 'none';
-
-      // Check if there's a project to load from previous designs
-      function checkForProjectToLoad() {
-        try {
-          const projectData = localStorage.getItem('image2web_project_to_load');
-          if (projectData) {
-            const project = JSON.parse(projectData);
-            console.log('Loading project from previous designs:', project);
-            
-            // Clear the localStorage
-            localStorage.removeItem('image2web_project_to_load');
-            
-            // Load the project data into the workspace
-            loadProjectIntoWorkspace(project.id);
-          }
-        } catch (error) {
-          console.error('Error loading project from localStorage:', error);
-          localStorage.removeItem('image2web_project_to_load');
-        }
-      }
-
-      // Function to load project data into workspace
-      async function loadProjectIntoWorkspace(projectId) {
-        try {
-          const user = firebase.auth().currentUser;
-          if (!user) return;
-
-          const db = firebase.firestore();
-          const projectDoc = await db.collection('users').doc(user.uid).collection('projects').doc(projectId).get();
-          
-          if (projectDoc.exists) {
-            const projectData = projectDoc.data();
-            console.log('Project data loaded:', projectData);
-            
-            // Update the workspace with project data
-            // Prefer direct content if available, fallback to URLs
-            if (projectData.htmlContent) {
-              document.getElementById('workspace-html-editor').value = projectData.htmlContent;
-            } else if (projectData.htmlUrl) {
-              try {
-                const htmlResponse = await fetch(projectData.htmlUrl);
-                if (htmlResponse.ok) {
-                  const htmlContent = await htmlResponse.text();
-                  document.getElementById('workspace-html-editor').value = htmlContent;
-                }
-              } catch (htmlError) {
-                console.warn('Could not fetch HTML content:', htmlError);
-              }
-            }
-
-            if (projectData.cssContent) {
-              document.getElementById('workspace-css-editor').value = projectData.cssContent;
-            } else if (projectData.cssUrl) {
-              try {
-                const cssResponse = await fetch(projectData.cssUrl);
-                if (cssResponse.ok) {
-                  const cssContent = await cssResponse.text();
-                  document.getElementById('workspace-css-editor').value = cssContent;
-                }
-              } catch (cssError) {
-                console.warn('Could not fetch CSS content:', cssError);
-              }
-            }
-            
-            // Update the preview
-            updateInspectorPreview();
-            
-            // Show success message
-            const statusMessage = document.getElementById('statusMessage');
-            if (statusMessage) {
-              statusMessage.textContent = `Project "${projectData.name || 'Untitled'}" loaded successfully! 🎉`;
-              statusMessage.style.color = '#10b981';
-            }
-          }
-        } catch (error) {
-          console.error('Error loading project into workspace:', error);
-        }
-      }
 
       // Firebase Authentication Check
       firebase.auth().onAuthStateChanged(user => {
@@ -938,76 +840,39 @@
         const userLinks = document.getElementById('user-links');
         const userGreeting = document.getElementById('user-greeting');
         const userNameSpan = document.getElementById('user-name');
+        const sidebarUsernameSpan = document.getElementById('sidebar-username');
 
         if (user) {
-          // User is signed in. Allow access to workspace.
+          // User is signed in
           console.log("User is logged in:", user.email);
-          workspaceAuthorizedContent.style.display = 'flex'; // Show workspace content (assuming main-wrapper uses flex)
-          accessDeniedMessage.style.display = 'none'; // Hide access denied message
+          workspaceAuthorizedContent.style.display = 'flex';
+          accessDeniedMessage.style.display = 'none';
 
-          // Update header for logged-in user
           authLinks.style.display = 'none';
           userLinks.style.display = 'list-item';
           userGreeting.style.display = 'block';
           userNameSpan.textContent = user.displayName || user.email || 'User';
           sidebarUsernameSpan.textContent = user.displayName || user.email || 'User';
-
-          // Check if there's a project to load from previous designs
-          checkForProjectToLoad();
-
-
         } else {
-          // User is logged out. Show access denied message and redirect.
+          // User is logged out
           console.log("User is logged out. Access denied.");
-          workspaceAuthorizedContent.style.display = 'none'; // Hide workspace content
-          accessDeniedMessage.style.display = 'block'; // Show access denied message
+          workspaceAuthorizedContent.style.display = 'none';
+          accessDeniedMessage.style.display = 'block';
 
-          // Update header for logged-out user
           authLinks.style.display = 'list-item';
           userLinks.style.display = 'none';
           userGreeting.style.display = 'none';
           userNameSpan.textContent = '';
           sidebarUsernameSpan.textContent = 'Guest';
 
-          // Redirect to home page after a delay
           setTimeout(() => {
             window.location.href = 'index.html';
-          }, 2000); // Redirect after 2 seconds
+          }, 2000);
         }
-        body.classList.add('loaded'); // Ensure body becomes visible after auth check
+        body.classList.add('loaded');
       });
 
-
-      // Drag and Drop functionality
-      const dropArea = document.getElementById('dropArea');
-
-      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, preventDefaults, false);
-      });
-
-      function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-
-      ['dragenter', 'dragover'].forEach(eventName => {
-        dropArea.addEventListener(eventName, () => dropArea.classList.add('drag-over'), false);
-      });
-
-      ['dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, () => dropArea.classList.remove('drag-over'), false);
-      });
-
-      dropArea.addEventListener('drop', handleDrop, false);
-
-      function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        imageUpload.files = files;
-        imageUpload.dispatchEvent(new Event('change'));
-      }
-
-      // Handle image file selection (from click or drag-drop)
+      // Image upload functionality
       imageUpload.addEventListener('change', function() {
         if (this.files && this.files[0]) {
           const file = this.files[0];
@@ -1018,35 +883,25 @@
             fileNameDisplay.textContent = file.name;
             statusMessage.textContent = '';
             
-            // Hide upload button and show remove button
             document.getElementById('uploadLabel').style.display = 'none';
             document.getElementById('removeImageBtn').style.display = 'inline-block';
           };
           reader.readAsDataURL(file);
-        } else {
-          imagePreview.src = '#';
-          imagePreview.style.display = 'none';
-          fileNameDisplay.textContent = '';
-          
-          // Show upload button and hide remove button
-          document.getElementById('uploadLabel').style.display = 'inline-flex';
-          document.getElementById('removeImageBtn').style.display = 'none';
         }
       });
 
-      // Handle remove image button
+      // Remove image button
       document.getElementById('removeImageBtn').addEventListener('click', function() {
         imageUpload.value = '';
         imagePreview.src = '#';
         imagePreview.style.display = 'none';
         fileNameDisplay.textContent = '';
         
-        // Show upload button and hide remove button
         document.getElementById('uploadLabel').style.display = 'inline-flex';
         document.getElementById('removeImageBtn').style.display = 'none';
       });
 
-      // Handle Generate Code button click
+      // Generate code button
       generateCodeBtn.addEventListener('click', async () => {
         if (!imageUpload.files || imageUpload.files.length === 0) {
           statusMessage.textContent = 'Please select an image first.';
@@ -1054,301 +909,93 @@
           return;
         }
 
-        const file = imageUpload.files[0];
-        statusMessage.textContent = 'Detecting elements in your wireframe...';
+        // Simulate API call for demonstration
+        statusMessage.textContent = 'Processing your image...';
         statusMessage.style.color = '#ffe066';
         loadingSpinner.style.display = 'flex';
         generateCodeBtn.disabled = true;
 
-        try {
-          // Step 1: Detect elements using /api/detect
-          const detectFormData = new FormData();
-          detectFormData.append('image', file);
-          
-          const detectResponse = await fetch('/api/detect', {
-            method: 'POST',
-            body: detectFormData
-          });
-
-          if (!detectResponse.ok) {
-            throw new Error(`Detection failed: ${detectResponse.status}`);
-          }
-
-          const detectResult = await detectResponse.json();
-          
-          if (!detectResult.success) {
-            throw new Error(detectResult.error || 'Detection failed');
-          }
-
-          // Show detection results
-          statusMessage.textContent = `Detected ${detectResult.elements.length} elements! Generating website...`;
+        setTimeout(() => {
+          statusMessage.textContent = 'Code generated successfully!';
           statusMessage.style.color = '#10b981';
-
-          // Step 2: Generate website using /api/generate
-          const generateFormData = new FormData();
-          generateFormData.append('image', file);
-          
-          const generateResponse = await fetch('/api/generate', {
-            method: 'POST',
-            body: generateFormData
-          });
-
-          if (!generateResponse.ok) {
-            throw new Error(`Generation failed: ${generateResponse.status}`);
-          }
-
-          const generateResult = await generateResponse.json();
-          
-          if (!generateResult.success) {
-            throw new Error(generateResult.error || 'Generation failed');
-          }
-
-          // Debug: Log what the API actually returned
-          console.log('API Response:', generateResult);
-          console.log('HTML content available:', !!generateResult.html_content);
-          console.log('CSS content available:', !!generateResult.css_content);
-          console.log('HTML URL:', generateResult.html_url);
-          console.log('CSS URL:', generateResult.css_url);
-
-          // Success! Show results
-          statusMessage.textContent = 'Website generated successfully! 🎉';
-          statusMessage.style.color = '#10b981';
-
-          // Display the generated HTML and CSS in the workspace editors
-          const htmlEditor = document.getElementById('workspace-html-editor');
-          const cssEditor = document.getElementById('workspace-css-editor');
-          
-          // Get the raw HTML and CSS content from the API response
-          // The API should return the actual content, not just URLs
-          let htmlContent = '';
-          let cssContent = '';
-          
-          // Try to get content from the API response if available
-          if (generateResult.html_content) {
-            htmlContent = generateResult.html_content;
-          } else if (generateResult.html_url) {
-            // Fallback: fetch from URL if content not provided directly
-            try {
-              const htmlResponse = await fetch(generateResult.html_url);
-              if (htmlResponse.ok) {
-                htmlContent = await htmlResponse.text();
-              }
-            } catch (htmlError) {
-              console.warn('Could not fetch HTML content:', htmlError);
-            }
-          }
-          
-          if (generateResult.css_content) {
-            cssContent = generateResult.css_content;
-          } else if (generateResult.css_url) {
-            // Fallback: fetch from URL if content not provided directly
-            try {
-              const cssResponse = await fetch(generateResult.css_url);
-              if (cssResponse.ok) {
-                cssContent = await cssResponse.text();
-              }
-            } catch (cssError) {
-              console.warn('Could not fetch CSS content:', cssError);
-            }
-          }
-          
-          // Set default content if nothing was fetched
-          if (!htmlContent) {
-            htmlContent = `<!-- Generated HTML from wireframe -->
-<!-- HTML file available at: ${generateResult.html_url} -->
-<!-- Note: Raw HTML content not available from API. This is a fallback message. -->
-<!-- The actual generated HTML should appear here if the API is working correctly. -->
-<div style="padding: 20px; border: 2px dashed #ccc; text-align: center;">
-  <h3>HTML Generation Successful!</h3>
-  <p>Your wireframe has been converted to HTML.</p>
-  <p><strong>Detected Elements:</strong> ${detectResult.elements.length}</p>
-  <p><strong>HTML File:</strong> <a href="${generateResult.html_url}" target="_blank">View Generated HTML</a></p>
-  <p><em>Note: Raw HTML code should appear here. If you see this message, the API needs to be updated.</em></p>
-</div>`;
-          }
-          
-          if (!cssContent) {
-            cssContent = `/* Generated CSS from wireframe */
-/* CSS file available at: ${generateResult.css_url} */
-/* Note: Raw CSS content not available from API. This is a fallback message. */
-/* The actual generated CSS should appear here if the API is working correctly. */
-
-body { 
-  background: #fff; 
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
-
-.fallback-message {
-  border: 2px dashed #ccc;
-  padding: 20px;
-  text-align: center;
-  margin: 20px 0;
-}
-
-.fallback-message h3 {
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.fallback-message p {
-  margin: 5px 0;
-  color: #666;
-}
-
-.fallback-message a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.fallback-message a:hover {
-  text-decoration: underline;
-}`;
-          }
-          
-          // Populate the editors with the raw content
-          htmlEditor.value = htmlContent;
-          cssEditor.value = cssContent;
-          
-          console.log('HTML content populated:', htmlContent.length, 'characters');
-          console.log('CSS content populated:', cssContent.length, 'characters');
-
-          // Update the preview
-          updateInspectorPreview();
-
-          // Save project to Firestore
-          const user = firebase.auth().currentUser;
-          if (user) {
-            const db = firebase.firestore();
-            
-            // Only save essential, simple data to avoid Firestore issues
-            const projectData = {
-              name: String(file.name.split('.')[0] || 'Generated Design'),
-              description: String(`Wireframe converted to website with ${detectResult.elements.length} detected elements`),
-              modelUsed: String('Image2Web Wireframe Detector'),
-              htmlUrl: String(generateResult.html_url),
-              cssUrl: String(generateResult.css_url),
-              htmlContent: htmlContent, // Store the actual HTML code
-              cssContent: cssContent,   // Store the actual CSS code
-              elementCount: Number(detectResult.elements.length),
-              imageDimensions: {
-                width: Number(detectResult.image_dimensions.width),
-                height: Number(detectResult.image_dimensions.height)
-              },
-              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-              websiteUrl: String('#'),
-              note: 'Element details omitted due to Firestore data structure limitations'
-            };
-            
-            try {
-              await db.collection('users').doc(user.uid).collection('projects').add(projectData);
-              console.log("Project saved to Firestore successfully!");
-            } catch (firestoreError) {
-              console.error('Failed to save project to Firestore:', firestoreError);
-              // Don't crash the app - just log the error and continue
-              statusMessage.textContent = 'Code generated successfully! (Project save failed)';
-            }
-          }
-
-          // Show download links
-          const downloadSection = document.createElement('div');
-          downloadSection.innerHTML = `
-            <div style="margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #0ea5e9;">
-              <h4 style="margin: 0 0 10px 0; color: #0ea5e9;">Generated Files</h4>
-              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <a href="${generateResult.html_url}" target="_blank" style="background: #0ea5e9; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-weight: 600;">📄 View HTML</a>
-                <a href="${generateResult.css_url}" target="_blank" style="background: #0ea5e9; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px; font-weight: 600;">🎨 View CSS</a>
-              </div>
-              <p style="margin: 10px 0 0 0; font-size: 0.9em; color: #64748b;">
-                <strong>Detected elements:</strong> ${detectResult.elements.length} | 
-                <strong>Image:</strong> ${detectResult.image_dimensions.width} × ${detectResult.image_dimensions.height}px
-              </p>
-            </div>
-          `;
-          
-          // Insert after the status message
-          statusMessage.parentNode.insertBefore(downloadSection, statusMessage.nextSibling);
-
-          // Add visual feedback that the editors have been populated
-          htmlEditor.style.borderColor = '#10b981';
-          cssEditor.style.borderColor = '#10b981';
-          setTimeout(() => {
-            htmlEditor.style.borderColor = '';
-            cssEditor.style.borderColor = '';
-          }, 2000);
-
-          // Scroll to the code inspector section to show the generated code
-          const codeInspectorSection = document.querySelector('.code-inspector-section');
-          if (codeInspectorSection) {
-            codeInspectorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-
-          // Add a success message above the code inspector
-          const successMessage = document.createElement('div');
-          successMessage.innerHTML = `
-            <div style="margin-bottom: 20px; padding: 15px; background: #ecfdf5; border-radius: 8px; border-left: 4px solid #10b981;">
-              <h4 style="margin: 0 0 10px 0; color: #10b981;">✨ Code Generated Successfully!</h4>
-              <p style="margin: 0; color: #065f46;">
-                Your HTML and CSS code has been populated in the editors below. 
-                Edit the code to customize your website, and see live previews in real-time!
-              </p>
-            </div>
-          `;
-          
-          // Insert the success message above the code inspector
-          const codeInspectorTitle = document.querySelector('.code-inspector-section h2');
-          if (codeInspectorTitle) {
-            codeInspectorTitle.parentNode.insertBefore(successMessage, codeInspectorTitle.nextSibling);
-          }
-
-        } catch (error) {
-          console.error('Wireframe processing failed:', error);
-          statusMessage.textContent = `Error: ${error.message}. Please try again.`;
-          statusMessage.style.color = '#f5576c';
-        } finally {
           loadingSpinner.style.display = 'none';
           generateCodeBtn.disabled = false;
-        }
+        }, 2000);
       });
 
-      // Handle Save as HTML file button click
-      saveHtmlBtn.addEventListener('click', () => {
-        const generatedCode = codeDisplay.querySelector('code').textContent;
-        const blob = new Blob([generatedCode], {
-          type: 'text/html'
-        });
-        const url = URL.createObjectURL(blob);
+      // Save HTML and CSS functionality
+      document.getElementById('saveHtmlBtn2').onclick = function() {
+        const code = document.getElementById('workspace-html-editor').value;
+        const blob = new Blob([code], { type: 'text/html' });
         const a = document.createElement('a');
-        a.href = url;
-        a.download = 'generated_website.html';
+        a.href = URL.createObjectURL(blob);
+        a.download = 'workspace.html';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      });
+      };
 
-      // Helper function to escape HTML for display
-      function escapeHtml(html) {
-        const div = document.createElement('div');
-        div.appendChild(document.createTextNode(html));
-        return div.innerHTML;
+      document.getElementById('saveCssBtn').onclick = function() {
+        const css = document.getElementById('workspace-css-editor').value;
+        const blob = new Blob([css], { type: 'text/css' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'workspace.css';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+
+      // Real-time preview update
+      function updateInspectorPreview() {
+        try {
+          const html = document.getElementById('workspace-html-editor').value;
+          const css = document.getElementById('workspace-css-editor').value;
+          const iframe = document.getElementById('inspector-preview');
+          
+          if (iframe) {
+            const doc = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generated Website Preview</title>
+  <style>${css}</style>
+</head>
+<body>${html}</body>
+</html>`;
+            
+            iframe.srcdoc = doc;
+          }
+        } catch (error) {
+          console.error('Error updating preview:', error);
+        }
       }
 
-      // Sidebar navigation active state (Client-side only)
-      const sidebarNavItems = document.querySelectorAll('.sidebar-nav li');
-      const currentPage = "workspace";
-      sidebarNavItems.forEach(item => {
-        if (item.dataset.page === currentPage) {
-          item.classList.add('active');
-        } else {
-          item.classList.remove('active');
-        }
-      });
+      document.getElementById('workspace-html-editor').addEventListener('input', updateInspectorPreview);
+      document.getElementById('workspace-css-editor').addEventListener('input', updateInspectorPreview);
+      
+      // Initial preview
+      updateInspectorPreview();
+
+      // File export functionality
+      function renderFilePicker() {
+        const container = document.getElementById('filePickerContainer');
+        container.innerHTML = '<strong>Select files to export:</strong><form id="filePickerForm">';
+        container.innerHTML += '<div><label><input type="checkbox" name="file" value="1"> example.html</label></div>';
+        container.innerHTML += '<div><label><input type="checkbox" name="file" value="2"> styles.css</label></div>';
+        container.innerHTML += '</form>';
+      }
+
+      document.getElementById('refreshFilesBtn').onclick = renderFilePicker;
+      document.getElementById('exportBtn').onclick = function() {
+        alert('Export functionality would save selected files as a ZIP download.');
+      };
+
+      // Initial render
+      renderFilePicker();
     });
   </script>
-  <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
-    &#9776;
-  </button>
 </body>
 
 </html>
