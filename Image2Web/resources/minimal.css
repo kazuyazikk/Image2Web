@@ -1,0 +1,67 @@
+/* Minimal.css - Minimalist, light UI theme */
+:root {
+  --minimal-bg: #fff;
+  --minimal-primary: #222;
+  --minimal-secondary: #888;
+  --minimal-border: #eee;
+}
+body {
+  background: var(--minimal-bg);
+  color: var(--minimal-primary);
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+.container, .card, .navbar {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  color: var(--minimal-primary);
+}
+.navbar {
+  background: #fff;
+  color: var(--minimal-primary);
+  border-bottom: 1px solid var(--minimal-border);
+  padding: 1em 2em;
+  font-weight: bold;
+}
+.navbar a {
+  color: var(--minimal-primary);
+  margin-right: 1.5em;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.navbar a:hover {
+  color: var(--minimal-secondary);
+}
+.button, button {
+  background: var(--minimal-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.button:hover, button:hover {
+  background: var(--minimal-secondary);
+}
+input, textarea, select {
+  background: #fff;
+  color: var(--minimal-primary);
+  border: 1px solid var(--minimal-border);
+  border-radius: 4px;
+  padding: 0.5em;
+}
+.card {
+  padding: 1.5em;
+  margin: 1em 0;
+}
+h1, h2, h3, h4 {
+  color: var(--minimal-primary);
+}
+a {
+  color: var(--minimal-primary);
+}
+a:hover {
+  color: var(--minimal-secondary);
+}
