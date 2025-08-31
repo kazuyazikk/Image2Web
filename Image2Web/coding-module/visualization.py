@@ -12,7 +12,7 @@ import math
 model = None # Makes model global variable
 
 # CONFIG
-MODEL_PATH = "./wireframe_detection_model.keras"
+MODEL_PATH = "./wireframe_detection_model_best.keras"
 OUTPUT_DIR = "./output/"
 CLASS_NAMES = ["button", "checkbox", "image", "navbar", "paragraph", "text", "textfield"]
 
