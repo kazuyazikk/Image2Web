@@ -2,18 +2,26 @@ import shutil
 import os
 
 def duplicate_css_file():
-    source_file = "resources/espresso.css"
-    duplicate_file = "generated_files/duplicate_espresso.css"
-    
+    duplicate_css_file_with_theme('espresso')
+
+def duplicate_css_file_with_theme(theme_name):
+    """
+    Duplicate a CSS file from resources based on the selected theme.
+    theme_name: 'espresso', 'modern', 'minimal', 'dark'
+    """
+    theme_file = f"resources/{theme_name}.css"
+    duplicate_file = f"generated_files/duplicate_{theme_name}.css"
     try:
-        if not os.path.exists(source_file):
-            raise FileNotFoundError(f"Source file '{source_file}' does not exist.")
-        shutil.copy(source_file, duplicate_file)
-        print(f"css File duplicated succesfully! -> {duplicate_file}")
+        if not os.path.exists(theme_file):
+            raise FileNotFoundError(f"Theme file '{theme_file}' does not exist.")
+        shutil.copy(theme_file, duplicate_file)
+        print(f"CSS file duplicated successfully! -> {duplicate_file}")
+        return duplicate_file
     except FileNotFoundError as e:
         print(f"Error: {e}")
     except Exception as e:
         print(f"Unexpected Error: {e}")
+    return None
         
 
 def generate_css_file(elements, css_file):

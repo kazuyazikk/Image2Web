@@ -71,31 +71,42 @@ def generate():
             # Run your existing code generator
             elements = main.parse_elements(json_data)
             html_content = main.generate_html(elements)
-            main.duplicate_css_file()
-            main.generate_css_file(elements, "generated_files/duplicate_espresso.css")
+
+            # Get theme from request (default to espresso)
+            theme = request.form.get('theme', 'espresso')
+
+            css_file = main.duplicate_css_file_with_theme(theme)
+            if not css_file:
+                # fallback to espresso if theme file missing
+                css_file = main.duplicate_css_file_with_theme('espresso')
+                theme = 'espresso'
+            main.generate_css_file(elements, css_file)
 
             # Save locally inside container
             os.makedirs("generated_files", exist_ok=True)
             html_path = "generated_files/output.html"
-            css_path = "generated_files/style.css"
+            css_path = f"generated_files/style_{theme}.css"
 
             with open(html_path, "w") as f:
                 f.write(html_content)
-            os.rename("generated_files/duplicate_espresso.css", css_path)
+            # Move/copy the correct theme file to the right css_path
+            import shutil
+            shutil.move(css_file, css_path)
 
             # Upload to Firebase Storage
             timestamp = int(time.time())
             user_id = request.form.get("user_id", "demoUser")
             html_url = upload_to_storage(html_path, f"generated/{user_id}/{timestamp}/output.html")
-            css_url = upload_to_storage(css_path, f"generated/{user_id}/{timestamp}/style.css")
+            css_url = upload_to_storage(css_path, f"generated/{user_id}/{timestamp}/style_{theme}.css")
 
             # Update the HTML file to use the absolute CSS URL
             with open(html_path, "r") as f:
                 html_content = f.read()
-            
             # Replace the relative CSS link with the absolute URL
             html_content = html_content.replace('href="style.css"', f'href="{css_url}"')
-            
+            html_content = html_content.replace('href="generated_files/style.css"', f'href="{css_url}"')
+            html_content = html_content.replace('href="generated_files/duplicate_espresso.css"', f'href="{css_url}"')
+            html_content = html_content.replace('href="generated_files/duplicate_{theme}.css"', f'href="{css_url}"')
             with open(html_path, "w") as f:
                 f.write(html_content)
 
@@ -105,7 +116,6 @@ def generate():
             # Read the final HTML and CSS content to return in the response
             with open(html_path, "r") as f:
                 final_html_content = f.read()
-            
             with open(css_path, "r") as f:
                 final_css_content = f.read()
 
