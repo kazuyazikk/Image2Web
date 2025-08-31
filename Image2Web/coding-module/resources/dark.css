@@ -1,0 +1,68 @@
+/* Dark.css - Popular dark mode UI theme */
+:root {
+  --dark-bg: #181823;
+  --dark-card: #232336;
+  --dark-primary: #38bdf8;
+  --dark-secondary: #64748b;
+  --dark-border: #2d2d3a;
+  --dark-text: #f4faff;
+}
+body {
+  background: var(--dark-bg);
+  color: var(--dark-text);
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+.container, .card, .navbar {
+  background: var(--dark-card);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(30, 41, 59, 0.12);
+  color: var(--dark-text);
+}
+.navbar {
+  background: var(--dark-primary);
+  color: #fff;
+  padding: 1em 2em;
+  font-weight: bold;
+}
+.navbar a {
+  color: #fff;
+  margin-right: 1.5em;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.navbar a:hover {
+  color: var(--dark-secondary);
+}
+.button, button {
+  background: var(--dark-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.button:hover, button:hover {
+  background: var(--dark-secondary);
+}
+input, textarea, select {
+  background: var(--dark-card);
+  color: var(--dark-text);
+  border: 1px solid var(--dark-border);
+  border-radius: 4px;
+  padding: 0.5em;
+}
+.card {
+  padding: 1.5em;
+  margin: 1em 0;
+}
+h1, h2, h3, h4 {
+  color: var(--dark-primary);
+}
+a {
+  color: var(--dark-primary);
+}
+a:hover {
+  color: var(--dark-secondary);
+}

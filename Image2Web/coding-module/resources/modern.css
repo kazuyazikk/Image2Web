@@ -1,0 +1,68 @@
+/* Modern.css - Clean, modern UI theme */
+:root {
+  --modern-bg: #f7f9fa;
+  --modern-primary: #2563eb;
+  --modern-secondary: #64748b;
+  --modern-card: #fff;
+  --modern-border: #e5e7eb;
+  --modern-text: #1e293b;
+}
+body {
+  background: var(--modern-bg);
+  color: var(--modern-text);
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+.container, .card, .navbar {
+  background: var(--modern-card);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(30, 41, 59, 0.08);
+  color: var(--modern-text);
+}
+.navbar {
+  background: var(--modern-primary);
+  color: #fff;
+  padding: 1em 2em;
+  font-weight: bold;
+}
+.navbar a {
+  color: #fff;
+  margin-right: 1.5em;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.navbar a:hover {
+  color: var(--modern-secondary);
+}
+.button, button {
+  background: var(--modern-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.button:hover, button:hover {
+  background: var(--modern-secondary);
+}
+input, textarea, select {
+  background: #fff;
+  color: var(--modern-text);
+  border: 1px solid var(--modern-border);
+  border-radius: 4px;
+  padding: 0.5em;
+}
+.card {
+  padding: 1.5em;
+  margin: 1em 0;
+}
+h1, h2, h3, h4 {
+  color: var(--modern-primary);
+}
+a {
+  color: var(--modern-primary);
+}
+a:hover {
+  color: var(--modern-secondary);
+}
