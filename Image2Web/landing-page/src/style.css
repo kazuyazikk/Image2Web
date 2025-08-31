@@ -60,7 +60,7 @@ main {
   background: var(--background-light, #2c004f);
   min-height: 80vh;
 }
-}
+
 
 body::before {
   content: '';
