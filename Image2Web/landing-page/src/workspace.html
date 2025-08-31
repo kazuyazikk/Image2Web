@@ -560,6 +560,17 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
         <section class="workspace-section-card code-inspector-section">
+          <!-- Theme Selector UI -->
+          <div style="margin-bottom: 18px; display: flex; align-items: center; gap: 12px;">
+            <label for="css-theme-selector" style="font-weight: bold; color: #2563eb;">CSS Theme:</label>
+            <select id="css-theme-selector" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc;">
+              <option value="espresso">Espresso (Coffee)</option>
+              <option value="modern">Modern</option>
+              <option value="minimal">Minimal</option>
+              <option value="dark">Dark</option>
+            </select>
+            <span id="theme-selected-msg" style="color: #64748b; font-size: 0.95em;"></span>
+          </div>
           <!-- Two-pane Inspector/Code section -->
           <div class="two-pane-layout">
             <!-- Inspector (left) -->
@@ -1084,9 +1095,13 @@
           statusMessage.textContent = `Detected ${detectResult.elements.length} elements! Generating website...`;
           statusMessage.style.color = '#10b981';
 
-          // Step 2: Generate website using /api/generate
+          // Step 2: Generate website using /api/generates
           const generateFormData = new FormData();
           generateFormData.append('image', file);
+          // Get selected theme from dropdown
+          const selectedTheme = document.getElementById('css-theme-selector').value;
+          generateFormData.append('theme', selectedTheme);
+          document.getElementById('theme-selected-msg').textContent = `Theme: ${selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1)}`;
           
           const generateResponse = await fetch('/api/generate', {
             method: 'POST',
