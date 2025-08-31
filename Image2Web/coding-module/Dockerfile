@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Copy source code and required assets
 COPY app.py main.py visualization.py html_generator.py css_generator.py ./
-COPY wireframe_detection_model.keras ./wireframe_detection_model.keras
+COPY wireframe_detection_model_best.keras ./wireframe_detection_model_best.keras
 COPY resources/ ./resources/
 COPY generated_files/ ./generated_files/
 COPY output/ ./output/
