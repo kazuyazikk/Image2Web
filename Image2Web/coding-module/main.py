@@ -1,6 +1,6 @@
 import json
 from html_generator import generate_html, generate_just_html
-from css_generator import duplicate_css_file, generate_css_file
+from css_generator import duplicate_css_file_with_theme, generate_css_file
 
 def read_json_file(file_path):
     """Reads and parse the JSON file from the CNN module."""
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         html_content = generate_html(elements)
         
         # Duplicate the css file
-        duplicate_css_file()
+        duplicate_css_file_with_theme('espresso')
         
         #Append auto-generated rules
         generate_css_file(elements, "generated_files/duplicate_espresso.css")

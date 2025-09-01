@@ -1,9 +1,6 @@
 import shutil
 import os
 
-def duplicate_css_file():
-    duplicate_css_file_with_theme('espresso')
-
 def duplicate_css_file_with_theme(theme_name):
     """
     Duplicate a CSS file from resources based on the selected theme.
