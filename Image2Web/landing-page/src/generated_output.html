@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Generated Output - Image2Web</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;background:#0f1724;color:#e6eef8;margin:0;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between}
+    h1{color:#38bdf8;margin:0}
+    .controls{display:flex;gap:10px}
+    button{background:#0ea5e9;color:#fff;padding:8px 12px;border:0;border-radius:6px;cursor:pointer}
+    .layout{display:grid;grid-template-columns:1fr;gap:16px;margin-top:18px}
+    .preview{background:#111827;border:2px solid #38bdf8;border-radius:8px;padding:8px}
+    iframe{width:100%;height:70vh;border:0;border-radius:6px}
+    .code-blocks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    textarea{width:100%;min-height:200px;background:#0b1220;color:#e6eef8;border:1px solid #1f2937;padding:12px;border-radius:6px;resize:none;font-family:monospace}
+    .note{color:#9ca3af;font-size:0.95rem}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Generated Output</h1>
+    <div class="controls">
+      <button id="openInNew">Open Preview in New Tab</button>
+  <button id="editLayoutBtn">Edit Layout</button>
+  <button id="saveDesignBtn" title="Save this generated design to Previous Designs">Save Design</button>
+  <button id="backBtn">Back to Workspace</button>
+    </div>
+  </header>
+
+  <p class="note">This page shows the most recently generated HTML/CSS stored in your browser. If you generated code on another device or cleared storage, it may be empty.</p>
+
+  <div class="layout">
+    <div class="preview">
+      <iframe id="generatedPreview" sandbox="allow-same-origin allow-scripts"></iframe>
+    </div>
+
+    <div class="code-blocks">
+      <div>
+        <h3 style="margin:0 0 8px 0;color:#7dd3fc">HTML</h3>
+        <textarea id="htmlView" readonly></textarea>
+      </div>
+      <div>
+        <h3 style="margin:0 0 8px 0;color:#7dd3fc">CSS</h3>
+        <textarea id="cssView" readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Edit layout support
+    let editMode = false;
+    let selectedEl = null;
+    const editButtons = {};
+
+    function enableEditMode() {
+      const iframe = document.getElementById('generatedPreview');
+      if (!iframe.contentDocument) { alert('Preview not loaded yet'); return; }
+      editMode = true;
+      document.getElementById('editLayoutBtn').textContent = 'Exit Edit';
+      iframe.contentDocument.addEventListener('click', onIframeClick, true);
+      // show edit toolbar
+      ensureEditToolbar();
+    }
+
+    function disableEditMode() {
+      const iframe = document.getElementById('generatedPreview');
+      editMode = false;
+      document.getElementById('editLayoutBtn').textContent = 'Edit Layout';
+      if (iframe.contentDocument) iframe.contentDocument.removeEventListener('click', onIframeClick, true);
+      removeSelectionOutline();
+      hideEditToolbar();
+      selectedEl = null;
+    }
+
+    function onIframeClick(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const el = e.target;
+      // avoid selecting the body/html root
+      if (!el || el === iframe.contentDocument.body || el === iframe.contentDocument.documentElement) return;
+      selectElement(el);
+    }
+
+    function selectElement(el) {
+      // Non-destructive selection: only add a visual outline.
+      // Do NOT modify layout, positioning, size or margins here to avoid
+      // breaking the page layout (previous implementation caused overlap).
+      const iframe = document.getElementById('generatedPreview');
+      const doc = iframe && iframe.contentDocument;
+      // clear previous
+      removeSelectionOutline();
+      selectedEl = el;
+      try {
+        // only add an outline to indicate selection; keep original styles intact
+        el.style.outline = '3px dashed #f59e0b';
+        el.style.outlineOffset = '3px';
+      } catch (err) {
+        console.warn('Could not highlight element:', err);
+      }
+      showEditToolbar();
+    }
+
+    function removeSelectionOutline() {
+      if (!selectedEl) return;
+      try {
+        selectedEl.style.outline = '';
+        selectedEl.style.outlineOffset = '';
+      } catch (_) {}
+      selectedEl = null;
+    }
+
+    // toolbar creation
+    function ensureEditToolbar() {
+      if (document.getElementById('editToolbar')) return;
+      const tb = document.createElement('div');
+      tb.id = 'editToolbar';
+      tb.style.position = 'fixed';
+      tb.style.right = '18px';
+      tb.style.top = '80px';
+      tb.style.background = '#0b1220';
+      tb.style.color = '#e6eef8';
+      tb.style.padding = '8px';
+      tb.style.border = '1px solid #1f2937';
+      tb.style.borderRadius = '8px';
+      tb.style.zIndex = '9999';
+      tb.style.display = 'none';
+      tb.innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:stretch;">
+          <div style="display:flex;gap:6px;"><button id="nudgeUp">▲</button><button id="nudgeLeft">◄</button><button id="nudgeRight">►</button><button id="nudgeDown">▼</button></div>
+          <div style="display:flex;gap:6px;"><button id="makeAbsolute">Make Absolute</button><button id="saveLayout">Save</button><button id="cancelLayout">Cancel</button></div>
+        </div>`;
+      document.body.appendChild(tb);
+      editButtons.nudgeUp = document.getElementById('nudgeUp');
+      editButtons.nudgeDown = document.getElementById('nudgeDown');
+      editButtons.nudgeLeft = document.getElementById('nudgeLeft');
+      editButtons.nudgeRight = document.getElementById('nudgeRight');
+      editButtons.makeAbsolute = document.getElementById('makeAbsolute');
+      editButtons.saveLayout = document.getElementById('saveLayout');
+      editButtons.cancelLayout = document.getElementById('cancelLayout');
+      editButtons.nudgeUp.addEventListener('click', () => nudgeSelected(0, -10));
+      editButtons.nudgeDown.addEventListener('click', () => nudgeSelected(0, 10));
+      editButtons.nudgeLeft.addEventListener('click', () => nudgeSelected(-10, 0));
+      editButtons.nudgeRight.addEventListener('click', () => nudgeSelected(10, 0));
+      editButtons.makeAbsolute.addEventListener('click', () => { if (selectedEl) { selectedEl.style.position='absolute'; showEditToolbar(); } });
+      editButtons.saveLayout.addEventListener('click', saveLayoutChanges);
+      editButtons.cancelLayout.addEventListener('click', () => { disableEditMode(); loadGenerated(); });
+    }
+
+    function showEditToolbar() { const tb = document.getElementById('editToolbar'); if (tb) tb.style.display = 'block'; }
+    function hideEditToolbar() { const tb = document.getElementById('editToolbar'); if (tb) tb.style.display = 'none'; }
+
+    function nudgeSelected(dx, dy) {
+      if (!selectedEl) return;
+      const style = selectedEl.style;
+      const left = parseFloat(style.left || 0) || 0;
+      const top = parseFloat(style.top || 0) || 0;
+      style.left = (left + dx) + 'px';
+      style.top = (top + dy) + 'px';
+    }
+
+    function saveLayoutChanges() {
+      const iframe = document.getElementById('generatedPreview');
+      const doc = iframe.contentDocument;
+      // serialize body innerHTML and save to localStorage and projects_list if present
+      try {
+        const newHtml = doc.body.innerHTML;
+        localStorage.setItem('generated_html', newHtml);
+        // update last project if exists
+        try {
+          const lastId = Number(localStorage.getItem('projects_list_last_id') || 0);
+          if (lastId) {
+            const raw = localStorage.getItem('projects_list') || '[]';
+            const projects = JSON.parse(raw);
+            const idx = projects.findIndex(p => Number(p.id) === lastId);
+            if (idx !== -1) {
+              projects[idx].html = newHtml;
+              localStorage.setItem('projects_list', JSON.stringify(projects));
+              localStorage.setItem('projects_list_updated_at', String(Date.now()));
+            }
+          }
+        } catch (pe) { console.warn('Could not update projects_list with layout changes', pe); }
+        // reflect in editor textarea
+        document.getElementById('htmlView').value = newHtml;
+        alert('Layout saved to localStorage and Previous Designs (if present).');
+      } catch (err) { console.error('Save failed:', err); alert('Save failed: ' + err.message); }
+      disableEditMode();
+    }
+
+    function hideEditToolbar() { const tb = document.getElementById('editToolbar'); if (tb) tb.style.display = 'none'; }
+
+    function loadGenerated() {
+      const html = localStorage.getItem('generated_html') || '';
+      const css = localStorage.getItem('generated_css') || '';
+      const preview = document.getElementById('generatedPreview');
+      const htmlView = document.getElementById('htmlView');
+      const cssView = document.getElementById('cssView');
+
+      htmlView.value = html;
+      cssView.value = css;
+
+      const doc = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body>${html}</body></html>`;
+      preview.srcdoc = doc;
+    }
+
+    document.getElementById('backBtn').addEventListener('click', () => {
+      window.location.href = 'workspace.html';
+    });
+
+    document.getElementById('openInNew').addEventListener('click', () => {
+      const html = localStorage.getItem('generated_html') || '';
+      const css = localStorage.getItem('generated_css') || '';
+      const doc = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>${css}</style></head><body>${html}</body></html>`;
+      const w = window.open('', '_blank');
+      if (w) {
+        w.document.open();
+        w.document.write(doc);
+        w.document.close();
+      } else {
+        alert('Popup blocked. Allow popups for this site to open preview in a new tab.');
+      }
+    });
+
+      // Save Design handler: add to projects_list
+      document.getElementById('saveDesignBtn').addEventListener('click', () => {
+        try {
+          const html = localStorage.getItem('generated_html') || '';
+          const css = localStorage.getItem('generated_css') || '';
+          const projects = JSON.parse(localStorage.getItem('projects_list') || '[]');
+          const entry = { id: Date.now(), title: `Saved ${new Date().toLocaleString()}`, html, css };
+          projects.unshift(entry);
+          localStorage.setItem('projects_list', JSON.stringify(projects));
+          localStorage.setItem('projects_list_updated_at', String(Date.now()));
+          localStorage.setItem('projects_list_last_id', String(entry.id));
+          alert('Design saved to Previous Designs.');
+        } catch (err) {
+          console.error('Save failed:', err);
+          alert('Could not save design: ' + err.message);
+        }
+      });
+
+    // Load on start
+    loadGenerated();
+  </script>
+</body>
+</html>

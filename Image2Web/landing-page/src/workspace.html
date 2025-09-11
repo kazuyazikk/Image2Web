@@ -251,9 +251,10 @@
 
     /* Mobile-optimized two-pane layout */
     .two-pane-layout {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
     }
 
     .inspector-pane, .code-pane, .css-pane {
@@ -271,17 +272,19 @@
       text-align: center;
     }
 
+    /* Inspector spans full width and is taller for readable preview */
     #inspector-preview {
       width: 100%;
-      height: 250px;
+      height: 500px;
       background: #181823;
       border: 2px dashed #38bdf8;
       border-radius: 8px;
     }
 
+    /* Editors should expand to show full content; autosize handled by JS */
     .code-pane textarea, .css-pane textarea {
       width: 100%;
-      height: 150px;
+      min-height: 120px;
       border-radius: 8px;
       padding: 10px;
       background: #181823;
@@ -289,7 +292,8 @@
       font-size: 0.85em;
       border: 1px solid #38bdf8;
       margin-bottom: 12px;
-      resize: vertical;
+      resize: none;
+      overflow: hidden; /* hide internal scrollbar; JS will expand height */
       font-family: 'Courier New', monospace;
       box-sizing: border-box;
     }
@@ -458,49 +462,47 @@
       .sidebar {
         width: 250px;
       }
-      
+
       .main-content-area {
         padding: 20px 40px;
       }
-      
+
+      /* Desktop layout: inspector spans full width on first row, editors sit side-by-side under it */
       .two-pane-layout {
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
         gap: 20px;
       }
-      
+
       .inspector-pane {
-        flex: none;
-        order: 1;
+        grid-column: 1 / -1; /* span full width */
       }
-      
+
       .code-pane {
-        flex: none;
-        order: 2;
+        grid-column: 1 / 2;
       }
-      
+
       .css-pane {
-        flex: none;
-        order: 3;
+        grid-column: 2 / 3;
       }
-      
+
       #inspector-preview {
-        height: 400px;
+        height: 500px;
       }
-      
+
       .code-pane textarea, .css-pane textarea {
-        height: 200px;
+        min-height: 220px;
       }
     }
 
     /* Large desktop styles */
     @media (min-width: 1200px) {
       #inspector-preview {
-        height: 500px;
+        height: 60vh;
       }
-      
+
       .code-pane textarea, .css-pane textarea {
-        height: 250px;
+        min-height: 300px;
       }
     }
 
@@ -596,17 +598,11 @@
           </div>
 
           <button id="generateCodeBtn" class="workspace-cta-btn">Generate Code!</button>
+          <button id="viewGeneratedBtn" class="workspace-cta-btn" style="margin-left:16px;background:#7dd3fc;color:#08203a;">View HTML/CSS</button>
           <p id="statusMessage"></p>
         </section>
 
-        <!-- Export Controls -->
-        <div class="import-export-controls">
-          <button id="exportBtn">Export All as ZIP</button>
-        </div>
-        
-        <!-- File Picker for Export -->
-        <div id="filePickerContainer"></div>
-        <button id="refreshFilesBtn">Refresh File List</button>
+  <!-- Export controls removed -->
 
         <section class="workspace-section-card code-inspector-section">
           <!-- Two-pane Inspector/Code section -->
@@ -909,18 +905,219 @@ h1 {
           return;
         }
 
-        // Simulate API call for demonstration
+        // Real API call to backend to generate HTML/CSS
         statusMessage.textContent = 'Processing your image...';
         statusMessage.style.color = '#ffe066';
         loadingSpinner.style.display = 'flex';
         generateCodeBtn.disabled = true;
 
-        setTimeout(() => {
-          statusMessage.textContent = 'Code generated successfully!';
+        try {
+          const formData = new FormData();
+          formData.append('image', imageUpload.files[0]);
+          // include selected theme if you add a selector later; default to espresso
+          formData.append('theme', 'espresso');
+
+          // attach a user id if available from Firebase auth
+          try {
+            const currentUser = firebase.auth().currentUser;
+            if (currentUser) formData.append('user_id', currentUser.uid || currentUser.email || 'user');
+          } catch (e) {
+            // ignore
+          }
+
+          // POST to relative API path; change to your deployed URL if needed
+          const resp = await fetch('/api/generate', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await resp.json();
+          if (!resp.ok) {
+            throw new Error(data.error || (data.message || 'Generation failed on server'));
+          }
+
+          // Populate editors with returned content (will autosize)
+          setEditorContents(data.html_content, data.css_content);
+
+          // Save latest generated content to localStorage for viewing on other page
+          try {
+            if (data.html_content) localStorage.setItem('generated_html', data.html_content);
+            if (data.css_content) localStorage.setItem('generated_css', data.css_content);
+
+            // Automatically add this generated result to Previous Designs (projects_list)
+            try {
+              const raw = localStorage.getItem('projects_list') || '[]';
+              const projects = JSON.parse(raw);
+              const entry = {
+                id: Date.now(),
+                title: `Generated ${new Date().toLocaleString()}`,
+                filename: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : undefined,
+                thumbnail: undefined,
+                html: data.html_content || '',
+                css: data.css_content || ''
+              };
+              // Try to generate a thumbnail snapshot of the generated preview (inspector) so Previous Designs shows the output
+              try {
+                const htmlContent = document.getElementById('workspace-html-editor').value || '';
+                const cssContent = document.getElementById('workspace-css-editor').value || '';
+                const maxDim = 300;
+
+                // fallback immediate thumbnail: uploaded imagePreview if present
+                const imgEl = document.getElementById('imagePreview');
+                if (imgEl && imgEl.src && imgEl.src !== '#' && imgEl.style.display !== 'none') {
+                  entry.thumbnail = imgEl.src;
+                }
+
+                // Asynchronously create an SVG foreignObject that wraps the generated HTML+CSS and render to canvas
+                (function(html, css, entryId) {
+                  try {
+                    const wrapper = `<div xmlns='http://www.w3.org/1999/xhtml'><style>${css}</style>${html}</div>`;
+                    // choose a render width; 900px wide is usually fine and will be scaled down
+                    const renderW = 900;
+                    const renderH = 600;
+                    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${renderW}' height='${renderH}'><foreignObject width='100%' height='100%'>${wrapper}</foreignObject></svg>`;
+                    const img = new Image();
+                    img.onload = function() {
+                      try {
+                        // scale to maxDim preserving aspect
+                        let w = img.width, h = img.height;
+                        if (w > h) {
+                          if (w > maxDim) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+                        } else {
+                          if (h > maxDim) { w = Math.round(w * (maxDim / h)); h = maxDim; }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        const small = canvas.toDataURL('image/png');
+                        try {
+                          const raw2 = localStorage.getItem('projects_list') || '[]';
+                          const list2 = JSON.parse(raw2);
+                          const idx2 = list2.findIndex(p => String(p.id) === String(entryId));
+                          if (idx2 !== -1) {
+                            list2[idx2].thumbnail = small;
+                            localStorage.setItem('projects_list', JSON.stringify(list2));
+                            localStorage.setItem('projects_list_updated_at', String(Date.now()));
+                          }
+                        } catch (ee) { /* ignore thumbnail replace errors */ }
+                      } catch (e) { /* ignore drawing errors */ }
+                    };
+                    img.onerror = function() { /* ignore errors */ };
+                    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+                  } catch (e) {
+                    console.warn('inspector thumbnail generation failed', e);
+                  }
+                })(htmlContent, cssContent, entry.id);
+              } catch (e) { console.warn('thumbnail generation failed', e); }
+              projects.unshift(entry);
+              // keep list reasonable in size (optional): keep latest 100
+              if (projects.length > 100) projects.length = 100;
+              localStorage.setItem('projects_list', JSON.stringify(projects));
+              // If no thumbnail was produced by the snapshot logic, create a simple SVG placeholder so the card shows something
+              try {
+                const p0 = projects[0];
+                if (!p0.thumbnail) {
+                  const title = (p0.title || 'Generated').replace(/"/g, '');
+                  const time = new Date(Number(p0.id) || Date.now()).toLocaleString();
+                  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='140'><rect width='100%' height='100%' fill='#2a0b4a'/><text x='50%' y='45%' fill='#bfe9ff' font-size='14' text-anchor='middle' font-family='Arial, Helvetica, sans-serif'>${title}</text><text x='50%' y='70%' fill='#bfe9ff' font-size='11' text-anchor='middle' font-family='Arial, Helvetica, sans-serif'>${time}</text></svg>`;
+                  p0.thumbnail = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+                  localStorage.setItem('projects_list', JSON.stringify(projects));
+                }
+              } catch (e) { /* ignore placeholder failure */ }
+              localStorage.setItem('projects_list_updated_at', String(Date.now()));
+              localStorage.setItem('projects_list_last_id', String(entry.id));
+            } catch (pe) {
+              console.warn('Auto-save to projects_list failed:', pe);
+            }
+          } catch (e) {
+            console.warn('Could not save generated code to localStorage:', e);
+          }
+
+          // Update preview
+          updateInspectorPreview();
+
+          statusMessage.textContent = `Code generated successfully (${data.detected_elements || 0} elements).`;
           statusMessage.style.color = '#10b981';
+
+          // Attempt to persist project server-side (and client-side fallback)
+          try {
+            const currentUser = firebase.auth().currentUser;
+            if (currentUser) {
+              // Call backend to save metadata/content
+              try {
+                const saveResp = await fetch('/api/save_project', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    user_id: currentUser.uid,
+                    title: `Generated ${new Date().toLocaleString()}`,
+                    html: data.html_content || '',
+                    css: data.css_content || '',
+                    html_url: data.html_url || '',
+                    css_url: data.css_url || '',
+                    elementCount: data.detected_elements || 0
+                  })
+                });
+                const saved = await saveResp.json();
+                if (saveResp.ok && saved && saved.success) {
+                  // update local metadata so previous_designs shows the server id quickly
+                  const lastId = localStorage.getItem('projects_list_last_id');
+                  try {
+                    const raw = localStorage.getItem('projects_list') || '[]';
+                    const projects = JSON.parse(raw);
+                    // find the entry that matches the temp id and replace its id with the real one
+                    const idx = projects.findIndex(p => String(p.id) === String(lastId));
+                    if (idx !== -1) {
+                      projects[idx].id = saved.id;
+                      localStorage.setItem('projects_list', JSON.stringify(projects));
+                      // If this id was previously marked deleted locally, remove it from deleted list
+                      try {
+                        const deletedRaw = localStorage.getItem('projects_list_deleted_ids') || '[]';
+                        let deletedArr = JSON.parse(deletedRaw);
+                        deletedArr = deletedArr.filter(x => String(x) !== String(saved.id));
+                        localStorage.setItem('projects_list_deleted_ids', JSON.stringify(deletedArr));
+                      } catch (e) { console.warn('failed to clear deleted id after save', e); }
+                    }
+                  } catch (_) {}
+                  localStorage.setItem('projects_list_last_id', String(saved.id));
+                } else {
+                  console.warn('Server-side project save responded with error', saved);
+                }
+              } catch (e) {
+                console.warn('Server-side save failed, will attempt client-side Firestore save', e);
+                // fallback: try client-side Firestore write so the project appears in the user's account immediately
+                try {
+                  const db = firebase.firestore();
+                  await db.collection('users').doc(currentUser.uid).collection('projects').add({
+                    title: `Generated ${new Date().toLocaleString()}`,
+                    html: data.html_content || '',
+                    css: data.css_content || '',
+                    html_url: data.html_url || '',
+                    css_url: data.css_url || '',
+                    elementCount: data.detected_elements || 0,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'completed'
+                  });
+                } catch (ee) {
+                  console.warn('Client-side Firestore save also failed', ee);
+                }
+              }
+            }
+          } catch (saveErr) {
+            console.warn('Could not persist project to server/firestore:', saveErr);
+          }
+
+          // After generation and persistence attempts, do NOT auto-redirect; user can click View HTML/CSS
+
+        } catch (err) {
+          console.error('Generation error:', err);
+          statusMessage.textContent = 'Generation failed: ' + (err.message || err);
+          statusMessage.style.color = '#f5576c';
+        } finally {
           loadingSpinner.style.display = 'none';
           generateCodeBtn.disabled = false;
-        }, 2000);
+        }
       });
 
       // Save HTML and CSS functionality
@@ -974,26 +1171,42 @@ h1 {
 
       document.getElementById('workspace-html-editor').addEventListener('input', updateInspectorPreview);
       document.getElementById('workspace-css-editor').addEventListener('input', updateInspectorPreview);
-      
-      // Initial preview
-      updateInspectorPreview();
 
-      // File export functionality
-      function renderFilePicker() {
-        const container = document.getElementById('filePickerContainer');
-        container.innerHTML = '<strong>Select files to export:</strong><form id="filePickerForm">';
-        container.innerHTML += '<div><label><input type="checkbox" name="file" value="1"> example.html</label></div>';
-        container.innerHTML += '<div><label><input type="checkbox" name="file" value="2"> styles.css</label></div>';
-        container.innerHTML += '</form>';
+      // Auto-resize editors so their contents are fully visible (no internal scroll)
+      function autosizeTextarea(el) {
+        if (!el) return;
+        el.style.height = 'auto';
+        const newHeight = Math.min(Math.max(el.scrollHeight, 120), 2000);
+        el.style.height = newHeight + 'px';
       }
 
-      document.getElementById('refreshFilesBtn').onclick = renderFilePicker;
-      document.getElementById('exportBtn').onclick = function() {
-        alert('Export functionality would save selected files as a ZIP download.');
-      };
+      const htmlEditor = document.getElementById('workspace-html-editor');
+      const cssEditor = document.getElementById('workspace-css-editor');
+      htmlEditor.addEventListener('input', () => autosizeTextarea(htmlEditor));
+      cssEditor.addEventListener('input', () => autosizeTextarea(cssEditor));
 
-      // Initial render
-      renderFilePicker();
+      // Ensure editors resize when content is programmatically set
+      function setEditorContents(html, css) {
+        if (typeof html !== 'undefined' && html !== null) {
+          htmlEditor.value = html;
+          autosizeTextarea(htmlEditor);
+        }
+        if (typeof css !== 'undefined' && css !== null) {
+          cssEditor.value = css;
+          autosizeTextarea(cssEditor);
+        }
+      }
+
+      // Initial preview and size
+      autosizeTextarea(htmlEditor);
+      autosizeTextarea(cssEditor);
+      updateInspectorPreview();
+
+  // View HTML/CSS button: open generated output viewer (reads generated_html/generated_css from localStorage)
+  const viewBtn = document.getElementById('viewGeneratedBtn');
+  if (viewBtn) viewBtn.addEventListener('click', () => { window.location.href = 'generated_output.html'; });
+
+  // File export functionality removed
     });
   </script>
 </body>

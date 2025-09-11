@@ -152,7 +152,40 @@
       text-align: left;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden; /* ensure large images don't overflow card */
     }
+
+    /* Compact thumbnail in project card and image modal */
+    .project-card .project-image {
+      width: 88px;
+      height: 88px;
+      margin-bottom: 12px;
+      flex: 0 0 88px;
+    }
+
+    .project-card .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+    /* fullscreen image modal */
+    #imageModal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    #imageModal img { max-width: 84vw; max-height: 84vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+    #imageModal .close-btn { position: absolute; right: 18px; top: 18px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
 
     .project-card:hover {
       transform: translateY(-5px);
@@ -341,6 +374,12 @@
     </main>
   </div>
 
+  <!-- Image modal for previewing thumbnails full-size -->
+  <div id="imageModal" style="display:none;align-items:center;justify-content:center;">
+    <button class="close-btn" id="closeImageModal">&times;</button>
+    <img id="imageModalImg" src="" alt="Preview" />
+  </div>
+
   <div class="signup-modal" id="signupModal">
     <div class="signup-content">
       <button class="close-btn" onclick="closeSignup()">&times;</button>
@@ -512,7 +551,8 @@
           userGreeting.style.display = 'none';
           userNameSpan.textContent = '';
           sidebarUsernameSpan.textContent = 'Guest';
-          projectsList.innerHTML = '<p style="color: var(--text-secondary);">No projects yet. Log in to view your designs or start a new conversion in the Workspace!</p>';
+          // If the user is not signed in, show any locally saved projects (from workspace auto-save)
+          loadLocalProjects();
         }
       });
 
@@ -542,6 +582,8 @@
           });
 
           renderProjects();
+          // also merge any locally auto-saved projects (from workspace) so they appear for the user
+          try { mergeLocalProjects(); } catch (e) { console.warn('Could not merge local projects:', e); }
         } catch (error) {
           console.error('Error loading previous designs:', error);
           projectsList.innerHTML = `<p style="color: var(--danger-red);">Error loading projects: ${error.message}</p>`;
@@ -555,19 +597,27 @@
         }
 
         const html = currentProjects.map(p => {
-          const created = p.createdAt ? new Date(p.createdAt.toDate()).toLocaleString() : 'N/A';
-          const thumb = p.originalImageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOTRBM0I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=';
+          // determine created date from Firestore timestamp or from id (if id is a timestamp)
+          let created;
+          if (p.createdAt) {
+            try { created = new Date(p.createdAt.toDate()).toLocaleString(); } catch (e) { created = 'N/A'; }
+          } else if (p.id && !isNaN(Number(p.id))) {
+            created = new Date(Number(p.id)).toLocaleString();
+          } else { created = 'N/A'; }
+
+          const name = p.name || p.title || p.filename || 'Untitled';
+          const thumb = p.originalImageUrl || p.thumbnail || p.thumbnail || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOTRBM0I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=';
           const status = p.status || 'completed';
           return `
             <div class="project-card">
-              <div class="project-image"><img src="${thumb}" alt="${p.name}"/></div>
-              <h3>${p.name || 'Untitled'}</h3>
+                      <div class="project-image"><img src="${thumb}" alt="${name}" onclick="openImageModal('${thumb.replace(/'/g, "\'")}')"/></div>
+              <h3>${name}</h3>
               <p>Created: ${created}</p>
               <p>Elements: ${p.elementCount || 0}</p>
               <p>Status: <span class="status-badge ${status}">${status}</span></p>
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <a class="project-link" href="${p.htmlUrl || '#'}" target="_blank">View HTML</a>
-                <a class="project-link" href="${p.cssUrl || '#'}" target="_blank">View CSS</a>
+                <button class="project-link" onclick="viewProjectHtml('${p.id}')">View HTML</button>
+                <button class="project-link" onclick="viewProjectCss('${p.id}')">View CSS</button>
                 <button class="reset-btn primary-btn" onclick="openInWorkspace('${p.id}')">Open in Workspace</button>
                 <button class="reset-btn secondary-btn" style="color:#ef4444;border-color:#ef4444" onclick="deleteProject('${p.id}')">Delete</button>
               </div>
@@ -576,29 +626,165 @@
         projectsList.innerHTML = html;
       }
 
+      // View project content in modal (supports both Firestore-stored and localStorage projects)
+      window.viewProjectHtml = function(projectId) {
+        const p = currentProjects.find(x => String(x.id) === String(projectId));
+        if (!p) return; document.getElementById('modalHtmlCode').value = p.html || p.htmlContent || '';
+        document.getElementById('modalCssCode').value = p.css || p.cssContent || '';
+        document.getElementById('codeModal').style.display = 'flex';
+      }
+
+      window.viewProjectCss = function(projectId) {
+        // reuse the same modal to show CSS as well
+        const p = currentProjects.find(x => String(x.id) === String(projectId));
+        if (!p) return; document.getElementById('modalHtmlCode').value = p.html || p.htmlContent || '';
+        document.getElementById('modalCssCode').value = p.css || p.cssContent || '';
+        document.getElementById('codeModal').style.display = 'flex';
+      }
+
+      // close modal handler
+      const closeBtn = document.getElementById('closeCodeModal');
+      if (closeBtn) closeBtn.onclick = () => { document.getElementById('codeModal').style.display = 'none'; };
+
+      // Image modal handlers
+      window.openImageModal = function(src) {
+        try {
+          const img = document.getElementById('imageModalImg');
+          img.src = src || '';
+          const modal = document.getElementById('imageModal');
+          modal.style.display = 'flex';
+          modal.focus();
+        } catch (e) { console.warn('openImageModal failed', e); }
+      }
+      const closeImageBtn = document.getElementById('closeImageModal');
+      if (closeImageBtn) closeImageBtn.onclick = () => { document.getElementById('imageModal').style.display = 'none'; document.getElementById('imageModalImg').src = ''; };
+      // close when clicking the overlay (not the image)
+      const imageModalEl = document.getElementById('imageModal');
+      if (imageModalEl) {
+        imageModalEl.addEventListener('click', (ev) => {
+          if (ev.target === imageModalEl) {
+            imageModalEl.style.display = 'none';
+            document.getElementById('imageModalImg').src = '';
+          }
+        });
+      }
+
+      // Load projects saved to localStorage (workspace autosave)
+      function loadLocalProjects() {
+        try {
+          const raw = localStorage.getItem('projects_list') || '[]';
+          const list = JSON.parse(raw);
+          if (Array.isArray(list) && list.length) {
+            // normalize to currentProjects shape used by renderProjects
+            currentProjects = list.map(p => ({ id: p.id, title: p.title, name: p.title, html: p.html, css: p.css, originalImageUrl: p.thumbnail || p.originalImageUrl }));
+            renderProjects();
+            return;
+          }
+        } catch (e) {
+          console.warn('Failed to load local projects:', e);
+        }
+        projectsList.innerHTML = '<p style="color: var(--text-secondary);">No projects yet. Start a new conversion in the Workspace!</p>';
+      }
+
+      // Merge localStorage projects into currentProjects (avoid duplicates)
+      function mergeLocalProjects() {
+        try {
+          const raw = localStorage.getItem('projects_list') || '[]';
+          const local = JSON.parse(raw);
+          if (!Array.isArray(local) || local.length === 0) return;
+
+          // build lookup of existing ids
+          const existingIds = new Set(currentProjects.map(p => String(p.id)));
+          // load deleted ids so removed items don't reappear
+          const deletedRaw = localStorage.getItem('projects_list_deleted_ids') || '[]';
+          const deletedIds = new Set(JSON.parse(deletedRaw));
+
+          // normalize local projects and append those not already present
+          const toAdd = local.map(p => ({
+            id: p.id,
+            title: p.title || p.name || 'Untitled',
+            name: p.title || p.name || 'Untitled',
+            html: p.html || p.htmlContent || '',
+            css: p.css || p.cssContent || '',
+            originalImageUrl: p.thumbnail || p.originalImageUrl || '',
+            elementCount: p.elementCount || 0
+          })).filter(p => !existingIds.has(String(p.id)));
+          // filter out ids that were deleted locally
+          const toAddFiltered = toAdd.filter(p => !deletedIds.has(String(p.id)));
+
+          if (toAddFiltered.length) {
+            // prepend local items so recent local saves appear first
+            currentProjects = toAddFiltered.concat(currentProjects);
+            // attempt to sort by numeric id (timestamp) if possible
+            try {
+              currentProjects.sort((a,b) => {
+                const ai = Number(a.id) || 0; const bi = Number(b.id) || 0;
+                return bi - ai;
+              });
+            } catch (_) {}
+            renderProjects();
+          }
+        } catch (e) {
+          console.warn('mergeLocalProjects failed:', e);
+        }
+      }
+
+      // Refresh when localStorage changes (another tab saved a project)
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'projects_list') loadLocalProjects();
+      });
+
       window.openInWorkspace = function(projectId) {
-        const project = currentProjects.find(p => p.id === projectId);
+        const project = currentProjects.find(p => String(p.id) === String(projectId));
         if (!project) return;
         try {
-          localStorage.setItem('image2web_project_to_load', JSON.stringify({ id: projectId }));
+          // stash full project content so workspace can load it immediately
+          const payload = { id: projectId, html: project.html || project.htmlContent || '', css: project.css || project.cssContent || '' };
+          localStorage.setItem('image2web_project_to_load', JSON.stringify(payload));
           window.location.href = 'workspace.html';
         } catch (e) {
-          console.error('Failed to stash project id for workspace:', e);
+          console.error('Failed to stash project for workspace:', e);
           window.location.href = 'workspace.html';
         }
       }
 
       window.deleteProject = async function(projectId) {
-        if (!confirm('Delete this project?')) return;
-        const user = firebase.auth().currentUser;
-        if (!user) return;
+        if (!confirm('Delete this project? This cannot be undone.')) return;
+
+        // remove from UI immediately
+        currentProjects = currentProjects.filter(p => String(p.id) !== String(projectId));
+        renderProjects();
+
+        // record deleted id locally to prevent merges from reintroducing it
         try {
-          const db = firebase.firestore();
-          await db.collection('users').doc(user.uid).collection('projects').doc(projectId).delete();
-          currentProjects = currentProjects.filter(p => p.id !== projectId);
-          renderProjects();
+          const rawDeleted = localStorage.getItem('projects_list_deleted_ids') || '[]';
+          const deletedArr = JSON.parse(rawDeleted);
+          if (!deletedArr.includes(String(projectId))) {
+            deletedArr.push(String(projectId));
+            localStorage.setItem('projects_list_deleted_ids', JSON.stringify(deletedArr));
+          }
+        } catch (e) { console.warn('failed to record deleted id locally', e); }
+
+        // Try server-side delete if logged in
+        try {
+          const user = firebase.auth().currentUser;
+          if (user) {
+            const db = firebase.firestore();
+            await db.collection('users').doc(user.uid).collection('projects').doc(String(projectId)).delete();
+          }
         } catch (e) {
-          alert('Failed to delete: ' + e.message);
+          console.warn('Failed to delete project on server:', e);
+        }
+
+        // Always remove any local copy from projects_list as a final step
+        try {
+          const raw = localStorage.getItem('projects_list') || '[]';
+          let projects = JSON.parse(raw);
+          projects = projects.filter(p => String(p.id) !== String(projectId));
+          localStorage.setItem('projects_list', JSON.stringify(projects));
+          localStorage.setItem('projects_list_updated_at', String(Date.now()));
+        } catch (e) {
+          console.warn('Failed to remove local project copy', e);
         }
       }
 

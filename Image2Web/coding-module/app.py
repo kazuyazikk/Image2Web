@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import main
 import visualization
 from google.cloud import storage
+from google.cloud import firestore
 import os, time
 import tempfile
 import json
@@ -19,6 +20,54 @@ def upload_to_storage(local_file, dest_path):
     blob = bucket.blob(dest_path)
     blob.upload_from_filename(local_file)
     return blob.public_url
+
+
+def safe_upload(local_file, dest_path):
+    """Try to upload to cloud storage but don't fail if credentials or bucket are missing.
+    Returns public URL on success or empty string on failure.
+    """
+    try:
+        # Basic guard: if BUCKET_NAME is left as placeholder, skip upload
+        if not BUCKET_NAME or BUCKET_NAME == "your-project-id.appspot.com":
+            print("Skipping upload_to_storage: BUCKET_NAME not configured")
+            return ""
+        return upload_to_storage(local_file, dest_path)
+    except Exception as e:
+        print(f"Warning: upload to storage failed: {e}")
+        return ""
+
+
+@app.route('/api/save_project', methods=['POST'])
+def save_project():
+    """Save project metadata/content to Firestore under users/{user_id}/projects.
+    Accepts JSON body with: user_id (required), title, html, css, html_url, css_url, elementCount
+    Returns {success: True, id: <doc id>} or error.
+    """
+    try:
+        data = request.get_json(force=True)
+        if not data:
+            return jsonify({'error': 'Missing JSON body'}), 400
+        user_id = data.get('user_id')
+        if not user_id:
+            return jsonify({'error': 'Missing user_id'}), 400
+
+        db = firestore.Client()
+        doc_ref = db.collection('users').document(str(user_id)).collection('projects').document()
+        payload = {
+            'title': data.get('title', f'Generated {int(time.time())}'),
+            'html': data.get('html', ''),
+            'css': data.get('css', ''),
+            'html_url': data.get('html_url', ''),
+            'css_url': data.get('css_url', ''),
+            'elementCount': data.get('elementCount', data.get('detected_elements', 0)),
+            'status': 'completed',
+            'createdAt': firestore.SERVER_TIMESTAMP()
+        }
+        doc_ref.set(payload)
+        return jsonify({'success': True, 'id': doc_ref.id})
+    except Exception as e:
+        print('Error saving project to Firestore:', e)
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route("/generate", methods=["POST"])  # Original path
@@ -96,8 +145,8 @@ def generate():
             # Upload to Firebase Storage
             timestamp = int(time.time())
             user_id = request.form.get("user_id", "demoUser")
-            html_url = upload_to_storage(html_path, f"generated/{user_id}/{timestamp}/output.html")
-            css_url = upload_to_storage(css_path, f"generated/{user_id}/{timestamp}/style_{theme}.css")
+            html_url = safe_upload(html_path, f"generated/{user_id}/{timestamp}/output.html")
+            css_url = safe_upload(css_path, f"generated/{user_id}/{timestamp}/style_{theme}.css")
 
             # Update the HTML file to use the absolute CSS URL
             with open(html_path, "r") as f:
@@ -110,8 +159,10 @@ def generate():
             with open(html_path, "w") as f:
                 f.write(html_content)
 
-            # Re-upload the updated HTML file with the correct CSS link
-            html_url = upload_to_storage(html_path, f"generated/{user_id}/{timestamp}/output.html")
+            # Re-upload the updated HTML file with the correct CSS link (best-effort)
+            re_html_url = safe_upload(html_path, f"generated/{user_id}/{timestamp}/output.html")
+            if re_html_url:
+                html_url = re_html_url
 
             # Read the final HTML and CSS content to return in the response
             with open(html_path, "r") as f:
