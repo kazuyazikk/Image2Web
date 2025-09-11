@@ -1202,6 +1202,26 @@ h1 {
       autosizeTextarea(cssEditor);
       updateInspectorPreview();
 
+      // If another page asked us to open a project, load it now
+      try {
+        const toLoadRaw = localStorage.getItem('image2web_project_to_load');
+        if (toLoadRaw) {
+          try {
+            const payload = JSON.parse(toLoadRaw);
+            if (payload && (payload.html || payload.css)) {
+              // populate editors and preview
+              setEditorContents(payload.html || '', payload.css || '');
+              updateInspectorPreview();
+              // ensure generated_html/generated_css are set for viewer pages
+              try { if (payload.html) localStorage.setItem('generated_html', payload.html); } catch(e){}
+              try { if (payload.css) localStorage.setItem('generated_css', payload.css); } catch(e){}
+            }
+          } catch (e) { console.warn('Failed to parse image2web_project_to_load', e); }
+          // remove the stash so it doesn't keep reloading on refresh
+          try { localStorage.removeItem('image2web_project_to_load'); } catch (e) {}
+        }
+      } catch (e) { /* ignore */ }
+
   // View HTML/CSS button: open generated output viewer (reads generated_html/generated_css from localStorage)
   const viewBtn = document.getElementById('viewGeneratedBtn');
   if (viewBtn) viewBtn.addEventListener('click', () => { window.location.href = 'generated_output.html'; });
