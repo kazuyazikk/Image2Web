@@ -21,36 +21,7 @@
       opacity: 1;
     }
 
-    .access-denied-message {
-      display: none;
-      text-align: center;
-      margin: 50px 20px;
-      font-size: 1.2em;
-      color: var(--danger-red);
-      padding: 20px;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      background-color: var(--modal-content-bg);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .access-denied-message h2 {
-      color: var(--primary-blue);
-      margin-bottom: 15px;
-      font-size: 1.5em;
-    }
-
-    .access-denied-message p {
-      margin-bottom: 25px;
-      color: var(--text-primary);
-      line-height: 1.5;
-    }
-
-    .access-denied-message .hero-btn {
-      padding: 12px 25px;
-      font-size: 1em;
-      border-radius: 50px;
-    }
+    /* access denied UI removed */
 
     /* Mobile-optimized workspace layout */
     .main-wrapper {
@@ -646,11 +617,7 @@ h1 {
     </div>
   </div>
 
-  <div class="access-denied-message" id="accessDeniedMessage">
-    <h2>Access Denied</h2>
-    <p>Please log in to access your workspace. You will be redirected to the home page shortly.</p>
-    <button class="hero-btn" onclick="openLogin()">Login Now</button>
-  </div>
+  <!-- Access denied UI removed -->
 
   <!-- Modals and footer remain the same as in your original code -->
   <div class="signup-modal" id="signupModal">
@@ -823,12 +790,11 @@ h1 {
       const statusMessage = document.getElementById('statusMessage');
       const loadingSpinner = document.getElementById('loading-spinner');
       const workspaceAuthorizedContent = document.getElementById('workspace-authorized-content');
-      const accessDeniedMessage = document.getElementById('accessDeniedMessage');
       const body = document.body;
 
       // Initial state
       workspaceAuthorizedContent.style.display = 'none';
-      accessDeniedMessage.style.display = 'none';
+      // access denied UI removed
 
       // Firebase Authentication Check
       firebase.auth().onAuthStateChanged(user => {
@@ -842,7 +808,7 @@ h1 {
           // User is signed in
           console.log("User is logged in:", user.email);
           workspaceAuthorizedContent.style.display = 'flex';
-          accessDeniedMessage.style.display = 'none';
+          // access denied UI removed
 
           authLinks.style.display = 'none';
           userLinks.style.display = 'list-item';
@@ -853,7 +819,6 @@ h1 {
           // User is logged out
           console.log("User is logged out. Access denied.");
           workspaceAuthorizedContent.style.display = 'none';
-          accessDeniedMessage.style.display = 'block';
 
           authLinks.style.display = 'list-item';
           userLinks.style.display = 'none';
@@ -861,9 +826,7 @@ h1 {
           userNameSpan.textContent = '';
           sidebarUsernameSpan.textContent = 'Guest';
 
-          setTimeout(() => {
-            window.location.href = 'index.html';
-          }, 2000);
+          window.location.href = 'index.html';
         }
         body.classList.add('loaded');
       });
