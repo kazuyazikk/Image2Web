@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contributors - IMAGE2WEB</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
@@ -19,34 +19,19 @@
         </svg>
         <div>
           <span class="brand">IMAGE2WEB</span>
-          <div class="slogan">Designed by SeroTech</div>
+          <div class="slogan">Building Tomorrow's Digital Experience</div>
         </div>
       </div>
       <nav>
         <ul>
+          <li class="nav-item" data-page="back" onclick="history.back()">
+            <button class="nav-btn">Back</button>
+          </li>
           <li class="nav-item" data-page="home" onclick="window.location.href='index.html'">
             <button class="nav-btn">Home</button>
           </li>
-          <li class="nav-item active" data-page="contributors" onclick="window.location.href='contributors.html'">
-            <button class="nav-btn">Contributors</button>
-          </li>
-          <li class="nav-item" data-page="workspace" onclick="window.location.href='workspace.html'">
-            <button class="nav-btn">Workspace</button>
-          </li>
-          <li class="nav-item" data-page="previous-designs" onclick="window.location.href='previous_designs.html'">
-            <button class="nav-btn">Previous Designs</button>
-          </li>
-          <li class="nav-item" id="auth-links">
-            <button class="nav-btn" onclick="openLogin()">Login</button>
-          </li>
-          <li class="nav-item" id="user-links" style="display: none;">
-            <button class="nav-btn" onclick="logout()">Logout</button>
-          </li>
         </ul>
       </nav>
-      <div id="user-greeting">
-        Hi, <span id="user-name"></span>
-      </div>
       <button id="nav-toggle" aria-label="Open navigation">&#9776;</button>
     </div>
   </header>
@@ -54,14 +39,20 @@
   <main>
     <section class="hero contributors-hero">
       <div class="hero-content">
-        <div class="hero-label">Our Awesome Team</div>
-        <h1 class="hero-title">Contributors</h1>
-        <ul class="contributors-list">
-          <li><span>Moyano, Sarge Dave M.</span></li>
-          <li><span>Mallari, Merick Joshua</span></li>
-          <li><span>Quiambao, Christian Joshua</span></li>
-          <li><span>Dizon, Robby</span></li>
-        </ul>
+        <div class="contributors-layout">
+          <div class="contributors-left">
+            <div class="hero-label">Our Awesome Team</div>
+          </div>
+          <div class="contributors-right">
+            <h1 class="hero-title">Contributors</h1>
+            <ul class="contributors-list">
+              <li><span>Moyano, Sarge Dave M.</span></li>
+              <li><span>Mallari, Merick Joshua</span></li>
+              <li><span>Quiambao, Christian Joshua</span></li>
+              <li><span>Dizon, Robby</span></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -98,18 +89,24 @@
     <div class="login-content">
       <button class="close-btn" onclick="closeLogin()">&times;</button>
       <form class="login-form" id="loginForm">
-        <h2 class="login-title">Login to IMAGE2WEB</h2>
+        <h2 class="login-title">Login to Image2Web</h2>
         <div class="form-group">
           <label for="login-username">Email</label>
-          <input type="email" id="login-username" name="login-username" placeholder="Enter your email" required>
+          <input type="email" id="login-username" required>
         </div>
         <div class="form-group">
           <label for="login-password">Password</label>
-          <input type="password" id="login-password" name="login-password" placeholder="Enter your password" required>
+          <input type="password" id="login-password" required>
         </div>
-        <button type="submit" class="login-btn" style="width: 100%; margin: 0;">
-          Login
+        <button type="submit" class="login-btn">Login</button>
+        <button type="button" class="login-btn" id="google-signin-btn">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo"> Sign in with Google
         </button>
+        <div style="text-align:center; margin-top:1em;">
+          <button type="button" class="signup-link-btn" onclick="closeLogin(); openSignup();">Don't have an account? Sign up now!</button>
+          <br />
+          <button type="button" class="forgot-link-btn" onclick="window.location.href='reset-password.html'">Forgot password?</button>
+        </div>
       </form>
     </div>
   </div>
@@ -185,23 +182,8 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
 
-    // Authentication redirect function
-    function checkAuthAndRedirect() {
-      if (firebase && firebase.auth) {
-        firebase.auth().onAuthStateChanged(user => {
-          if (user) {
-            // User is logged in, check if they're not already on workspace page
-            const currentPath = window.location.pathname;
-            if (!currentPath.includes('workspace.html')) {
-              // User is logged in but not on workspace, redirect to workspace
-              window.location.href = 'workspace.html';
-            }
-          }
-        });
-      }
-    }
 
-    // Helper functions for modals (assuming they are in script.js or a global scope)
+    // Helper functions for modals
     function openLogin() {
       document.getElementById('loginModal').classList.add('active');
     }
@@ -226,52 +208,7 @@
       document.getElementById('aboutModal').classList.remove('active');
     }
 
-    function logout() {
-      firebase.auth().signOut().then(() => {
-        console.log("User logged out");
-        window.location.href = 'index.html'; // Redirect after logout
-      }).catch((error) => {
-        console.error("Logout Error:", error);
-        alert("Logout failed: " + error.message);
-      });
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
-      // Check if user is logged in and redirect to workspace
-      checkAuthAndRedirect();
-      
-      // User authentication check for header
-      firebase.auth().onAuthStateChanged(user => {
-        const authLinks = document.getElementById('auth-links');
-        const userLinks = document.getElementById('user-links');
-        const userGreeting = document.getElementById('user-greeting');
-        const userNameSpan = document.getElementById('user-name');
-
-        if (user) {
-          authLinks.style.display = 'none';
-          userLinks.style.display = 'list-item';
-          userGreeting.style.display = 'block';
-          userNameSpan.textContent = user.displayName || user.email || 'User';
-        } else {
-          authLinks.style.display = 'list-item';
-          userLinks.style.display = 'none';
-          userGreeting.style.display = 'none';
-          userNameSpan.textContent = '';
-        }
-      });
-
-      // Header navigation active state for desktop (assuming you want to highlight the current page)
-      const navItems = document.querySelectorAll('nav .nav-item');
-      const currentPage = "contributors"; // Set the current page identifier for contributors.html
-
-      navItems.forEach(item => {
-        if (item.dataset.page === currentPage) {
-          item.classList.add('active');
-        } else {
-          item.classList.remove('active');
-        }
-      });
-
       // Mobile Navigation Toggle
       const navToggle = document.getElementById('nav-toggle');
       const mainNav = document.querySelector('nav ul');

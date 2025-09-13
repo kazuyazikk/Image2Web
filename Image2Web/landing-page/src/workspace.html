@@ -8,7 +8,7 @@
     content="Your personal workspace on Image2Web. Manage your projects and conversions here. Designed by SeroTech.">
   <title>IMAGE2WEB - Your Workspace</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
     /* Mobile-first responsive styles */
@@ -21,27 +21,26 @@
       opacity: 1;
     }
 
-    /* access denied UI removed */
-
-    /* Mobile-optimized workspace layout */
+    /* Image2CodeAI Style Workspace Layout */
     .main-wrapper {
       display: flex;
       flex-direction: column;
       width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding-top: 10px;
+      max-width: 100%;
+      margin: 0;
+      padding: 10px 0;
     }
 
     .sidebar {
       width: 100%;
-      background: var(--modal-content-bg);
-      padding: 15px;
-      border-bottom: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      padding: 10px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 15px;
+      gap: 10px;
       order: 2;
     }
 
@@ -59,110 +58,164 @@
     .sidebar-nav li a,
     .logout-btn {
       display: block;
-      padding: 8px 12px;
+      padding: 6px 10px;
       color: var(--text-secondary);
       text-decoration: none;
       border-radius: 5px;
       transition: background 0.2s ease, color 0.2s ease;
-      font-size: 0.9em;
+      font-size: 0.85em;
       white-space: nowrap;
     }
 
     .sidebar-nav li a:hover,
     .logout-btn:hover {
       background: rgba(56, 189, 248, 0.1);
-      color: var(--primary-blue);
+      color: var(--secondary-blue);
     }
 
     .sidebar-nav li.active a {
-      background: var(--primary-blue);
-      color: var(--button-text);
+      background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+      color: var(--text-primary);
       font-weight: bold;
     }
 
     .sidebar-user {
-      padding-top: 15px;
-      border-top: 1px solid var(--border-color);
-      margin-top: 15px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      margin-top: 10px;
       text-align: center;
     }
 
     .sidebar-user p {
       color: var(--text-primary);
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       font-weight: bold;
-      font-size: 0.9em;
+      font-size: 0.85em;
     }
 
     .logout-btn {
       background: transparent;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--glass-border);
       color: var(--text-secondary);
       cursor: pointer;
       width: 100%;
-      font-family: 'Russo One', Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .main-content-area {
       flex-grow: 1;
-      padding: 15px;
-      background: var(--background-light);
+      padding: 20px;
+      background: transparent;
       order: 1;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: 20px;
+      height: calc(100vh - 120px);
     }
 
-    /* Workspace section cards */
-    .workspace-section-card {
-      background: var(--modal-content-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    /* Two Column Layout */
+    .workspace-left-column {
+      flex: 0 0 350px;
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
     }
 
-    .workspace-section-card h2 {
-      font-family: 'Russo One', sans-serif;
-      color: var(--primary-blue);
-      margin-top: 0;
+    .workspace-right-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    /* Input Section */
+    .input-section {
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      height: 100%;
+    }
+
+    .workspace-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 30px 0;
+      line-height: 1.2;
+    }
+
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
       margin-bottom: 20px;
-      font-size: 1.5em;
-      text-align: center;
     }
 
-    /* Form elements */
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
+    .add-images-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: transparent;
+      border: 2px solid var(--glass-border);
       color: var(--text-secondary);
-      margin-bottom: 8px;
+      border-radius: 8px;
+      font-size: 0.9rem;
       font-weight: 500;
-      text-align: left;
-      font-size: 0.9em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* Image upload area */
+    .add-images-btn:hover {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: var(--secondary-blue);
+      color: var(--secondary-blue);
+    }
+
+    .generate-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+      color: var(--text-primary);
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .generate-btn:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--tertiary-blue));
+      transform: translateY(-2px);
+    }
+
+    /* Image Upload Area */
     .image-upload-area {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 1.5rem;
-      border: 2px dashed var(--primary-blue);
-      border-radius: 10px;
-      padding: 15px;
+      border: 2px dashed var(--secondary-blue);
+      border-radius: 8px;
+      padding: 20px;
       text-align: center;
       min-height: 120px;
       justify-content: center;
       transition: background-color 0.3s ease, border-color 0.3s ease;
+      margin-bottom: 20px;
     }
 
     .image-upload-area.drag-over {
       background-color: rgba(56, 189, 248, 0.1);
-      border-color: var(--secondary-blue);
+      border-color: var(--primary-blue);
     }
 
     .upload-label {
@@ -171,16 +224,16 @@
       align-items: center;
       gap: 8px;
       padding: 10px 16px;
-      background: var(--primary-blue);
-      color: var(--button-text);
-      border-radius: 50px;
+      background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+      color: var(--text-primary);
+      border-radius: 8px;
       font-weight: 600;
       transition: background 0.3s ease, transform 0.2s ease;
       font-size: 0.9em;
     }
 
     .upload-label:hover {
-      background: var(--secondary-blue);
+      background: linear-gradient(135deg, var(--primary-blue), var(--tertiary-blue));
       transform: translateY(-2px);
     }
 
@@ -190,173 +243,186 @@
       border-radius: 8px;
       margin-top: 1rem;
       object-fit: contain;
-      border: 1px solid var(--border-color);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       display: none;
     }
 
     #fileName {
       margin-top: 10px;
       font-size: 0.9em;
-      color: var(--text-secondary);
+      color: #cbd5e1;
       word-break: break-all;
     }
 
-    /* Code inspector section */
-    .code-inspector-section {
-      background: var(--modal-content-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-    }
-
-    .code-inspector-section h2 {
-      font-family: 'Russo One', sans-serif;
-      color: var(--primary-blue);
-      margin-top: 0;
-      margin-bottom: 15px;
-      font-size: 1.5em;
-      text-align: center;
-    }
-
-    /* Mobile-optimized two-pane layout */
-    .two-pane-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 16px;
-    }
-
-    .inspector-pane, .code-pane, .css-pane {
-      background: #232946;
-      border-radius: 8px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .inspector-pane h3, .code-pane h3, .css-pane h3 {
-      color: #38bdf8;
-      margin-bottom: 12px;
-      font-size: 1.1em;
-      text-align: center;
-    }
-
-    /* Inspector spans full width and is taller for readable preview */
-    #inspector-preview {
-      width: 100%;
-      height: 500px;
-      background: #181823;
-      border: 2px dashed #38bdf8;
-      border-radius: 8px;
-    }
-
-    /* Editors should expand to show full content; autosize handled by JS */
-    .code-pane textarea, .css-pane textarea {
-      width: 100%;
-      min-height: 120px;
-      border-radius: 8px;
-      padding: 10px;
-      background: #181823;
-      color: #fff;
-      font-size: 0.85em;
-      border: 1px solid #38bdf8;
-      margin-bottom: 12px;
-      resize: none;
-      overflow: hidden; /* hide internal scrollbar; JS will expand height */
-      font-family: 'Courier New', monospace;
-      box-sizing: border-box;
-    }
-
-    #saveHtmlBtn2, #saveCssBtn {
+    .remove-image-btn {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: #f8fafc;
       border: none;
+      padding: 8px 16px;
       border-radius: 8px;
-      padding: 10px 16px;
-      font-size: 0.9em;
-      cursor: pointer;
-      align-self: center;
-      width: 100%;
-      max-width: 160px;
       font-weight: 600;
+      cursor: pointer;
       transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      margin-top: 10px;
     }
 
-    #saveHtmlBtn2 {
-      background: #a259ff;
-      color: #fff;
+    .status-message {
+      margin-top: 15px;
+      font-size: 0.9em;
+      text-align: left;
+      min-height: 20px;
+      color: #cbd5e1;
     }
 
-    #saveHtmlBtn2:hover {
-      background: #8b47d4;
-      transform: translateY(-2px);
-    }
-
-    #saveCssBtn {
-      background: #38bdf8;
-      color: #fff;
-    }
-
-    #saveCssBtn:hover {
-      background: #0ea5e9;
-      transform: translateY(-2px);
-    }
-
-    /* Export controls */
-    .import-export-controls {
+    /* Output Section */
+    .output-section {
+      height: 100%;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-bottom: 20px;
     }
 
-    #exportBtn, #refreshFilesBtn {
-      background: var(--tertiary-blue);
-      color: var(--button-text);
-      padding: 10px 16px;
+    .output-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 16px 20px;
+      background: transparent;
       border: none;
-      border-radius: 50px;
-      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-      font-family: 'Russo One', Arial, sans-serif;
-      font-size: 0.9em;
-      text-align: center;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
     }
 
-    #exportBtn:hover, #refreshFilesBtn:hover {
-      background: #0ea5e9;
-      transform: translateY(-2px);
-    }
-
-    #filePickerContainer {
-      margin-bottom: 15px;
-      font-size: 0.9em;
-    }
-
-    #filePickerContainer strong {
-      display: block;
-      margin-bottom: 8px;
+    .tab-btn.active {
+      background: var(--glass-bg);
       color: var(--text-primary);
     }
 
-    #filePickerContainer label {
-      display: flex;
-      align-items: center;
-      margin-bottom: 6px;
+    .tab-btn:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.05);
       color: var(--text-secondary);
     }
 
-    #filePickerContainer input[type="checkbox"] {
-      margin-right: 8px;
+    .save-zip-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+      border: none;
+      color: var(--text-primary);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      margin-left: 8px;
     }
 
-    /* Status message */
-    #statusMessage {
-      margin-top: 15px;
-      font-size: 0.9em;
-      text-align: center;
-      min-height: 20px;
+    .save-zip-btn:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--tertiary-blue));
+      transform: translateY(-2px);
+    }
+
+    .output-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tab-content {
+      display: none;
+      flex: 1;
+      padding: 20px;
+    }
+
+    .tab-content.active {
+      display: flex;
+    }
+
+    #preview-tab {
+      padding: 0;
+    }
+
+    #inspector-preview {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #f8fafc;
+    }
+
+    .code-editors {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      height: 100%;
+    }
+
+    .code-editor-section {
+      flex: 1 1 50%;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .code-editor-section h4 {
+      color: #f8fafc;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 0 0 10px 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .code-editor {
+      flex: 1;
+      width: 100%;
+      min-width: 0;
+      padding: 20px;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .code-editor:focus {
+      border-color: var(--secondary-blue);
+    }
+
+    .save-btn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+      color: var(--text-primary);
+      border: none;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      align-self: flex-start;
+    }
+
+    .save-btn:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--tertiary-blue));
+      transform: translateY(-1px);
     }
 
     /* Mobile hamburger menu */
@@ -364,7 +430,7 @@
       display: block;
       background: none;
       border: none;
-      color: var(--primary-blue);
+      color: #38bdf8;
       font-size: 1.8em;
       cursor: pointer;
       z-index: 1003;
@@ -385,7 +451,7 @@
       .sidebar {
         width: 200px;
         min-width: 200px;
-        border-right: 1px solid var(--border-color);
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
         border-bottom: none;
         border-radius: 10px 0 0 10px;
         order: 1;
@@ -399,32 +465,17 @@
         padding: 20px;
         border-radius: 0 10px 10px 0;
         order: 2;
-      }
-      
-      .two-pane-layout {
         flex-direction: row;
-        flex-wrap: wrap;
+        height: calc(100vh - 140px);
       }
-      
-      .inspector-pane {
-        flex: 1 1 100%;
-        order: 1;
+
+      .workspace-left-column {
+        flex: 0 0 320px;
+        min-width: 280px;
       }
-      
-      .code-pane, .css-pane {
-        flex: 1 1 calc(50% - 8px);
-      }
-      
-      .code-pane {
-        order: 2;
-      }
-      
-      .css-pane {
-        order: 3;
-      }
-      
-      .import-export-controls {
-        flex-direction: row;
+
+      .workspace-right-column {
+        flex: 1;
       }
     }
 
@@ -435,34 +486,85 @@
       }
 
       .main-content-area {
-        padding: 20px 40px;
+        padding: 20px;
       }
 
-      /* Desktop layout: inspector spans full width on first row, editors sit side-by-side under it */
-      .two-pane-layout {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto;
-        gap: 20px;
+      .workspace-left-column {
+        flex: 0 0 380px;
+        min-width: 350px;
       }
 
-      .inspector-pane {
-        grid-column: 1 / -1; /* span full width */
+      .workspace-title {
+        font-size: 3rem;
+      }
+    }
+
+    /* Tablet styles */
+    @media (max-width: 1023px) and (min-width: 768px) {
+      .code-editors {
+        flex-direction: row;
+        gap: 12px;
       }
 
-      .code-pane {
-        grid-column: 1 / 2;
+      .code-editor-section {
+        flex: 1 1 50%;
       }
 
-      .css-pane {
-        grid-column: 2 / 3;
+      .code-editor {
+        font-size: 0.85rem;
+        padding: 18px;
+      }
+    }
+
+    /* Mobile styles */
+    @media (max-width: 767px) {
+      .main-wrapper {
+        padding: 10px 0;
       }
 
-      #inspector-preview {
-        height: 500px;
+      .main-content-area {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
       }
 
-      .code-pane textarea, .css-pane textarea {
-        min-height: 220px;
+      .workspace-left-column {
+        flex: none;
+        min-width: auto;
+        margin-bottom: 20px;
+      }
+
+      .workspace-right-column {
+        min-height: 500px;
+        flex: 1;
+      }
+
+      .code-editors {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .code-editor {
+        font-size: 0.8rem;
+        padding: 15px;
+      }
+
+      .workspace-title {
+        font-size: 2rem;
+      }
+
+      .input-section {
+        padding: 20px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .add-images-btn,
+      .generate-btn {
+        width: 100%;
+        justify-content: center;
       }
     }
 
@@ -510,7 +612,7 @@
         </svg>
         <div>
           <span class="brand">IMAGE2WEB</span>
-          <div class="slogan">Designed by SeroTech</div>
+          <div class="slogan">Building Tomorrow's Digital Experience</div>
         </div>
       </div>
       <nav>
@@ -540,7 +642,6 @@
           <ul>
             <li data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
             <li class="active" data-page="workspace"><a href="workspace.html">Workspace</a></li>
-            <li data-page="tutorials"><a href="#">Tutorials/Guide</a></li>
           </ul>
         </nav>
         <div class="sidebar-user">
@@ -550,44 +651,68 @@
       </aside>
 
       <main class="main-content-area">
-        <section class="workspace-section-card">
-          <h2>Generate Code from Wireframe</h2>
+        <!-- Left Column - Input Controls -->
+        <div class="workspace-left-column">
+          <div class="input-section">
+            <h1 class="workspace-title">What do you want to build today?</h1>
 
-          <div class="image-upload-area" id="dropArea">
-            <label for="imageUpload" class="upload-label" id="uploadLabel">
-              <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="20" height="20">
-                <path
-                  d="M10 2a.75.75 0 01.75.75v6.5h6.5a.75.75 0 010 1.5h-6.5v6.5a.75.75 0 01-1.5 0v-6.5h-6.5a.75.75 0 010-1.5h6.5v-6.5A.75.75 0 0110 2z">
-                </path>
-              </svg>
-              Upload Wireframe Here
-            </label>
-            <input type="file" id="imageUpload" accept="image/*" style="display: none;">
-            <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
-            <p id="fileName"></p>
-            <button id="removeImageBtn" class="download-code-btn" style="display: none; margin-top: 10px;">Remove Image</button>
-          </div>
-
-          <button id="generateCodeBtn" class="workspace-cta-btn">Generate Code!</button>
-          <button id="viewGeneratedBtn" class="workspace-cta-btn" style="margin-left:16px;background:#7dd3fc;color:#08203a;">View HTML/CSS</button>
-          <p id="statusMessage"></p>
-        </section>
-
-  <!-- Export controls removed -->
-
-        <section class="workspace-section-card code-inspector-section">
-          <!-- Two-pane Inspector/Code section -->
-          <h2>Code Inspector</h2>
-          <div class="two-pane-layout">
-            <!-- Inspector (left) -->
-            <div class="inspector-pane">
-              <h3>Inspector</h3>
-              <iframe id="inspector-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+            <div class="action-buttons">
+              <button class="add-images-btn" id="addImagesBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Add Images
+              </button>
+              <button class="generate-btn" id="generateCodeBtn">Generate</button>
             </div>
-            <!-- Code (middle) -->
-            <div class="code-pane">
-              <h3>Code (HTML)</h3>
-              <textarea id="workspace-html-editor">&lt;!DOCTYPE html&gt;
+
+            <div class="image-upload-area" id="dropArea" style="display: none;">
+              <label for="imageUpload" class="upload-label" id="uploadLabel">
+                <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="20" height="20">
+                  <path d="M10 2a.75.75 0 01.75.75v6.5h6.5a.75.75 0 010 1.5h-6.5v6.5a.75.75 0 01-1.5 0v-6.5h-6.5a.75.75 0 010-1.5h6.5v-6.5A.75.75 0 0110 2z"></path>
+                </svg>
+                Upload Wireframe Here
+              </label>
+              <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+              <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
+              <p id="fileName"></p>
+              <button id="removeImageBtn" class="remove-image-btn" style="display: none;">Remove Image</button>
+            </div>
+
+            <p id="statusMessage" class="status-message"></p>
+          </div>
+        </div>
+
+        <!-- Right Column - Preview/Code Output -->
+        <div class="workspace-right-column">
+          <div class="output-section">
+            <div class="output-tabs">
+              <button class="tab-btn active" data-tab="preview">Preview</button>
+              <button class="tab-btn" data-tab="code">Code</button>
+              <button class="save-zip-btn" id="saveZipBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 9L12 5L16 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Save ZIP
+              </button>
+            </div>
+
+            <div class="output-content">
+              <!-- Preview Tab Content -->
+              <div class="tab-content active" id="preview-tab">
+                <iframe id="inspector-preview" sandbox="allow-scripts allow-same-origin"></iframe>
+              </div>
+
+              <!-- Code Tab Content -->
+              <div class="tab-content" id="code-tab">
+                <div class="code-editors">
+                  <div class="code-editor-section">
+                    <h4>HTML</h4>
+                    <textarea id="workspace-html-editor" class="code-editor">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
   &lt;title&gt;Page Title&lt;/title&gt;
@@ -597,22 +722,24 @@
   &lt;p&gt;This is a paragraph.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;</textarea>
-              <button id="saveHtmlBtn2">Save as HTML file</button>
-            </div>
-            <!-- CSS (right) -->
-            <div class="css-pane">
-              <h3>Code (CSS)</h3>
-              <textarea id="workspace-css-editor">body {
+                    <button id="saveHtmlBtn2" class="save-btn">Save HTML</button>
+                  </div>
+                  <div class="code-editor-section">
+                    <h4>CSS</h4>
+                    <textarea id="workspace-css-editor" class="code-editor">body {
   background: #fff;
   color: #232946;
 }
 h1 {
   color: #38bdf8;
 }</textarea>
-              <button id="saveCssBtn">Save as CSS file</button>
+                    <button id="saveCssBtn" class="save-btn">Save CSS</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
       </main>
     </div>
   </div>
@@ -701,9 +828,6 @@ h1 {
         <a href="#" class="footer-link">Blog</a>
       </div>
       <div class="footer-section">
-        <a href="#" class="footer-link">Tutorials</a>
-      </div>
-      <div class="footer-section">
         <h3 class="footer-title">Contact</h3>
         <p class="footer-text">📧 our email</p>
         <p class="footer-text">📍 A Wireframe to Website Generator</p>
@@ -781,8 +905,111 @@ h1 {
       document.querySelector('.mobile-overlay').classList.toggle('active');
     });
 
-    // Workspace Functionality JavaScript
-    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching functionality
+      function initTabs() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const targetTab = btn.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and contents
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            btn.classList.add('active');
+            document.getElementById(targetTab + '-tab').classList.add('active');
+          });
+        });
+      }
+
+      // Add Images button functionality
+      function initAddImages() {
+        const addImagesBtn = document.getElementById('addImagesBtn');
+        const imageUploadArea = document.getElementById('dropArea');
+        
+        addImagesBtn.addEventListener('click', () => {
+          imageUploadArea.style.display = imageUploadArea.style.display === 'none' ? 'flex' : 'none';
+        });
+      }
+
+      // Save ZIP functionality
+      function initSaveZip() {
+        const saveZipBtn = document.getElementById('saveZipBtn');
+        
+        saveZipBtn.addEventListener('click', async () => {
+          try {
+            const htmlContent = document.getElementById('workspace-html-editor').value;
+            const cssContent = document.getElementById('workspace-css-editor').value;
+            
+            if (!htmlContent && !cssContent) {
+              alert('No code to save. Please generate some code first.');
+              return;
+            }
+
+            // Create a new JSZip instance
+            const zip = new JSZip();
+            
+            // Add HTML file
+            if (htmlContent) {
+              zip.file('index.html', htmlContent);
+            }
+            
+            // Add CSS file
+            if (cssContent) {
+              zip.file('styles.css', cssContent);
+            }
+            
+            // Add a README file
+            const readmeContent = `# Generated Website
+
+This project was generated using Image2Web.
+
+## Files:
+- index.html: The main HTML file
+- styles.css: The CSS stylesheet
+
+## How to use:
+1. Open index.html in your web browser
+2. The page will automatically load the styles from styles.css
+
+Generated on: ${new Date().toLocaleString()}
+`;
+            zip.file('README.md', readmeContent);
+            
+            // Generate the ZIP file
+            const zipBlob = await zip.generateAsync({type: 'blob'});
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(zipBlob);
+            link.download = `image2web-project-${Date.now()}.zip`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success message
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = 'Project saved as ZIP file successfully!';
+            statusMessage.style.color = '#10b981';
+            
+          } catch (error) {
+            console.error('Error creating ZIP file:', error);
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = 'Error saving ZIP file. Please try again.';
+            statusMessage.style.color = '#ef4444';
+          }
+        });
+      }
+
+      // Workspace Functionality JavaScript
+      document.addEventListener('DOMContentLoaded', function() {
+        // Initialize new functionality
+        initTabs();
+        initAddImages();
+        initSaveZip();
       const imageUpload = document.getElementById('imageUpload');
       const imagePreview = document.getElementById('imagePreview');
       const fileNameDisplay = document.getElementById('fileName');
@@ -913,7 +1140,7 @@ h1 {
               const projects = JSON.parse(raw);
               const entry = {
                 id: Date.now(),
-                title: `Generated ${new Date().toLocaleString()}`,
+                title: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : `Generated ${new Date().toLocaleString()}`,
                 filename: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : undefined,
                 thumbnail: undefined,
                 html: data.html_content || '',
@@ -1014,7 +1241,7 @@ h1 {
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
                     user_id: currentUser.uid,
-                    title: `Generated ${new Date().toLocaleString()}`,
+                    title: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : `Generated ${new Date().toLocaleString()}`,
                     html: data.html_content || '',
                     css: data.css_content || '',
                     html_url: data.html_url || '',

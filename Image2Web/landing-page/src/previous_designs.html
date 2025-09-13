@@ -25,7 +25,7 @@
     content="View your previous wireframe to website conversions on Image2Web. Manage and review your past projects. Designed by SeroTech.">
   <title>IMAGE2WEB - Previous Designs</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
     /* Add any specific styles for previous_designs.html here if needed,
@@ -52,9 +52,10 @@
     .sidebar {
       width: 250px; /* Fixed width for the sidebar */
       min-width: 200px; /* Minimum width */
-      background: var(--modal-content-bg);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
       padding: 20px;
-      border-right: 1px solid var(--border-color);
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -77,41 +78,43 @@
     .logout-btn {
       display: block;
       padding: 10px 15px;
-      color: var(--text-secondary);
+      color: #cbd5e1;
       text-decoration: none;
       border-radius: 5px;
       transition: background 0.2s ease, color 0.2s ease;
       font-size: 1.1em;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .sidebar-nav li a:hover,
     .logout-btn:hover {
-      background: rgba(var(--primary-blue), 0.1);
-      color: var(--primary-blue);
+      background: rgba(56, 189, 248, 0.1);
+      color: #38bdf8;
     }
 
     .sidebar-nav li.active a {
-      background: var(--primary-blue);
-      color: var(--button-text);
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #f8fafc;
       font-weight: bold;
     }
 
     .sidebar-user {
       padding-top: 20px;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
       margin-top: auto;
     }
 
     .sidebar-user p {
-      color: var(--text-primary);
+      color: #f8fafc;
       margin-bottom: 10px;
       font-weight: bold;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .main-content-area {
       flex-grow: 1;
       padding: 20px 40px;
-      background: var(--background-light);
+      background: transparent;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
       box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
@@ -126,14 +129,12 @@
     }
 
     .projects-section h2 {
+      font-family: 'Poppins', sans-serif;
       font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 700;
+      color: #38bdf8;
       margin-bottom: 2rem;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-family: 'Russo One', Arial, sans-serif;
-      text-align: center; /* Center the title */
+      text-align: center;
     }
 
     .projects-grid {
@@ -144,15 +145,15 @@
     }
 
     .project-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 15px;
       padding: 1.5rem;
       text-align: left;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-  overflow: hidden; /* ensure large images don't overflow card */
+      overflow: hidden; /* ensure large images don't overflow card */
     }
 
     /* Compact thumbnail in project card and image modal */
@@ -196,13 +197,15 @@
       font-size: 1.3rem;
       color: #38bdf8;
       margin-bottom: 0.5rem;
-      font-family: 'Russo One', Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
     }
 
     .project-card p {
       font-size: 0.95rem;
-      color: var(--text-secondary);
+      color: #cbd5e1;
       margin-bottom: 1rem;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .project-card .project-link {
@@ -214,6 +217,7 @@
       text-decoration: none;
       font-size: 0.9rem;
       transition: filter 0.2s ease;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     button.project-link { border: none; cursor: pointer; }
 
@@ -229,6 +233,7 @@
       border: none;
       cursor: pointer;
       transition: filter 0.2s ease;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     .primary-btn:hover { filter: brightness(1.1); }
 
@@ -257,7 +262,7 @@
       .sidebar {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 0;
         padding: 15px 20px;
       }
@@ -322,7 +327,7 @@
         </svg>
         <div>
           <span class="brand">IMAGE2WEB</span>
-          <div class="slogan">Designed by SeroTech</div>
+          <div class="slogan">Building Tomorrow's Digital Experience</div>
         </div>
       </div>
       <nav>

@@ -8,7 +8,7 @@
     content="Image2Web lets you turn images into beautiful, responsive websites instantly. Designed by SeroTech.">
   <title>Image2Web - by SeroTech</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
   #user-links { display: none; }
@@ -131,13 +131,21 @@
   <!-- HERO SECTION -->
   <main>
     <section class="hero">
-      <div class="hero-content">
-        <div class="hero-chip">✨ Digital Innovation Hub</div>
-        <h1 class="hero-title gradient">The Future<br>of Technology</h1>
-        <p class="hero-desc">Empowering developers to build extraordinary digital experiences with cutting-edge tools and insights.</p>
-        <div class="hero-btn-group">
-          <button class="hero-btn primary" onclick="openSignup()">Get Started</button>
-          <button class="github-btn secondary" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')">View on GitHub</button>
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title">Instantly convert your <br>Wireframes to Code! <span class="lightning">⚡</span></h1>
+            <p class="hero-desc">Image2Web converts Wireframes to HTML CSS Code instantly!<br>Just upload your Image and generate code to replicate the same.</p>
+            <button class="hero-btn primary" onclick="openSignup()">
+              Start Generating Code
+              <span class="btn-arrow">→</span>
+            </button>
+          </div>
+          <div class="hero-video">
+            <div class="video-container">
+              <iframe src="https://www.youtube.com/embed/CJtrc-qnbOo" title="Image2Web Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -220,12 +228,6 @@
         <h3 class="footer-title">Quick Links</h3>
         <a href="#" class="footer-link" onclick="window.location.href='index.html'">Home</a>
         <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
-      </div>
-      <div class="footer-section">
-        <h3 class="footer-title">Tutorial</h3>
-        <div class="tutorial-video">
-          <iframe src="https://www.youtube.com/embed/CJtrc-qnbOo" title="Tutorial Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
       </div>
       
     </div>
