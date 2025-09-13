@@ -570,6 +570,9 @@
         });
       }
 
+      // Make logout function globally accessible
+      window.logout = logout;
+
       // Function to load existing projects for the logged-in user (from Firebase Firestore)
       let currentProjects = [];
 
@@ -818,14 +821,6 @@
           item.classList.remove('active');
         }
       });
-    });
-  </script>
-  <script>
-    // Check authentication and redirect to workspace if logged in
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof checkAuthAndRedirect === 'function') {
-        checkAuthAndRedirect();
-      }
     });
   </script>
   <button id="nav-toggle" aria-label="Open navigation" style="display:none;">

@@ -965,6 +965,11 @@ h1 {
         <button type="submit" class="login-btn" style="width: 100%; margin: 0;">
           Login
         </button>
+        <div style="text-align:center; margin-top:1em;">
+          <button type="button" class="signup-link-btn" onclick="closeLogin(); openSignup();">Don't have an account? Sign up now!</button>
+          <br />
+          <button type="button" class="forgot-link-btn" onclick="window.location.href='reset-password.html'">Forgot password?</button>
+        </div>
       </form>
     </div>
   </div>
@@ -1135,6 +1140,53 @@ h1 {
         alert("Logout failed: " + error.message);
       });
     }
+
+    // Login form functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const email = document.getElementById('login-username').value;
+          const password = document.getElementById('login-password').value;
+          
+          try {
+            const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+            console.log("User logged in:", userCredential.user.email);
+            closeLogin();
+          } catch (error) {
+            console.error("Login Error:", error);
+            alert("Login failed: " + error.message);
+          }
+        });
+      }
+
+      // Signup form functionality
+      const signupForm = document.getElementById('signupForm');
+      if (signupForm) {
+        signupForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const username = document.getElementById('signup-username').value;
+          const email = document.getElementById('signup-email').value;
+          const password = document.getElementById('signup-password').value;
+          
+          try {
+            const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            await userCredential.user.updateProfile({
+              displayName: username
+            });
+            console.log("User signed up:", userCredential.user.email);
+            closeSignup();
+            document.getElementById('successMessage').style.display = 'block';
+          } catch (error) {
+            console.error("Signup Error:", error);
+            alert("Signup failed: " + error.message);
+          }
+        });
+      }
+    });
 
     // Mobile navigation toggle
     document.getElementById('nav-toggle').addEventListener('click', function() {
@@ -1378,8 +1430,10 @@ Generated on: ${new Date().toLocaleString()}
               const projects = JSON.parse(raw);
               const entry = {
                 id: Date.now(),
-                title: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : `Generated ${new Date().toLocaleString()}`,
+                name: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : 'Generated Project',
+                title: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : 'Generated Project',
                 filename: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : undefined,
+                originalImageUrl: undefined,
                 thumbnail: undefined,
                 html: data.html_content || '',
                 css: data.css_content || '',
@@ -1387,58 +1441,19 @@ Generated on: ${new Date().toLocaleString()}
               };
               // Try to generate a thumbnail snapshot of the generated preview (inspector) so Previous Designs shows the output
               try {
-                const htmlContent = document.getElementById('workspace-html-editor').value || '';
-                const cssContent = document.getElementById('workspace-css-editor').value || '';
-                const maxDim = 300;
-
-                // fallback immediate thumbnail: uploaded imagePreview if present
+                // Use the uploaded image as thumbnail
                 const imgEl = document.getElementById('imagePreview');
                 if (imgEl && imgEl.src && imgEl.src !== '#' && imgEl.style.display !== 'none') {
+                  entry.originalImageUrl = imgEl.src;
                   entry.thumbnail = imgEl.src;
+                  console.log('Using uploaded image as thumbnail:', imgEl.src);
+                } else {
+                  console.log('No uploaded image found for thumbnail');
                 }
 
-                // Asynchronously create an SVG foreignObject that wraps the generated HTML+CSS and render to canvas
-                (function(html, css, entryId) {
-                  try {
-                    const wrapper = `<div xmlns='http://www.w3.org/1999/xhtml'><style>${css}</style>${html}</div>`;
-                    // choose a render width; 900px wide is usually fine and will be scaled down
-                    const renderW = 900;
-                    const renderH = 600;
-                    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${renderW}' height='${renderH}'><foreignObject width='100%' height='100%'>${wrapper}</foreignObject></svg>`;
-                    const img = new Image();
-                    img.onload = function() {
-                      try {
-                        // scale to maxDim preserving aspect
-                        let w = img.width, h = img.height;
-                        if (w > h) {
-                          if (w > maxDim) { h = Math.round(h * (maxDim / w)); w = maxDim; }
-                        } else {
-                          if (h > maxDim) { w = Math.round(w * (maxDim / h)); h = maxDim; }
-                        }
-                        const canvas = document.createElement('canvas');
-                        canvas.width = w; canvas.height = h;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, w, h);
-                        const small = canvas.toDataURL('image/png');
-                        try {
-                          const raw2 = localStorage.getItem('projects_list') || '[]';
-                          const list2 = JSON.parse(raw2);
-                          const idx2 = list2.findIndex(p => String(p.id) === String(entryId));
-                          if (idx2 !== -1) {
-                            list2[idx2].thumbnail = small;
-                            localStorage.setItem('projects_list', JSON.stringify(list2));
-                            localStorage.setItem('projects_list_updated_at', String(Date.now()));
-                          }
-                        } catch (ee) { /* ignore thumbnail replace errors */ }
-                      } catch (e) { /* ignore drawing errors */ }
-                    };
-                    img.onerror = function() { /* ignore errors */ };
-                    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-                  } catch (e) {
-                    console.warn('inspector thumbnail generation failed', e);
-                  }
-                })(htmlContent, cssContent, entry.id);
-              } catch (e) { console.warn('thumbnail generation failed', e); }
+              } catch (e) {
+                console.warn('Thumbnail generation failed:', e);
+              }
               projects.unshift(entry);
               // keep list reasonable in size (optional): keep latest 100
               if (projects.length > 100) projects.length = 100;
@@ -1483,7 +1498,9 @@ Generated on: ${new Date().toLocaleString()}
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
                     user_id: currentUser.uid,
-                    title: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : `Generated ${new Date().toLocaleString()}`,
+                    name: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : 'Generated Project',
+                    title: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : 'Generated Project',
+                    originalImageUrl: document.getElementById('imagePreview')?.src || '',
                     html: data.html_content || '',
                     css: data.css_content || '',
                     html_url: data.html_url || '',
@@ -1523,7 +1540,9 @@ Generated on: ${new Date().toLocaleString()}
                 try {
                   const db = firebase.firestore();
                   const docRef = await db.collection('users').doc(currentUser.uid).collection('projects').add({
-                    title: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : `Generated ${new Date().toLocaleString()}`,
+                    name: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : 'Generated Project',
+                    title: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : 'Generated Project',
+                    originalImageUrl: document.getElementById('imagePreview')?.src || '',
                     html: data.html_content || '',
                     css: data.css_content || '',
                     html_url: data.html_url || '',
