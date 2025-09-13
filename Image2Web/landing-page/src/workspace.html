@@ -198,6 +198,7 @@
       transform: translateY(-2px);
     }
 
+
     /* Image Upload Area */
     .image-upload-area {
       display: flex;
@@ -617,6 +618,121 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
+    /* Tutorial Modal Styles */
+    .tutorial-modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background: rgba(18, 0, 47, 0.8);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tutorial-modal.active {
+      display: flex;
+    }
+
+    .tutorial-content {
+      background: var(--modal-content-bg);
+      margin: 5% auto;
+      padding: 2rem;
+      border-radius: 16px;
+      max-width: 800px;
+      width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      position: relative;
+      color: var(--text-primary);
+    }
+
+    .tutorial-title {
+      color: var(--secondary-blue);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .tutorial-section {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      border-left: 4px solid var(--secondary-blue);
+    }
+
+    .tutorial-section h3 {
+      color: var(--secondary-blue);
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .tutorial-section p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .tutorial-section ul {
+      color: var(--text-secondary);
+      padding-left: 1.5rem;
+    }
+
+    .tutorial-section li {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .video-link {
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .youtube-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #FF0000, #CC0000);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .youtube-link:hover {
+      background: linear-gradient(135deg, #CC0000, #990000);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 2rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      color: var(--secondary-blue);
+    }
   </style>
 </head>
 
@@ -675,6 +791,7 @@
           <ul>
             <li data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
             <li class="active" data-page="workspace"><a href="workspace.html">Workspace</a></li>
+            <li data-page="tutorial"><a href="#" onclick="openTutorial(); return false;">Tutorial</a></li>
           </ul>
         </nav>
         <div class="sidebar-user">
@@ -843,6 +960,62 @@ h1 {
     </div>
   </div>
 
+  <div class="tutorial-modal" id="tutorialModal">
+    <div class="tutorial-content">
+      <button class="close-btn" onclick="closeTutorial()">&times;</button>
+      <h2 class="tutorial-title">How to Use Image2Web</h2>
+      
+      <div class="tutorial-section">
+        <h3>📸 Step 1: Upload Your Wireframe</h3>
+        <p>Click the "Add Images" button to upload your wireframe or design image. Supported formats include PNG, JPG, and other common image formats.</p>
+      </div>
+
+      <div class="tutorial-section">
+        <h3>⚡ Step 2: Generate Code</h3>
+        <p>Once your image is uploaded, click the "Generate" button. Our AI will analyze your wireframe and automatically generate HTML and CSS code.</p>
+      </div>
+
+      <div class="tutorial-section">
+        <h3>👀 Step 3: Preview Your Website</h3>
+        <p>Switch to the "Preview" tab to see your generated website in action. The preview updates in real-time as you make changes.</p>
+      </div>
+
+      <div class="tutorial-section">
+        <h3>✏️ Step 4: Edit Your Code</h3>
+        <p>Switch to the "Code" tab to view and edit the generated HTML and CSS. Make any customizations you need to perfect your website.</p>
+      </div>
+
+      <div class="tutorial-section">
+        <h3>💾 Step 5: Save Your Project</h3>
+        <p>Use the "Save ZIP" button to download your complete project files, or save individual HTML/CSS files using the save buttons.</p>
+      </div>
+
+      <div class="tutorial-section">
+        <h3>📚 Additional Resources</h3>
+        <p>Watch our comprehensive tutorial video to see Image2Web in action:</p>
+        <div class="video-link">
+          <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" class="youtube-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z" fill="#FF0000"/>
+              <polygon points="9.75,15.02 15.5,12 9.75,8.98" fill="white"/>
+            </svg>
+            Watch Tutorial on YouTube
+          </a>
+        </div>
+      </div>
+
+      <div class="tutorial-section">
+        <h3>💡 Pro Tips</h3>
+        <ul>
+          <li>Use clear, high-contrast wireframes for best results</li>
+          <li>Keep your designs simple and well-structured</li>
+          <li>Test your generated code in different browsers</li>
+          <li>Save your projects regularly to avoid losing work</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <div class="footer-content">
       <div class="footer-section">
@@ -919,6 +1092,14 @@ h1 {
 
     function closeAbout() {
       document.getElementById('aboutModal').classList.remove('active');
+    }
+
+    function openTutorial() {
+      document.getElementById('tutorialModal').classList.add('active');
+    }
+
+    function closeTutorial() {
+      document.getElementById('tutorialModal').classList.remove('active');
     }
 
     function logout() {
