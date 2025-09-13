@@ -356,7 +356,6 @@
           <ul>
             <li class="active" data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
             <li data-page="workspace"><a href="workspace.html">Workspace</a></li>
-            <li data-page="tutorials"><a href="#">Tutorials/Guide</a></li>
           </ul>
         </nav>
       <div class="sidebar-user">
@@ -680,8 +679,16 @@
           const raw = localStorage.getItem('projects_list') || '[]';
           const list = JSON.parse(raw);
           if (Array.isArray(list) && list.length) {
-            // normalize to currentProjects shape used by renderProjects
-            currentProjects = list.map(p => ({ id: p.id, title: p.title, name: p.title, html: p.html, css: p.css, originalImageUrl: p.thumbnail || p.originalImageUrl }));
+          // normalize to currentProjects shape used by renderProjects
+          currentProjects = list.map(p => ({ 
+            id: p.id, 
+            title: p.title, 
+            name: p.title, 
+            html: p.html, 
+            css: p.css, 
+            originalImageUrl: p.thumbnail || p.originalImageUrl,
+            elementCount: p.elementCount || 0
+          }));
             renderProjects();
             return;
           }

@@ -337,12 +337,14 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      height: 100%;
     }
 
     .tab-content {
       display: none;
       flex: 1;
       padding: 20px;
+      height: 100%;
     }
 
     .tab-content.active {
@@ -351,6 +353,8 @@
 
     #preview-tab {
       padding: 0;
+      height: 100%;
+      flex-direction: column;
     }
 
     #inspector-preview {
@@ -358,6 +362,8 @@
       height: 100%;
       border: none;
       background: #f8fafc;
+      flex: 1;
+      min-height: 0;
     }
 
     .code-editors {
@@ -584,7 +590,8 @@
     /* Large desktop styles */
     @media (min-width: 1200px) {
       #inspector-preview {
-        height: 60vh;
+        height: 100%;
+        min-height: 70vh;
       }
 
       .code-pane textarea, .css-pane textarea {
@@ -1170,7 +1177,8 @@ Generated on: ${new Date().toLocaleString()}
                 filename: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : undefined,
                 thumbnail: undefined,
                 html: data.html_content || '',
-                css: data.css_content || ''
+                css: data.css_content || '',
+                elementCount: data.detected_elements || 0
               };
               // Try to generate a thumbnail snapshot of the generated preview (inspector) so Previous Designs shows the output
               try {
@@ -1260,6 +1268,9 @@ Generated on: ${new Date().toLocaleString()}
           try {
             const currentUser = firebase.auth().currentUser;
             if (currentUser) {
+              // Get the last saved project ID from localStorage
+              const lastId = localStorage.getItem('projects_list_last_id');
+              
               // Call backend to save metadata/content
               try {
                 const saveResp = await fetch('/api/save_project', {
@@ -1272,13 +1283,13 @@ Generated on: ${new Date().toLocaleString()}
                     css: data.css_content || '',
                     html_url: data.html_url || '',
                     css_url: data.css_url || '',
-                    elementCount: data.detected_elements || 0
+                    elementCount: data.detected_elements || 0,
+                    localId: lastId // Include local ID to prevent duplicates
                   })
                 });
                 const saved = await saveResp.json();
                 if (saveResp.ok && saved && saved.success) {
                   // update local metadata so previous_designs shows the server id quickly
-                  const lastId = localStorage.getItem('projects_list_last_id');
                   try {
                     const raw = localStorage.getItem('projects_list') || '[]';
                     const projects = JSON.parse(raw);
@@ -1286,6 +1297,7 @@ Generated on: ${new Date().toLocaleString()}
                     const idx = projects.findIndex(p => String(p.id) === String(lastId));
                     if (idx !== -1) {
                       projects[idx].id = saved.id;
+                      projects[idx].serverId = saved.id; // Mark as synced with server
                       localStorage.setItem('projects_list', JSON.stringify(projects));
                       // If this id was previously marked deleted locally, remove it from deleted list
                       try {
@@ -1305,16 +1317,29 @@ Generated on: ${new Date().toLocaleString()}
                 // fallback: try client-side Firestore write so the project appears in the user's account immediately
                 try {
                   const db = firebase.firestore();
-                  await db.collection('users').doc(currentUser.uid).collection('projects').add({
-                    title: `Generated ${new Date().toLocaleString()}`,
+                  const docRef = await db.collection('users').doc(currentUser.uid).collection('projects').add({
+                    title: imageUpload.files && imageUpload.files[0] ? imageUpload.files[0].name : `Generated ${new Date().toLocaleString()}`,
                     html: data.html_content || '',
                     css: data.css_content || '',
                     html_url: data.html_url || '',
                     css_url: data.css_url || '',
                     elementCount: data.detected_elements || 0,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    status: 'completed'
+                    status: 'completed',
+                    localId: lastId // Include local ID to prevent duplicates
                   });
+                  
+                  // Update localStorage with the Firebase document ID
+                  try {
+                    const raw = localStorage.getItem('projects_list') || '[]';
+                    const projects = JSON.parse(raw);
+                    const idx = projects.findIndex(p => String(p.id) === String(lastId));
+                    if (idx !== -1) {
+                      projects[idx].id = docRef.id;
+                      projects[idx].serverId = docRef.id;
+                      localStorage.setItem('projects_list', JSON.stringify(projects));
+                    }
+                  } catch (_) {}
                 } catch (ee) {
                   console.warn('Client-side Firestore save also failed', ee);
                 }
