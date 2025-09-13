@@ -396,9 +396,9 @@
       width: 100%;
       min-width: 0;
       padding: 20px;
-      background: var(--input-bg);
-      color: var(--text-primary);
-      border: 1px solid var(--glass-border);
+      background: #1a1a1a;
+      color: #e2e8f0;
+      border: 1px solid #333;
       border-radius: 8px;
       font-family: 'Courier New', monospace;
       font-size: 0.9rem;
@@ -413,6 +413,30 @@
 
     .code-editor:focus {
       border-color: var(--secondary-blue);
+      background: #1a1a1a;
+    }
+
+    .code-editor::placeholder {
+      color: #64748b;
+      font-style: italic;
+    }
+
+    /* Dark theme scrollbar */
+    .code-editor::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .code-editor::-webkit-scrollbar-track {
+      background: #2a2a2a;
+    }
+
+    .code-editor::-webkit-scrollbar-thumb {
+      background: #4a4a4a;
+      border-radius: 4px;
+    }
+
+    .code-editor::-webkit-scrollbar-thumb:hover {
+      background: #5a5a5a;
     }
 
     .save-btn {
