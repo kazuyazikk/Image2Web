@@ -789,8 +789,10 @@ footer {
   overflow: hidden;
   font-family: 'Inter', sans-serif;
   flex: 1;
-  min-width: 200px;
-  white-space: nowrap;
+  min-width: 250px;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.4;
 }
 
 .contributors-list li::before {
@@ -1271,6 +1273,9 @@ footer {
   .contributors-list li {
     font-size: 1.2rem;
     padding: 1.6rem;
+    min-width: 280px;
+    white-space: normal;
+    word-wrap: break-word;
   }
 
   .contributors-list {
