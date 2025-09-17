@@ -67,17 +67,33 @@ body{
 }
 
 
-.navbar-base {
+.navbar-base{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   background-color: var(--medium-brown);
   border-bottom: 3px solid var(--dark-brown);
-  display: flex;
+  display:flex;
+  justify-content: space-between;
   align-items: center;
   padding: 0 20px;
   font-family: 'Georgia', serif;
+  z-index: 1000;
+}
+.navbar-base ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-base ul li{
+  margin-right: 25px;
 }
 
 .navbar-base a {
-  margin-right: 25px;
   text-decoration: none;
   color: var(--cream);
   font-size: 1.1rem;
@@ -85,8 +101,16 @@ body{
   transition: color 0.3s ease;
 }
 
-.navbar-base a:hover {
+.navbar-base a:hover{
   color: var(--light-brown);
+}
+
+/* Search bar styling */
+.navbar-search{
+  padding: 6px 10px;
+  border: 1px solid var(--dark-brown);
+  border-radius: 4px;
+  font-size: 1rem;
 }
 
 .paragraph-base {
@@ -150,7 +174,13 @@ body{
 }
 /* End of base design */
 /* Below are the specific locations of the detected elements */
-.button_0 {
+.group_0 {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.button_0_g0 {
   position: absolute;
   left: 25.52%;
   top: 22.53%;
@@ -159,7 +189,7 @@ body{
   border:1px solid black;
 }
 
-.checkbox_with_label_1 {
+.checkbox_with_label_1_g0 {
   position: absolute;
   left: 9.08%;
   top: 23.2%;
@@ -167,7 +197,7 @@ body{
   height: 11.529999999999998%;
 }
 
-.image_2 {
+.image_2_g0 {
   position: absolute;
   left: 8.32%;
   top: 37.27%;
@@ -176,7 +206,16 @@ body{
   object-fit:cover;
 }
 
-.paragraph_4 {
+.navbar_3_g0 {
+  position: absolute;
+  left: 8.22%;
+  top: 4.84%;
+  width: 35.51%;
+  height: 7.43%;
+  border:1px solid black;
+}
+
+.paragraph_4_g0 {
   position: absolute;
   left: 51.23%;
   top: 5.08%;
@@ -185,7 +224,7 @@ body{
   margin:0; padding:10px; overflow:hidden;
 }
 
-.textfield_5 {
+.textfield_5_g0 {
   position: absolute;
   left: 6.96%;
   top: 14.52%;
