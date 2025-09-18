@@ -83,6 +83,18 @@
     .login-content h2 {
       color: #f8fafc !important;
     }
+    /* Ensure title (logo/brand) is far left and greeting is far right */
+    .main-header .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .main-header .header-content .logo { margin-right: auto; }
+    .main-header .header-content #user-greeting { margin-left: auto; }
+    /* Remove centering so logo is flush left */
+    header.main-header { padding-left: 1; padding-top: 0; }
+    .main-header .header-content { margin: 0; max-width: none; }
   </style>
 </head>
 
@@ -117,7 +129,6 @@
       </div>
       <nav>
         <ul id="nav-menu" class="nav-menu-layout">
-          <li class="nav-item" data-page="home"><button class="nav-btn" onclick="window.location.href='index.html'">Home</button></li>
           <li class="nav-item" data-page="contributors"><button class="nav-btn" onclick="window.location.href='contributors.html'">Members</button></li>
           <li class="nav-item" id="auth-links"><button class="nav-btn" onclick="openLogin()">Login</button></li>
           <li class="nav-item" id="user-links"><button class="nav-btn" onclick="logout()">Logout</button></li>
@@ -220,14 +231,11 @@
   <!-- FOOTER -->
   <footer>
     <div class="footer-content">
-      <div class="footer-section">
-        <h3>About Image2Web</h3>
-        <p>Image2Web helps you turn wireframes and images into real, responsive websites in seconds.</p>
-      </div>
+      
       <div class="footer-section">
         <h3 class="footer-title">Quick Links</h3>
-        <a href="#" class="footer-link" onclick="window.location.href='index.html'">Home</a>
         <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
+        <a href="https://github.com/kazuyazikk/Image2Web" class="footer-link" target="_blank" rel="noopener noreferrer">Our REPO</a>
       </div>
       
     </div>
@@ -271,4 +279,5 @@
     });
   </script>
 </body>
+
 </html>
