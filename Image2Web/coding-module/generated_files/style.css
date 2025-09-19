@@ -175,61 +175,77 @@ body{
 /* End of base design */
 /* Below are the specific locations of the detected elements */
 .group_0 {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+display: flex;
+gap: 10px;
+margin-bottom: 20px;
 }
 
-.button_0_g0 {
-  position: absolute;
-  left: 25.52%;
-  top: 22.53%;
-  width: 8.150000000000002%;
-  height: 5.91%;
-  border:1px solid black;
+.navbar_0_g0 {
+position: absolute;
+left: 9.48rem;
+top: 4.44rem;
+width: 32.7rem;
+height: 7.14rem;
+ border:1px solid black;
 }
 
-.checkbox_with_label_1_g0 {
-  position: absolute;
-  left: 9.08%;
-  top: 23.2%;
-  width: 16.9%;
-  height: 11.529999999999998%;
+.textfield_1_g0 {
+position: absolute;
+left: 7.72rem;
+top: 14.55rem;
+width: 35.620000000000005rem;
+height: 5.84rem;
+ border:1px solid black;
 }
 
-.image_2_g0 {
-  position: absolute;
-  left: 8.32%;
-  top: 37.27%;
-  width: 36.78%;
-  height: 26.349999999999994%;
-  object-fit:cover;
+.checkbox_2_g0 {
+position: absolute;
+left: 9.44rem;
+top: 22.84rem;
+width: 6.980000000000002rem;
+height: 5.440000000000001rem;
+ border:1px solid black;
 }
 
-.navbar_3_g0 {
-  position: absolute;
-  left: 8.22%;
-  top: 4.84%;
-  width: 35.51%;
-  height: 7.43%;
-  border:1px solid black;
+.text_3_g0 {
+position: absolute;
+left: 9.43rem;
+top: 30.59rem;
+width: 16.71rem;
+height: 3.870000000000001rem;
+ display:flex; align-items:center;
 }
 
-.paragraph_4_g0 {
-  position: absolute;
-  left: 51.23%;
-  top: 5.08%;
-  width: 44.300000000000004%;
-  height: 57.46%;
-  margin:0; padding:10px; overflow:hidden;
+.group_1 {
+display: flex;
+gap: 10px;
+margin-bottom: 20px;
 }
 
-.textfield_5_g0 {
-  position: absolute;
-  left: 6.96%;
-  top: 14.52%;
-  width: 37.699999999999996%;
-  height: 5.75%;
-  border:1px solid black;
+.paragraph_0_g1 {
+position: absolute;
+left: 50.47rem;
+top: 6.35rem;
+width: 45.400000000000006rem;
+height: 54.49rem;
+ margin:0; padding:10px; overflow:hidden;
+}
+
+.button_1_g1 {
+position: absolute;
+left: 25.42rem;
+top: 22.51rem;
+width: 8.269999999999996rem;
+height: 5.969999999999999rem;
+ border:1px solid black;
+}
+
+.image_2_g1 {
+position: absolute;
+left: 4.82rem;
+top: 36.9rem;
+width: 43.75rem;
+height: 27.360000000000007rem;
+ object-fit:cover;
 }
 
