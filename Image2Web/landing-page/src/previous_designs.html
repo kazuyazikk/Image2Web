@@ -634,8 +634,8 @@
               <p>Elements: ${p.elementCount || 0}</p>
               <p>Status: <span class="status-badge ${status}">${status}</span></p>
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button class="project-link" onclick="viewProjectHtml('${p.id}')">View HTML</button>
-                <button class="project-link" onclick="viewProjectCss('${p.id}')">View CSS</button>
+                <button class="project-link" onclick="viewProjectHtml('${p.id}')">View Generated Output</button>
+                <button class="project-link" onclick="viewProjectCss('${p.id}')">View Code</button>
                 <button class="reset-btn primary-btn" onclick="openInWorkspace('${p.id}')">Open in Workspace</button>
                 <button class="reset-btn secondary-btn" style="color:#ef4444;border-color:#ef4444" onclick="deleteProject('${p.id}')">Delete</button>
               </div>
