@@ -18,7 +18,7 @@ def generate_just_html (elements):
         elif el["label"] == "text":
             tag = f'<span style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; display:flex; align-items:center;"> {label_description(el["label"])} </span>'
         elif el["label"] == "navbar":
-            tag = f'<nav style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; background-color:#f8f9fa; border:1px solid #dee2e6; display:flex; align-items:center; padding:0 15px;"><a href="#" style="margin-right:20px; text-decoration:none; color:#007bff;">Home</a><a href="#" style="margin-right:20px; text-decoration:none; color:#007bff;">About</a><a href="#" style="text-decoration:none; color:#007bff;">Contact</a></nav>'
+            tag = f'<nav style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; background-color:#f8f9fa; border:1px solid #dee2e6; display:flex; align-items:center; padding:0 15px;"><a href="javascript:void(0)" onclick="event.preventDefault(); return false;" style="margin-right:20px; text-decoration:none; color:#007bff;">Home</a><a href="javascript:void(0)" onclick="event.preventDefault(); return false;" style="margin-right:20px; text-decoration:none; color:#007bff;">About</a><a href="javascript:void(0)" onclick="event.preventDefault(); return false;" style="text-decoration:none; color:#007bff;">Contact</a></nav>'
         elif el["label"] == "paragraph":
             tag = f'<p style="position:absolute; left:{el["x"]}px; top:{el["y"]}px; width:{el["width"]}px; height:{el["height"]}px; margin:0; padding:10px; overflow:hidden;">{label_description(el["label"])}</p>'
         else:

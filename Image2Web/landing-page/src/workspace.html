@@ -757,6 +757,24 @@
     .close-btn:hover {
       color: var(--secondary-blue);
     }
+
+    /* Hide top header quick links on workspace page */
+    header .header-content nav ul li[data-page="workspace"],
+    header .header-content nav ul li#user-links { display: none !important; }
+
+    /* Ensure title (logo/brand) is far left and greeting is far right */
+    header .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    header .header-content .logo { margin-right: auto; }
+    header .header-content #user-greeting { margin-left: auto; }
+
+    /* Remove global centering/padding so logo is flush left */
+    header { padding-left: 1; padding-top: 0; }
+    header .header-content { margin: 0; max-width: none; }
   </style>
 </head>
 
@@ -1225,6 +1243,39 @@ h1 {
         });
       }
 
+      // Drag & Drop image upload support
+      function initDragAndDrop() {
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('imageUpload');
+        if (!dropArea || !fileInput) return;
+
+        const preventDefaults = (e) => { e.preventDefault(); e.stopPropagation(); };
+        ['dragenter','dragover','dragleave','drop'].forEach(ev => {
+          dropArea.addEventListener(ev, preventDefaults, false);
+        });
+
+        ['dragenter','dragover'].forEach(ev => {
+          dropArea.addEventListener(ev, () => dropArea.classList.add('drag-over'));
+        });
+        ['dragleave','drop'].forEach(ev => {
+          dropArea.addEventListener(ev, () => dropArea.classList.remove('drag-over'));
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+          const dt = e.dataTransfer;
+          const files = dt && dt.files ? dt.files : null;
+          if (!files || !files.length) return;
+          const file = Array.from(files).find(f => /^image\//.test(f.type));
+          if (!file) return;
+          try {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            fileInput.files = dataTransfer.files;
+          } catch(_) { /* fallback if not supported */ }
+          fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      }
+
       // Save ZIP functionality
       function initSaveZip() {
         const saveZipBtn = document.getElementById('saveZipBtn');
@@ -1300,6 +1351,7 @@ Generated on: ${new Date().toLocaleString()}
         initTabs();
         initAddImages();
         initSaveZip();
+        initDragAndDrop();
       const imageUpload = document.getElementById('imageUpload');
       const imagePreview = document.getElementById('imagePreview');
       const fileNameDisplay = document.getElementById('fileName');

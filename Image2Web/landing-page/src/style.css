@@ -380,13 +380,14 @@ nav ul.open {
   justify-content: flex-end;
   align-items: center;
   order: 2;
-  flex: 0 0 auto;
+  flex: 0 0 44%;
+  max-width: 44%;
 }
 
 .video-container {
   position: relative;
   width: 100%;
-  max-width: 1000px;
+  max-width: 100%;
   aspect-ratio: 16/9;
   border-radius: 12px;
   overflow: hidden;
@@ -465,6 +466,58 @@ nav ul.open {
   color: var(--text-primary);
   max-height: 90vh;
   overflow-y: auto;
+}
+
+/* Elevated visual style for Signup modal */
+.signup-content {
+  background:
+    radial-gradient(1200px 600px at 0% 0%, rgba(56, 189, 248, 0.12), transparent 60%),
+    radial-gradient(900px 500px at 100% 100%, rgba(167, 139, 250, 0.14), transparent 60%),
+    linear-gradient(180deg, rgba(34, 0, 73, 0.95), rgba(28, 0, 58, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 60px rgba(56, 189, 248, 0.18), 0 10px 30px rgba(167, 139, 250, 0.12);
+}
+
+/* Gradient border glow */
+.signup-content::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #38bdf8, #a78bfa, #fb7185);
+  filter: blur(12px);
+  opacity: 0.35;
+  z-index: -1;
+}
+
+/* Title gradient */
+.signup-content h2 {
+  background: linear-gradient(90deg, #bfe9ff, #d0b3ff, #ffd1df);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Input styling + subtle gradient */
+.signup-content .form-group input {
+  background:
+    linear-gradient(180deg, rgba(14, 10, 30, 0.7), rgba(10, 8, 22, 0.7)) padding-box,
+    linear-gradient(135deg, rgba(56,189,248,0.35), rgba(167,139,250,0.35)) border-box;
+  border: 1px solid transparent;
+}
+
+.signup-content .form-group input:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25), 0 0 0 6px rgba(167, 139, 250, 0.18);
+}
+
+/* Button gradient refinement */
+.signup-content .signup-btn {
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  box-shadow: 0 6px 18px rgba(14,165,233,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.signup-content .signup-btn:hover {
+  background: linear-gradient(135deg, #60d0ff, #38bdf8);
 }
 
 .close-btn {
@@ -1614,9 +1667,8 @@ footer {
     max-width: 800px;
   }
 
-  .video-container {
-    max-width: 900px;
-  }
+  .hero-video { flex-basis: 46%; max-width: 46%; }
+  .video-container { max-width: 100%; }
 
   .hero-title {
     font-size: 4.5em;
