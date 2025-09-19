@@ -20,57 +20,31 @@ def parse_elements(data):
     """Parse JSON elements into a structured format with positioning info."""
     elements = []
     
-    #Handle both a single statement dict or a list of elements.
-    if isinstance(data, dict):
-        data = [data]
-    for item in data:
-        label = item.get("label", "unknown")
-        shape_type = item.get("shape_type", "unknown")
-        group_id = item.get("group_id")
-        flags = item.get("flags", [])
-        points = item.get("points", [])
-        unit = item.get("unit")
-        
-        if(unit is None):
-            unit = "px"
-        
-        if len(points) == 2:
-            x1, y1 = points[0]
-            x2, y2 = points[1]
-            width = x2 -x1
-            height = y2 - y1
-            
-        
-            element_info = {
-                "label" : label,
-                "shape_type" : shape_type,
-                "group_id" : group_id,
-                "flags" : flags,
-                "x" : x1,
-                "y" : y1,
-                "width" : width,
-                "height" : height,
-                "positioning" : "absolute",
-                "unit" : unit
-            }
-            elements.append(element_info)
-    return elements
-
-def display_elements(data):
-    """Display the parsed elements for debugging."""
-    if not data:
-        return
+    if isinstance(data, dict) and "groups" in data:
+        for g_idx, group in enumerate(data["groups"]):
+            for el in group["elements"]:
+                bbox = el.get("bounding_box",{})
+                x1, y1, x2, y2 = bbox["x1"], bbox["y1"], bbox["x2"], bbox["y2"]
+                width, height = x2 - x1, y2 - y1
+                
+                element_info = {
+                    "label": el.get("label", "unknown"),
+                    "x": x1,
+                    "y": y1,
+                    "width": width,
+                    "height": height,
+                    "positioning": "absolute",
+                    "unit": "rem",
+                    "group_type": group.get("type"),
+                    "alignment_type": group.get("alignment_type")
+                }
+                elements.append(element_info)
+        return elements
     
-    print(f"Found element: {data['label']}")
-    print(f"Shape Type: {data['shape_type']}")
-    print(f"Point: {data['points']}")
-    print(f"Group ID: {data['group_id']}")
-    print(f"-" * 30) #Line break
     
 if __name__ == "__main__":
     json_data = read_json_file("sample_output.json") #TODO:replace with your actual file path
     if json_data:
-        # display_elements(json_data)
         elements = parse_elements(json_data)
         #html_content = generate_just_html(elements)
         html_content = generate_html(elements)
