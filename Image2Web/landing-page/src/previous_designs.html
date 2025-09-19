@@ -649,10 +649,25 @@
         const p = currentProjects.find(x => String(x.id) === String(projectId));
         if (!p) return;
         try {
-          // Stash code for viewer and open in a new tab
-          localStorage.setItem('generated_html', p.html || p.htmlContent || '');
-          localStorage.setItem('generated_css', p.css || p.cssContent || '');
-          window.open('generated_output.html', '_blank');
+          const name = p.name || p.title || 'Generated Output';
+          const htmlRaw = p.html || p.htmlContent || '';
+          const cssRaw = p.css || p.cssContent || '';
+
+          let finalHtml = '';
+          const hasHtmlTag = /<\s*html[\s\S]*<\s*\/\s*html\s*>/i.test(htmlRaw);
+          if (hasHtmlTag) {
+            if (/<\s*head[\s\S]*<\s*\/\s*head\s*>/i.test(htmlRaw)) {
+              finalHtml = htmlRaw.replace(/<\s*\/\s*head\s*>/i, `<style>${cssRaw}</style></head>`);
+            } else {
+              finalHtml = htmlRaw.replace(/<\s*body[^>]*>/i, (m) => `${m}\n<style>${cssRaw}</style>`);
+            }
+          } else {
+            finalHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${name}</title><style>${cssRaw}</style></head><body>${htmlRaw}</body></html>`;
+          }
+
+          const blob = new Blob([finalHtml], { type: 'text/html' });
+          const url = URL.createObjectURL(blob);
+          window.open(url, '_blank', 'noopener');
         } catch (e) {
           console.warn('Failed to open viewer in new tab, falling back to modal', e);
           document.getElementById('modalHtmlCode').value = p.html || p.htmlContent || '';
