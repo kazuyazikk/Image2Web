@@ -1,0 +1,117 @@
+[
+  {
+    "label": "button",
+    "points": [
+      [
+        25.52,
+        22.53
+      ],
+      [
+        33.67,
+        28.44
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {},
+    "unit": "%"
+  },
+  {
+    "label": "checkbox_with_label",
+    "points": [
+      [
+        9.08,
+        23.2
+      ],
+      [
+        25.98,
+        34.73
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {},
+    "unit": "%",
+    "layout": "vertical",
+    "checkbox_box": {
+      "x1": 9.08,
+      "y1": 23.2,
+      "x2": 16.53,
+      "y2": 28.5
+    },
+    "text_box": {
+      "x1": 9.46,
+      "y1": 30.72,
+      "x2": 25.98,
+      "y2": 34.73
+    }
+  },
+  {
+    "label": "image",
+    "points": [
+      [
+        8.32,
+        37.27
+      ],
+      [
+        45.1,
+        63.62
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {},
+    "unit": "%"
+  },
+  {
+    "label": "navbar",
+    "points": [
+      [
+        8.22,
+        4.84
+      ],
+      [
+        43.73,
+        12.27
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {},
+    "unit": "%"
+  },
+  {
+    "label": "paragraph",
+    "points": [
+      [
+        51.23,
+        5.08
+      ],
+      [
+        95.53,
+        62.54
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {},
+    "unit": "%"
+  },
+  {
+    "label": "textfield",
+    "points": [
+      [
+        6.96,
+        14.52
+      ],
+      [
+        44.66,
+        20.27
+      ]
+    ],
+    "group_id": null,
+    "shape_type": "rectangle",
+    "flags": {},
+    "unit": "%"
+  }
+]

@@ -8,7 +8,7 @@
     content="Image2Web lets you turn images into beautiful, responsive websites instantly. Designed by SeroTech.">
   <title>Image2Web - by SeroTech</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
   #user-links { display: none; }
@@ -83,6 +83,18 @@
     .login-content h2 {
       color: #f8fafc !important;
     }
+    /* Ensure title (logo/brand) is far left and greeting is far right */
+    .main-header .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .main-header .header-content .logo { margin-right: auto; }
+    .main-header .header-content #user-greeting { margin-left: auto; }
+    /* Remove centering so logo is flush left */
+    header.main-header { padding-left: 1; padding-top: 0; }
+    .main-header .header-content { margin: 0; max-width: none; }
   </style>
 </head>
 
@@ -91,22 +103,33 @@
   <header class="main-header">
     <div class="header-content">
       <div class="logo">
-        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8" />
-          <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9" />
-          <rect x="20" y="32" width="16" height="16" rx="4" fill="#06B6D4" />
-          <rect x="20" y="20" width="16" height="16" rx="4" fill="#1E293B" />
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="CODE4WEB logo">
+          <defs>
+            <linearGradient id="c4w-blue" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#38BDF8"/>
+              <stop offset="100%" stop-color="#0EA5E9"/>
+            </linearGradient>
+            <linearGradient id="c4w-violet" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#A78BFA"/>
+              <stop offset="100%" stop-color="#FB7185"/>
+            </linearGradient>
+          </defs>
+          <rect x="0.5" y="0.5" width="55" height="55" rx="12" fill="#0b1025"/>
+          <circle cx="28" cy="28" r="25" fill="url(#c4w-blue)" opacity="0.06"/>
+          <circle cx="28" cy="28" r="25" stroke="url(#c4w-violet)" stroke-width="1.5" opacity="0.6"/>
+          <path d="M21 18 L13 28 L21 38" stroke="url(#c4w-blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M35 18 L43 28 L35 38" stroke="url(#c4w-violet)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="24" y="24" width="8" height="8" rx="2" fill="url(#c4w-blue)" opacity="0.95"/>
+          <rect x="24" y="24" width="8" height="8" rx="2" fill="url(#c4w-violet)" opacity="0.35"/>
         </svg>
         <div>
-          <span class="brand">CODE4WEB</span>
-          <div class="slogan">Designed by SeroTech</div>
+          <span class="brand">IMAGE2WEB</span>
+          <div class="slogan">Building Tomorrow's Digital Experience</div>
         </div>
       </div>
       <nav>
         <ul id="nav-menu" class="nav-menu-layout">
-          <li class="nav-item" data-page="home"><button class="nav-btn" onclick="window.location.href='index.html'">Home</button></li>
-                  <li class="nav-item" data-page="workspace"><button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button></li>
-          
+          <li class="nav-item" data-page="contributors"><button class="nav-btn" onclick="window.location.href='contributors.html'">Members</button></li>
           <li class="nav-item" id="auth-links"><button class="nav-btn" onclick="openLogin()">Login</button></li>
           <li class="nav-item" id="user-links"><button class="nav-btn" onclick="logout()">Logout</button></li>
         </ul>
@@ -119,15 +142,21 @@
   <!-- HERO SECTION -->
   <main>
     <section class="hero">
-      <div class="hero-content">
-        <div class="hero-label">Digital Insights</div>
-        <h1 class="hero-title">The Future<br>of Technology</h1>
-        <p class="hero-desc">Upload images and convert them into beautiful, responsive websites with ease.</p>
-        <div class="hero-btn-group">
-          <button class="hero-btn" onclick="openSignup()">Get Started</button>
-          <button class="github-btn" onclick="window.open('https://github.com/kazuyazikk/Code4Web', '_blank')">
-            View us on Github!
-          </button>
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title">Instantly convert your <br>Wireframes to Code! <span class="lightning">⚡</span></h1>
+            <p class="hero-desc">Image2Web converts Wireframes to HTML CSS Code instantly!<br>Just upload your Image and generate code to replicate the same.</p>
+            <button class="hero-btn primary" onclick="openSignup()">
+              Start Generating Code
+              <span class="btn-arrow">→</span>
+            </button>
+          </div>
+          <div class="hero-video">
+            <div class="video-container">
+              <iframe src="https://www.youtube.com/embed/CJtrc-qnbOo" title="Image2Web Tutorial" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -141,15 +170,15 @@
         <h2>Join Image2Web</h2>
         <div class="form-group">
           <label for="username">Username</label>
-          <input id="signup-username" name="username" type="text" required>
+          <input id="signup-username" name="username" type="text" placeholder="Enter your username" aria-label="Username" required>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="signup-email" name="email" type="email" required>
+          <input id="signup-email" name="email" type="email" placeholder="Enter your email" aria-label="Email" required>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input id="signup-password" name="password" type="password" required>
+          <input id="signup-password" name="password" type="password" placeholder="Create a password" aria-label="Password" required>
         </div>
         <button type="submit" class="signup-btn">Create Account</button>
         <div class="success-message" id="successMessage" style="display:none;">
@@ -202,24 +231,13 @@
   <!-- FOOTER -->
   <footer>
     <div class="footer-content">
-      <div class="footer-section">
-        <h3>About Image2Web</h3>
-        <p>Image2Web helps you turn wireframes and images into real, responsive websites in seconds.</p>
-      </div>
+      
       <div class="footer-section">
         <h3 class="footer-title">Quick Links</h3>
-        <a href="#" class="footer-link" onclick="window.location.href='index.html'">Home</a>
         <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
-        <a href="#" class="footer-link">Blog</a>
+        <a href="https://github.com/kazuyazikk/Image2Web" class="footer-link" target="_blank" rel="noopener noreferrer">Our REPO</a>
       </div>
-      <div class="footer-section">
-        <a href="#" class="footer-link">Tutorials</a>
-      </div>
-      <div class="footer-section">
-        <h3>Contact</h3>
-        <p>📧 our email</p>
-        <p>📍 A Wireframe to Website Generator</p>
-      </div>
+      
     </div>
     <div class="footer-bottom">
       <p>&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
@@ -261,4 +279,5 @@
     });
   </script>
 </body>
+
 </html>

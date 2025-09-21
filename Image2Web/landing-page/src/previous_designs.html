@@ -1,20 +1,3 @@
-  <!-- Modal for Generated Code Preview -->
-  <div id="codeModal" class="modal" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100vw;height:100vh;overflow:auto;background:rgba(18,0,47,0.8);align-items:center;justify-content:center;">
-    <div class="modal-content" style="background:#f4faff;padding:32px 24px;border-radius:16px;max-width:800px;width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.25);margin:auto;position:relative;">
-      <button id="closeCodeModal" style="position:absolute;top:12px;right:18px;font-size:1.5em;background:none;border:none;cursor:pointer;color:#0ea5e9;">&times;</button>
-      <h2 style="color:#0ea5e9;margin-bottom:18px;">Generated Files</h2>
-      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;justify-content:center;">
-        <div style="flex:1;min-width:260px;">
-          <h3 style="color:#38bdf8;">Code (HTML)</h3>
-          <textarea id="modalHtmlCode" readonly style="width:100%;height:180px;border-radius:8px;padding:12px;background:#181823;color:#fff;font-size:1em;border:1px solid #38bdf8;margin-bottom:16px;"></textarea>
-        </div>
-        <div style="flex:1;min-width:260px;">
-          <h3 style="color:#38bdf8;">Code (CSS)</h3>
-          <textarea id="modalCssCode" readonly style="width:100%;height:180px;border-radius:8px;padding:12px;background:#181823;color:#fff;font-size:1em;border:1px solid #38bdf8;margin-bottom:16px;"></textarea>
-        </div>
-      </div>
-    </div>
-  </div>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,9 +8,89 @@
     content="View your previous wireframe to website conversions on Image2Web. Manage and review your past projects. Designed by SeroTech.">
   <title>IMAGE2WEB - Previous Designs</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css?family=Russo+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
+    /* Ensure title (logo/brand) is far left and greeting is far right */
+    .main-header .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .main-header .header-content .logo { margin-right: auto; }
+    .main-header .header-content #user-greeting { margin-left: auto; }
+    /* Remove global centering/padding so logo is flush left */
+    header.main-header { padding-left: 1; padding-top: 0; }
+    .main-header .header-content { margin: 0; max-width: none; }
+    
+    /* Hide Members and Logout buttons completely on previous designs page */
+    .main-header .nav-item[data-page="contributors"],
+    .main-header .nav-item#auth-links,
+    .main-header .nav-item#user-links {
+      display: none !important;
+    }
+
+    /* CSS Classes for inline styles */
+    .button-container {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .empty-state {
+      color: var(--text-secondary);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .project-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .secondary-btn {
+      color: #ef4444;
+      border-color: #ef4444;
+      background: transparent;
+      border: 1px solid #ef4444;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .secondary-btn:hover {
+      background: #ef4444;
+      color: white;
+    }
+
+    .loading-state {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+      color: #38bdf8;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #38bdf8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     /* Add any specific styles for previous_designs.html here if needed,
        or extend the styles that are already in style.css for general layout. */
 
@@ -52,9 +115,11 @@
     .sidebar {
       width: 250px; /* Fixed width for the sidebar */
       min-width: 200px; /* Minimum width */
-      background: var(--modal-content-bg);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); /* Safari compatibility */
       padding: 20px;
-      border-right: 1px solid var(--border-color);
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -77,41 +142,54 @@
     .logout-btn {
       display: block;
       padding: 10px 15px;
-      color: var(--text-secondary);
+      color: #cbd5e1;
       text-decoration: none;
       border-radius: 5px;
       transition: background 0.2s ease, color 0.2s ease;
       font-size: 1.1em;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Match workspace sidebar logout button style */
+    .logout-btn {
+      background: transparent;
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      cursor: pointer;
+      width: 100%;
+      border-radius: 8px;
+      text-align: center;
     }
 
     .sidebar-nav li a:hover,
     .logout-btn:hover {
-      background: rgba(var(--primary-blue), 0.1);
-      color: var(--primary-blue);
+      background: rgba(56, 189, 248, 0.1);
+      color: #38bdf8;
     }
 
     .sidebar-nav li.active a {
-      background: var(--primary-blue);
-      color: var(--button-text);
+      background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+      color: #f8fafc;
       font-weight: bold;
     }
 
     .sidebar-user {
       padding-top: 20px;
-      border-top: 1px solid var(--border-color);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
       margin-top: auto;
     }
 
     .sidebar-user p {
-      color: var(--text-primary);
+      color: #f8fafc;
       margin-bottom: 10px;
       font-weight: bold;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .main-content-area {
       flex-grow: 1;
       padding: 20px 40px;
-      background: var(--background-light);
+      background: transparent;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
       box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
@@ -126,14 +204,13 @@
     }
 
     .projects-section h2 {
+      font-family: 'Poppins', sans-serif;
       font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 700;
+      color: #38bdf8;
       margin-bottom: 2rem;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-family: 'Russo One', Arial, sans-serif;
-      text-align: center; /* Center the title */
+      text-align: left;
+      margin-left: 3rem;
     }
 
     .projects-grid {
@@ -144,15 +221,49 @@
     }
 
     .project-card {
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); /* Safari compatibility */
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 15px;
       padding: 1.5rem;
       text-align: left;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden; /* ensure large images don't overflow card */
     }
+
+    /* Compact thumbnail in project card and image modal */
+    .project-card .project-image {
+      width: 88px;
+      height: 88px;
+      margin-bottom: 12px;
+      flex: 0 0 88px;
+    }
+
+    .project-card .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+    /* fullscreen image modal */
+    #imageModal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    #imageModal img { max-width: 84vw; max-height: 84vh; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+    #imageModal .close-btn { position: absolute; right: 18px; top: 18px; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
 
     .project-card:hover {
       transform: translateY(-5px);
@@ -163,13 +274,15 @@
       font-size: 1.3rem;
       color: #38bdf8;
       margin-bottom: 0.5rem;
-      font-family: 'Russo One', Arial, sans-serif;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
     }
 
     .project-card p {
       font-size: 0.95rem;
-      color: var(--text-secondary);
+      color: #cbd5e1;
       margin-bottom: 1rem;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .project-card .project-link {
@@ -181,6 +294,7 @@
       text-decoration: none;
       font-size: 0.9rem;
       transition: filter 0.2s ease;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     button.project-link { border: none; cursor: pointer; }
 
@@ -196,6 +310,7 @@
       border: none;
       cursor: pointer;
       transition: filter 0.2s ease;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
     .primary-btn:hover { filter: brightness(1.1); }
 
@@ -224,7 +339,7 @@
       .sidebar {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid var(--border-color);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 0;
         padding: 15px 20px;
       }
@@ -259,6 +374,78 @@
 
       .projects-section h2 {
         font-size: 1.5em;
+        margin-left: 1rem; /* Reduce margin on tablet */
+      }
+
+      .button-container {
+        gap: 8px;
+        margin-bottom: 15px;
+      }
+
+      .primary-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .projects-section h2 {
+        margin-left: 0.5rem; /* Further reduce margin on mobile */
+        font-size: 1.3em;
+      }
+
+      .main-content-area {
+        padding: 15px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .project-card {
+        padding: 1rem;
+      }
+
+      .project-buttons {
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .project-buttons button {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .button-container {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .primary-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .projects-section h2 {
+        margin-left: 0;
+        text-align: center;
+        font-size: 1.2em;
+      }
+
+      .main-content-area {
+        padding: 10px;
+      }
+
+      .project-card {
+        padding: 0.8rem;
+      }
+
+      .project-image {
+        width: 60px;
+        height: 60px;
       }
     }
 
@@ -278,37 +465,41 @@
 </head>
 
 <body>
-  <header>
+  <header class="main-header">
     <div class="header-content">
       <div class="logo">
-        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="8" y="8" width="16" height="16" rx="4" fill="#38BDF8" />
-          <rect x="32" y="8" width="16" height="16" rx="4" fill="#0EA5E9" />
-          <rect x="20" y="32" width="16" height="16" rx="4" fill="#06B6D4" />
-          <rect x="20" y="20" width="16" height="16" rx="4" fill="#1E293B" />
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="CODE4WEB logo">
+          <defs>
+            <linearGradient id="c4w-blue" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#38BDF8"/>
+              <stop offset="100%" stop-color="#0EA5E9"/>
+            </linearGradient>
+            <linearGradient id="c4w-violet" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#A78BFA"/>
+              <stop offset="100%" stop-color="#FB7185"/>
+            </linearGradient>
+          </defs>
+          <rect x="0.5" y="0.5" width="55" height="55" rx="12" fill="#0b1025"/>
+          <circle cx="28" cy="28" r="25" fill="url(#c4w-blue)" opacity="0.06"/>
+          <circle cx="28" cy="28" r="25" stroke="url(#c4w-violet)" stroke-width="1.5" opacity="0.6"/>
+          <path d="M21 18 L13 28 L21 38" stroke="url(#c4w-blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M35 18 L43 28 L35 38" stroke="url(#c4w-violet)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="24" y="24" width="8" height="8" rx="2" fill="url(#c4w-blue)" opacity="0.95"/>
+          <rect x="24" y="24" width="8" height="8" rx="2" fill="url(#c4w-violet)" opacity="0.35"/>
         </svg>
         <div>
           <span class="brand">IMAGE2WEB</span>
-          <div class="slogan">Designed by SeroTech</div>
+          <div class="slogan">Building Tomorrow's Digital Experience</div>
         </div>
       </div>
       <nav>
-        <ul>
-
-          <li class="nav-item" data-page="workspace" onclick="window.location.href='workspace.html'">
-            <button class="nav-btn">Workspace</button>
-          </li>
-          <li class="nav-item" id="auth-links">
-            <button class="nav-btn" onclick="openLogin()">Login</button>
-          </li>
-          <li class="nav-item" id="user-links" style="display: none;">
-            <button class="nav-btn" onclick="logout()">Logout</button>
-          </li>
+        <ul id="nav-menu" class="nav-menu-layout">
+          <li class="nav-item" data-page="contributors" style="display: none;"><button class="nav-btn" onclick="window.location.href='contributors.html'">Members</button></li>
+          <li class="nav-item" id="auth-links" style="display: none;"><button class="nav-btn" onclick="openLogin()">Login</button></li>
+          <li class="nav-item" id="user-links" style="display: none;"><button class="nav-btn" onclick="logout()">Logout</button></li>
         </ul>
       </nav>
-      <div id="user-greeting">
-        Hi, <span id="user-name"></span>
-      </div>
+      <div id="user-greeting">Hi, <span id="user-name"></span></div>
     </div>
   </header>
 
@@ -318,7 +509,6 @@
           <ul>
             <li class="active" data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
             <li data-page="workspace"><a href="workspace.html">Workspace</a></li>
-            <li data-page="tutorials"><a href="#">Tutorials/Guide</a></li>
           </ul>
         </nav>
       <div class="sidebar-user">
@@ -327,18 +517,48 @@
       </div>
     </aside>
 
-    <main class="main-content-area">
-      <section class="workspace-section-card projects-section">
-        <h2>Your Generated Projects</h2>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;">
-          <button id="refreshProjectsBtn" class="primary-btn">Refresh</button>
-          <button id="exportProjectsBtn" class="primary-btn">Export JSON</button>
+    <main class="main-content-area" role="main">
+      <section class="workspace-section-card projects-section" aria-labelledby="projects-title">
+        <h2 id="projects-title">Your Generated Projects</h2>
+        <div class="button-container">
+          <button id="refreshProjectsBtn" class="primary-btn" aria-label="Refresh projects list">Refresh</button>
+          <button id="exportProjectsBtn" class="primary-btn" aria-label="Export all projects as JSON file">Export JSON</button>
         </div>
-        <div id="projectsList" class="projects-grid">
-          <p style="color: var(--text-secondary);">No projects yet. Log in to view your designs or start a new conversion in the Workspace!</p>
+        <div id="loadingState" class="loading-state" style="display: none;" role="status" aria-live="polite">
+          <div class="loading-spinner" aria-hidden="true"></div>
+          <p>Loading your projects...</p>
+        </div>
+        <div id="projectsList" class="projects-grid" role="region" aria-label="Generated projects list">
+          <div class="empty-state">
+            <p>No projects yet. Log in to view your designs or start a new conversion in the Workspace!</p>
+          </div>
         </div>
       </section>
     </main>
+  </div>
+
+  <!-- Image modal for previewing thumbnails full-size -->
+  <div id="imageModal" style="display:none;align-items:center;justify-content:center;">
+    <button class="close-btn" id="closeImageModal">&times;</button>
+    <img id="imageModalImg" src="" alt="Preview" />
+  </div>
+
+  <!-- Modal for Generated Code Preview -->
+  <div id="codeModal" class="modal" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100vw;height:100vh;overflow:auto;background:rgba(18,0,47,0.8);align-items:center;justify-content:center;">
+    <div class="modal-content" style="background:#f4faff;padding:32px 24px;border-radius:16px;max-width:800px;width:95vw;box-shadow:0 8px 32px rgba(0,0,0,0.25);margin:auto;position:relative;">
+      <button id="closeCodeModal" style="position:absolute;top:12px;right:18px;font-size:1.5em;background:none;border:none;cursor:pointer;color:#0ea5e9;">&times;</button>
+      <h2 style="color:#0ea5e9;margin-bottom:18px;">Generated Files</h2>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;justify-content:center;">
+        <div style="flex:1;min-width:260px;">
+          <h3 style="color:#38bdf8;">Code (HTML)</h3>
+          <textarea id="modalHtmlCode" readonly style="width:100%;height:180px;border-radius:8px;padding:12px;background:#181823;color:#fff;font-size:1em;border:1px solid #38bdf8;margin-bottom:16px;"></textarea>
+        </div>
+        <div style="flex:1;min-width:260px;">
+          <h3 style="color:#38bdf8;">Code (CSS)</h3>
+          <textarea id="modalCssCode" readonly style="width:100%;height:180px;border-radius:8px;padding:12px;background:#181823;color:#fff;font-size:1em;border:1px solid #38bdf8;margin-bottom:16px;"></textarea>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="signup-modal" id="signupModal">
@@ -404,36 +624,6 @@
     </div>
   </div>
 
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3 class="footer-title">About Image2Web</h3>
-        <p class="footer-text">
-          Image2Web is a tool that helps you turn your wireframes and images into real, responsive websites in seconds.
-          Built for developers and designers by SeroTech.
-        </p>
-        <div class="social-links">
-        </div>
-      </div>
-      <div class="footer-section">
-        <h3 class="footer-title">Quick Links</h3>
-        <a href="#" class="footer-link" onclick="window.location.href='index.html'">Home</a>
-        <a href="#" class="footer-link" onclick="openAbout(); return false;">About</a>
-        <a href="#" class="footer-link">Blog</a>
-      </div>
-      <div class="footer-section">
-        <a href="#" class="footer-link">Tutorials</a>
-      </div>
-      <div class="footer-section">
-        <h3 class="footer-title">Contact</h3>
-        <p class="footer-text">📧 our email</p>
-        <p class="footer-text">📍 A Wireframe to Website Generator</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p class="footer-text">&copy; 2025 Image2Web. All rights reserved. | Crafted with ❤️ for developers</p>
-    </div>
-  </footer>
 
   <div id="loading-spinner"
     style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2000;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);">
@@ -512,7 +702,8 @@
           userGreeting.style.display = 'none';
           userNameSpan.textContent = '';
           sidebarUsernameSpan.textContent = 'Guest';
-          projectsList.innerHTML = '<p style="color: var(--text-secondary);">No projects yet. Log in to view your designs or start a new conversion in the Workspace!</p>';
+          // If the user is not signed in, show any locally saved projects (from workspace auto-save)
+          loadLocalProjects();
         }
       });
 
@@ -525,6 +716,9 @@
           alert("Logout failed: " + error.message);
         });
       }
+
+      // Make logout function globally accessible
+      window.logout = logout;
 
       // Function to load existing projects for the logged-in user (from Firebase Firestore)
       let currentProjects = [];
@@ -542,6 +736,8 @@
           });
 
           renderProjects();
+          // also merge any locally auto-saved projects (from workspace) so they appear for the user
+          try { mergeLocalProjects(); } catch (e) { console.warn('Could not merge local projects:', e); }
         } catch (error) {
           console.error('Error loading previous designs:', error);
           projectsList.innerHTML = `<p style="color: var(--danger-red);">Error loading projects: ${error.message}</p>`;
@@ -554,56 +750,247 @@
           return;
         }
 
-        const html = currentProjects.map(p => {
-          const created = p.createdAt ? new Date(p.createdAt.toDate()).toLocaleString() : 'N/A';
-          const thumb = p.originalImageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOTRBM0I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=';
+        // Hide loading state
+      const loadingState = document.getElementById('loadingState');
+      if (loadingState) loadingState.style.display = 'none';
+      
+      const html = currentProjects.map(p => {
+          // determine created date from Firestore timestamp or from id (if id is a timestamp)
+          let created;
+          if (p.createdAt) {
+            try { created = new Date(p.createdAt.toDate()).toLocaleString(); } catch (e) { created = 'N/A'; }
+          } else if (p.id && !isNaN(Number(p.id))) {
+            created = new Date(Number(p.id)).toLocaleString();
+          } else { created = 'N/A'; }
+
+          const name = p.name || p.title || p.filename || 'Untitled';
+          const thumb = p.originalImageUrl || p.thumbnail || p.thumbnail || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjUwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOTRBM0I4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Tm8gSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo=';
           const status = p.status || 'completed';
           return `
             <div class="project-card">
-              <div class="project-image"><img src="${thumb}" alt="${p.name}"/></div>
-              <h3>${p.name || 'Untitled'}</h3>
+                      <div class="project-image"><img src="${thumb}" alt="${name}" onclick="openImageModal('${thumb.replace(/'/g, "\'")}')"/></div>
+              <h3>${name}</h3>
               <p>Created: ${created}</p>
               <p>Elements: ${p.elementCount || 0}</p>
               <p>Status: <span class="status-badge ${status}">${status}</span></p>
-              <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <a class="project-link" href="${p.htmlUrl || '#'}" target="_blank">View HTML</a>
-                <a class="project-link" href="${p.cssUrl || '#'}" target="_blank">View CSS</a>
-                <button class="reset-btn primary-btn" onclick="openInWorkspace('${p.id}')">Open in Workspace</button>
-                <button class="reset-btn secondary-btn" style="color:#ef4444;border-color:#ef4444" onclick="deleteProject('${p.id}')">Delete</button>
+              <div class="project-buttons">
+                <button class="project-link" onclick="viewProjectHtml('${p.id}')" aria-label="View generated HTML output for ${name}">View Generated Output</button>
+                <button class="project-link" onclick="viewProjectCss('${p.id}')" aria-label="View CSS code for ${name}">View Code</button>
+                <button class="reset-btn primary-btn" onclick="openInWorkspace('${p.id}')" aria-label="Open ${name} in workspace editor">Open in Workspace</button>
+                <button class="reset-btn secondary-btn" onclick="deleteProject('${p.id}')" aria-label="Delete project ${name}">Delete</button>
               </div>
             </div>`;
         }).join('');
         projectsList.innerHTML = html;
+        
+        // Show projects list again
+        if (projectsList) projectsList.style.display = 'grid';
       }
 
+      // View project content in modal (supports both Firestore-stored and localStorage projects)
+      window.viewProjectHtml = function(projectId) {
+        const p = currentProjects.find(x => String(x.id) === String(projectId));
+        if (!p) return;
+        try {
+          const name = p.name || p.title || 'Generated Output';
+          const htmlRaw = p.html || p.htmlContent || '';
+          const cssRaw = p.css || p.cssContent || '';
+
+          let finalHtml = '';
+          const hasHtmlTag = /<\s*html[\s\S]*<\s*\/\s*html\s*>/i.test(htmlRaw);
+          if (hasHtmlTag) {
+            if (/<\s*head[\s\S]*<\s*\/\s*head\s*>/i.test(htmlRaw)) {
+              finalHtml = htmlRaw.replace(/<\s*\/\s*head\s*>/i, `<style>${cssRaw}</style></head>`);
+            } else {
+              finalHtml = htmlRaw.replace(/<\s*body[^>]*>/i, (m) => `${m}\n<style>${cssRaw}</style>`);
+            }
+          } else {
+            finalHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${name}</title><style>${cssRaw}</style></head><body>${htmlRaw}</body></html>`;
+          }
+
+          const blob = new Blob([finalHtml], { type: 'text/html' });
+          const url = URL.createObjectURL(blob);
+          window.open(url, '_blank', 'noopener');
+        } catch (e) {
+          console.warn('Failed to open viewer in new tab, falling back to modal', e);
+          document.getElementById('modalHtmlCode').value = p.html || p.htmlContent || '';
+          document.getElementById('modalCssCode').value = p.css || p.cssContent || '';
+          document.getElementById('codeModal').style.display = 'flex';
+        }
+      }
+
+      window.viewProjectCss = function(projectId) {
+        // reuse the same modal to show CSS as well
+        const p = currentProjects.find(x => String(x.id) === String(projectId));
+        if (!p) return; document.getElementById('modalHtmlCode').value = p.html || p.htmlContent || '';
+        document.getElementById('modalCssCode').value = p.css || p.cssContent || '';
+        document.getElementById('codeModal').style.display = 'flex';
+      }
+
+      // close modal handler
+      const closeBtn = document.getElementById('closeCodeModal');
+      if (closeBtn) closeBtn.onclick = () => { document.getElementById('codeModal').style.display = 'none'; };
+
+      // Image modal handlers
+      window.openImageModal = function(src) {
+        try {
+          const img = document.getElementById('imageModalImg');
+          img.src = src || '';
+          const modal = document.getElementById('imageModal');
+          modal.style.display = 'flex';
+          modal.focus();
+        } catch (e) { console.warn('openImageModal failed', e); }
+      }
+      const closeImageBtn = document.getElementById('closeImageModal');
+      if (closeImageBtn) closeImageBtn.onclick = () => { document.getElementById('imageModal').style.display = 'none'; document.getElementById('imageModalImg').src = ''; };
+      // close when clicking the overlay (not the image)
+      const imageModalEl = document.getElementById('imageModal');
+      if (imageModalEl) {
+        imageModalEl.addEventListener('click', (ev) => {
+          if (ev.target === imageModalEl) {
+            imageModalEl.style.display = 'none';
+            document.getElementById('imageModalImg').src = '';
+          }
+        });
+      }
+
+      // Load projects saved to localStorage (workspace autosave)
+      function loadLocalProjects() {
+        try {
+          const raw = localStorage.getItem('projects_list') || '[]';
+          const list = JSON.parse(raw);
+          if (Array.isArray(list) && list.length) {
+          // normalize to currentProjects shape used by renderProjects
+          currentProjects = list.map(p => ({ 
+            id: p.id, 
+            title: p.title, 
+            name: p.title, 
+            html: p.html, 
+            css: p.css, 
+            originalImageUrl: p.thumbnail || p.originalImageUrl,
+            elementCount: p.elementCount || 0
+          }));
+            renderProjects();
+            return;
+          }
+        } catch (e) {
+          console.warn('Failed to load local projects:', e);
+        }
+        projectsList.innerHTML = '<p style="color: var(--text-secondary);">No projects yet. Start a new conversion in the Workspace!</p>';
+      }
+
+      // Merge localStorage projects into currentProjects (avoid duplicates)
+      function mergeLocalProjects() {
+        try {
+          const raw = localStorage.getItem('projects_list') || '[]';
+          const local = JSON.parse(raw);
+          if (!Array.isArray(local) || local.length === 0) return;
+
+          // build lookup of existing ids
+          const existingIds = new Set(currentProjects.map(p => String(p.id)));
+          // load deleted ids so removed items don't reappear
+          const deletedRaw = localStorage.getItem('projects_list_deleted_ids') || '[]';
+          const deletedIds = new Set(JSON.parse(deletedRaw));
+
+          // normalize local projects and append those not already present
+          const toAdd = local.map(p => ({
+            id: p.id,
+            title: p.title || p.name || 'Untitled',
+            name: p.title || p.name || 'Untitled',
+            html: p.html || p.htmlContent || '',
+            css: p.css || p.cssContent || '',
+            originalImageUrl: p.thumbnail || p.originalImageUrl || '',
+            elementCount: p.elementCount || 0
+          })).filter(p => !existingIds.has(String(p.id)));
+          // filter out ids that were deleted locally
+          const toAddFiltered = toAdd.filter(p => !deletedIds.has(String(p.id)));
+
+          if (toAddFiltered.length) {
+            // prepend local items so recent local saves appear first
+            currentProjects = toAddFiltered.concat(currentProjects);
+            // attempt to sort by numeric id (timestamp) if possible
+            try {
+              currentProjects.sort((a,b) => {
+                const ai = Number(a.id) || 0; const bi = Number(b.id) || 0;
+                return bi - ai;
+              });
+            } catch (_) {}
+            renderProjects();
+          }
+        } catch (e) {
+          console.warn('mergeLocalProjects failed:', e);
+        }
+      }
+
+      // Refresh when localStorage changes (another tab saved a project)
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'projects_list') loadLocalProjects();
+      });
+
       window.openInWorkspace = function(projectId) {
-        const project = currentProjects.find(p => p.id === projectId);
+        const project = currentProjects.find(p => String(p.id) === String(projectId));
         if (!project) return;
         try {
-          localStorage.setItem('image2web_project_to_load', JSON.stringify({ id: projectId }));
+          // stash full project content so workspace can load it immediately
+          const payload = { id: projectId, html: project.html || project.htmlContent || '', css: project.css || project.cssContent || '' };
+          localStorage.setItem('image2web_project_to_load', JSON.stringify(payload));
           window.location.href = 'workspace.html';
         } catch (e) {
-          console.error('Failed to stash project id for workspace:', e);
+          console.error('Failed to stash project for workspace:', e);
           window.location.href = 'workspace.html';
         }
       }
 
       window.deleteProject = async function(projectId) {
-        if (!confirm('Delete this project?')) return;
-        const user = firebase.auth().currentUser;
-        if (!user) return;
+        if (!confirm('Delete this project? This cannot be undone.')) return;
+
+        // remove from UI immediately
+        currentProjects = currentProjects.filter(p => String(p.id) !== String(projectId));
+        renderProjects();
+
+        // record deleted id locally to prevent merges from reintroducing it
         try {
-          const db = firebase.firestore();
-          await db.collection('users').doc(user.uid).collection('projects').doc(projectId).delete();
-          currentProjects = currentProjects.filter(p => p.id !== projectId);
-          renderProjects();
+          const rawDeleted = localStorage.getItem('projects_list_deleted_ids') || '[]';
+          const deletedArr = JSON.parse(rawDeleted);
+          if (!deletedArr.includes(String(projectId))) {
+            deletedArr.push(String(projectId));
+            localStorage.setItem('projects_list_deleted_ids', JSON.stringify(deletedArr));
+          }
+        } catch (e) { console.warn('failed to record deleted id locally', e); }
+
+        // Try server-side delete if logged in
+        try {
+          const user = firebase.auth().currentUser;
+          if (user) {
+            const db = firebase.firestore();
+            await db.collection('users').doc(user.uid).collection('projects').doc(String(projectId)).delete();
+          }
         } catch (e) {
-          alert('Failed to delete: ' + e.message);
+          console.warn('Failed to delete project on server:', e);
+        }
+
+        // Always remove any local copy from projects_list as a final step
+        try {
+          const raw = localStorage.getItem('projects_list') || '[]';
+          let projects = JSON.parse(raw);
+          projects = projects.filter(p => String(p.id) !== String(projectId));
+          localStorage.setItem('projects_list', JSON.stringify(projects));
+          localStorage.setItem('projects_list_updated_at', String(Date.now()));
+        } catch (e) {
+          console.warn('Failed to remove local project copy', e);
         }
       }
 
       document.getElementById('refreshProjectsBtn').onclick = () => {
-        const user = firebase.auth().currentUser; if (user) loadPreviousDesigns(user.uid);
+        const loadingState = document.getElementById('loadingState');
+        const projectsList = document.getElementById('projectsList');
+        
+        // Show loading state
+        if (loadingState) loadingState.style.display = 'flex';
+        if (projectsList) projectsList.style.display = 'none';
+        
+        const user = firebase.auth().currentUser; 
+        if (user) loadPreviousDesigns(user.uid);
       };
       document.getElementById('exportProjectsBtn').onclick = () => {
         const blob = new Blob([JSON.stringify(currentProjects, null, 2)], { type: 'application/json' });
@@ -620,14 +1007,6 @@
           item.classList.remove('active');
         }
       });
-    });
-  </script>
-  <script>
-    // Check authentication and redirect to workspace if logged in
-    document.addEventListener('DOMContentLoaded', function() {
-      if (typeof checkAuthAndRedirect === 'function') {
-        checkAuthAndRedirect();
-      }
     });
   </script>
   <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
