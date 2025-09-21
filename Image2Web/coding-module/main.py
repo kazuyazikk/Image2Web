@@ -1,5 +1,5 @@
 import json
-from html_generator import generate_html, generate_just_html
+from html_generator import generate_html
 from css_generator import duplicate_css_file_with_theme, generate_css_file
 
 def read_json_file(file_path):
