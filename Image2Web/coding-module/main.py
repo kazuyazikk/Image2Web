@@ -43,10 +43,9 @@ def parse_elements(data):
     
     
 if __name__ == "__main__":
-    json_data = read_json_file("sample_output.json") #TODO:replace with your actual file path
+    json_data = read_json_file("sample_output.json") 
     if json_data:
         elements = parse_elements(json_data)
-        #html_content = generate_just_html(elements)
         html_content = generate_html(elements)
         
         # Duplicate the css file
@@ -54,8 +53,6 @@ if __name__ == "__main__":
         
         #Append auto-generated rules
         generate_css_file(elements, "generated_files/duplicate_espresso.css")
-        #TODO: Remove the magic variables in the future when we integrate frontend and backend
-        #Magic Variables: html_generator, Generating css file, Duplicating css file
         
         #Save to file
         with open("generated_files/output.html", "w") as f:
