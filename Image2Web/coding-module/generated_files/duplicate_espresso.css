@@ -1,0 +1,251 @@
+/* This is a comment and it is not affected by the code whatsoever */
+/* This is the start of a base design */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root{
+  --cream: #FFF8F0;
+  --light-brown: #D4A574;
+  --medium-brown: #B8956A;
+  --dark-brown: #8B4513;
+  --chocolate: #5D4037;
+  --espresso: #3E2723;
+}
+
+body{
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+  color: var(--espresso);
+  background: var(--cream);
+  overflow-x: hidden;
+}
+
+.button-base {
+  display: inline-block;
+  /* padding: 18px 40px; */
+  background: var(--cream);
+  color: var(--espresso);
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.button-base:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  background: var(--light-brown);
+  color: var(--cream);
+}
+
+.button-base:active{
+  transform: scale(0.95);
+  background: var(--dark-brown);
+  color: var(--cream);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) inset;
+}
+
+.textfield-base {
+  border: 2px solid var(--medium-brown);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  color: var(--espresso);
+  background-color: var(--cream);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.textfield-base:focus {
+  outline: none;
+  border-color: var(--dark-brown);
+  box-shadow: 0 0 6px rgba(139, 69, 19, 0.5); /* dark brown glow */
+}
+
+
+.navbar-base{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: var(--medium-brown);
+  border-bottom: 3px solid var(--dark-brown);
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  font-family: 'Georgia', serif;
+  z-index: 1000;
+}
+.navbar-base ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-base ul li{
+  margin-right: 25px;
+}
+
+.navbar-base a {
+  text-decoration: none;
+  color: var(--cream);
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar-base a:hover{
+  color: var(--light-brown);
+}
+
+/* Search bar styling */
+.navbar-search{
+  padding: 6px 10px;
+  border: 1px solid var(--dark-brown);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.paragraph-base {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--chocolate);
+  font-family: 'Georgia', serif;
+  margin: 0;
+  padding: 12px;
+  background: var(--cream);
+  border-left: 4px solid var(--medium-brown);
+  border-radius: 4px;
+}
+
+.text-base {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--espresso);
+  font-family: 'Georgia', serif;
+}
+
+.image-base {
+  object-fit: cover;
+  border-radius: 6px;
+  border: 3px solid var(--medium-brown);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.checkbox-base {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--dark-brown); /* supported in modern browsers */
+  cursor: pointer;
+}
+
+.label-base {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--espresso);
+  margin-bottom: 6px;
+  display: inline-block;
+}
+.checkbox-label-base{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: var(--chocolate);
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox-label-base input[type="checkbox"]{
+  accent-color: var(--dark-brown);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.checkbox-label-base input[type="checkbox"]:hover{
+  transform: scale(1.1);
+}
+/* End of base design */
+/* Below are the specific locations of the detected elements */
+.group_0 {
+display: flex;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.navbar_0_g0 {
+position: absolute;
+left: 9.48rem;
+top: 4.44rem;
+width: 32.7rem;
+height: 7.14rem;
+ border:1px solid black;
+}
+
+.textfield_1_g0 {
+position: absolute;
+left: 7.72rem;
+top: 14.55rem;
+width: 35.620000000000005rem;
+height: 5.84rem;
+ border:1px solid black;
+}
+
+.checkbox_2_g0 {
+position: absolute;
+left: 9.44rem;
+top: 22.84rem;
+width: 6.980000000000002rem;
+height: 5.440000000000001rem;
+ border:1px solid black;
+}
+
+.text_3_g0 {
+position: absolute;
+left: 9.43rem;
+top: 30.59rem;
+width: 16.71rem;
+height: 3.870000000000001rem;
+ display:flex; align-items:center;
+}
+
+.group_1 {
+display: flex;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.paragraph_0_g1 {
+position: absolute;
+left: 50.47rem;
+top: 6.35rem;
+width: 45.400000000000006rem;
+height: 54.49rem;
+ margin:0; padding:10px; overflow:hidden;
+}
+
+.button_1_g1 {
+position: absolute;
+left: 25.42rem;
+top: 22.51rem;
+width: 8.269999999999996rem;
+height: 5.969999999999999rem;
+ border:1px solid black;
+}
+
+.image_2_g1 {
+position: absolute;
+left: 4.82rem;
+top: 36.9rem;
+width: 43.75rem;
+height: 27.360000000000007rem;
+ object-fit:cover;
+}
+

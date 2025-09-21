@@ -117,8 +117,16 @@ def generate():
 
             print(f"Detected {len(json_data)} elements")
 
+            #Debug on Cloud Run: What JSON looks like
+            print("json_data type:", type(json_data))
+            print("json_data sample:", json_data[:3] if isinstance(json_data, list) else json_data)
+
             # Run your existing code generator
             elements = main.parse_elements(json_data)
+            print(f"parse_elements returned: {type(elements)} with value: {elements}")
+            if elements is None:
+                print("WARNING: parse_elements returned None, forcing []")
+                elements = []
             html_content = main.generate_html(elements)
 
             # Get theme from request (default to espresso)

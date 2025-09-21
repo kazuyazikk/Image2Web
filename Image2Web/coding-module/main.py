@@ -29,6 +29,7 @@ def parse_elements(data):
                 
                 element_info = {
                     "label": el.get("label", "unknown"),
+                    "group_index": g_idx,
                     "x": x1,
                     "y": y1,
                     "width": width,
@@ -40,6 +41,46 @@ def parse_elements(data):
                 }
                 elements.append(element_info)
         return elements
+    
+    #Fix for Google cloud
+    #Google cloud run = JSON is a list, overall the function falls and then it will return NONE
+    #Locally = JSON is a dict with "groups", parse works
+    elif isinstance(data, list):
+        for g_idx, el in enumerate(data):
+            bbox = el.get("bounding_box", {})
+            if bbox:
+                # Case: bbox provided
+                x1, y1, x2, y2 = bbox["x1"], bbox["y1"], bbox["x2"], bbox["y2"]
+                element_info = {
+                    "label": el.get("label", "unknown"),
+                    "group_index": g_idx,
+                    "x": x1,
+                    "y": y1,
+                    "width": x2 - x1,
+                    "height": y2 - y1,
+                    "positioning": "absolute",
+                    "unit": "rem",
+                    "group_type": el.get("group_type", "single_element"),
+                    "alignment_type": el.get("alignment_type", "single")
+                }
+        else:
+            # Case: already parsed element → enforce keys
+            element_info = {
+                "label": el.get("label", "unknown"),
+                "group_index": el.get("group_index", g_idx),
+                "x": el.get("x", 0),
+                "y": el.get("y", 0),
+                "width": el.get("width", 1),   # enforces width
+                "height": el.get("height", 1), # enforces height
+                "positioning": el.get("positioning", "absolute"),
+                "unit": el.get("unit", "rem"),
+                "group_type": el.get("group_type", "single_element"),
+                "alignment_type": el.get("alignment_type", "single")
+            }
+            elements.append(element_info)
+        return elements
+    #Returning None to prevent errors on Google Cloud run
+    return []
     
     
 if __name__ == "__main__":
