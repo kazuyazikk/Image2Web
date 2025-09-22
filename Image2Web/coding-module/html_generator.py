@@ -75,6 +75,6 @@ def label_description(label):
     if label == "textfield":
         return("placeholder='Enter your text here'")
     if label == "text":
-        return("This is a Sample text, different from paragraph.")
+        return("This is a Sample text!")
     if label == "paragraph":
-        return("This is a sample paragraph text that demonstrates how text content would appear in this element.")
+        return("This is a sample paragraph text!")

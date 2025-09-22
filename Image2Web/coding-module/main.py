@@ -18,15 +18,37 @@ def read_json_file(file_path):
     
 def parse_elements(data):
     """Parse JSON elements into a structured format with positioning info."""
+
     elements = []
-    
-    if isinstance(data, dict) and "groups" in data:
+
+    # Case 1: flat list of shapes with "points"
+    if isinstance(data, list) and data and "points" in data[0]:
+        for idx, el in enumerate(data):
+            (x1, y1), (x2, y2) = el["points"]
+            width, height = x2 - x1, y2 - y1
+
+            element_info = {
+                "label": el.get("label", "unknown"),
+                "group_index": el.get("group_id", idx),
+                "x": x1,
+                "y": y1,
+                "width": width,
+                "height": height,
+                "positioning": "absolute",
+                "unit": el.get("unit", "%"),
+                "group_type": "single_element",
+                "alignment_type": "single"
+            }
+            elements.append(element_info)
+
+    # Case 2: grouped JSON with "groups"
+    elif isinstance(data, dict) and "groups" in data:
         for g_idx, group in enumerate(data["groups"]):
             for el in group["elements"]:
-                bbox = el.get("bounding_box",{})
-                x1, y1, x2, y2 = bbox["x1"], bbox["y1"], bbox["x2"], bbox["y2"]
+                bbox = el.get("bounding_box", {})
+                x1, y1, x2, y2 = bbox.get("x1", 0), bbox.get("y1", 0), bbox.get("x2", 0), bbox.get("y2", 0)
                 width, height = x2 - x1, y2 - y1
-                
+
                 element_info = {
                     "label": el.get("label", "unknown"),
                     "group_index": g_idx,
@@ -35,52 +57,19 @@ def parse_elements(data):
                     "width": width,
                     "height": height,
                     "positioning": "absolute",
-                    "unit": "rem",
+                    "unit": "%",
                     "group_type": group.get("type"),
-                    "alignment_type": group.get("alignment_type")
+                    "alignment_type": group.get("alignment_type", "single")
                 }
                 elements.append(element_info)
-        return elements
-    
-    #Fix for Google cloud
-    #Google cloud run = JSON is a list, overall the function falls and then it will return NONE
-    #Locally = JSON is a dict with "groups", parse works
-    elif isinstance(data, list):
-        for g_idx, el in enumerate(data):
-            bbox = el.get("bounding_box", {})
-            if bbox:
-                # Case: bbox provided
-                x1, y1, x2, y2 = bbox["x1"], bbox["y1"], bbox["x2"], bbox["y2"]
-                element_info = {
-                    "label": el.get("label", "unknown"),
-                    "group_index": g_idx,
-                    "x": x1,
-                    "y": y1,
-                    "width": x2 - x1,
-                    "height": y2 - y1,
-                    "positioning": "absolute",
-                    "unit": "rem",
-                    "group_type": el.get("group_type", "single_element"),
-                    "alignment_type": el.get("alignment_type", "single")
-                }
-        else:
-            # Case: already parsed element → enforce keys
-            element_info = {
-                "label": el.get("label", "unknown"),
-                "group_index": el.get("group_index", g_idx),
-                "x": el.get("x", 0),
-                "y": el.get("y", 0),
-                "width": el.get("width", 1),   # enforces width
-                "height": el.get("height", 1), # enforces height
-                "positioning": el.get("positioning", "absolute"),
-                "unit": el.get("unit", "rem"),
-                "group_type": el.get("group_type", "single_element"),
-                "alignment_type": el.get("alignment_type", "single")
-            }
-            elements.append(element_info)
-        return elements
-    #Returning None to prevent errors on Google Cloud run
-    return []
+
+    else:
+        print("parse_elements: Unrecognized JSON structure", type(data))
+        return []
+
+    print(f"parse_elements returned: {type(elements)} with {len(elements)} elements")
+    return elements
+
     
     
 if __name__ == "__main__":
