@@ -29,13 +29,16 @@ def generate_html(elements):
                 tag = f'<h6 class="text-base {class_name}">{label_description(el["label"])}</h6>'
             elif el["label"] == "navbar" and not already_have_navbar:
                 nav_class_name = f"{el['label']}_{i}"
-                tag = f'''<nav class="navbar-base {nav_class_name}">
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                    <input type="text" placeholder="Search..." class="navbar-search">
+                tag = f'''
+                <nav class="navbar-base">
+                    <div class="nav-content">
+                        <ul class="nav-links">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                        <input type="text" placeholder="Search..." class="navbar-search">
+                    </div>
                 </nav>'''
                 html_elements.append(tag)
                 already_have_navbar = True
