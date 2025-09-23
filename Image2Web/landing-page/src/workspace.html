@@ -851,13 +851,63 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
+      gap: 4rem; /* Even more space between logo and navigation */
     }
     header .header-content .logo { margin-right: auto; }
     header .header-content #user-greeting { margin-left: auto; }
 
-    /* Remove global centering/padding so logo is flush left */
-    header { padding-left: 1; padding-top: 0; }
-    header .header-content { margin: 0; max-width: none; }
+    /* Remove global centering/padding so logo is flush left - match previous designs page */
+    header.main-header { padding: 0.6rem 1.25rem; }
+    .main-header .header-content { margin: 0; max-width: none; }
+
+    /* Center the main navigation buttons */
+    .main-nav {
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      z-index: 1100 !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .main-nav ul {
+      display: flex !important;
+      gap: 1.5rem !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none !important;
+      align-items: center !important;
+    }
+
+    /* Position auth navigation on the right */
+    .auth-nav {
+      position: absolute !important;
+      right: 20px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      z-index: 1100 !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .auth-nav ul {
+      display: flex !important;
+      gap: 0.5rem !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none !important;
+      align-items: center !important;
+    }
+
+    /* Style the profile button */
+    .profile-container {
+      position: absolute !important;
+      right: 20px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      z-index: 1100 !important;
+    }
   </style>
 </head>
 
@@ -889,7 +939,7 @@
           <div class="slogan">Building Tomorrow's Digital Experience</div>
         </div>
       </div>
-      <nav>
+      <nav class="main-nav">
         <ul>
           <li class="nav-item" data-page="previous-designs" onclick="window.location.href='previous_designs.html'">
             <button class="nav-btn">Previous Designs</button>
@@ -898,6 +948,10 @@
             <button class="nav-btn">Workspace</button>
           </li>
           <li class="nav-item" data-page="tutorial"><button class="nav-btn" onclick="openTutorial(); return false;">Tutorial</button></li>
+        </ul>
+      </nav>
+      <nav class="auth-nav">
+        <ul>
           <li class="nav-item" id="auth-links">
             <button class="nav-btn" onclick="openLogin()">Login</button>
           </li>
@@ -919,7 +973,7 @@
           <div class="name" id="profileName">User</div>
           <div class="email" id="profileEmail">user@example.com</div>
           <div class="actions">
-            <button class="home" id="profileHome">Home</button>
+            
             <button class="signout" id="profileSignout">Sign out</button>
           </div>
         </div>

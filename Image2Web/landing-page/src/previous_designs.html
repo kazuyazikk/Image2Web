@@ -31,6 +31,55 @@
       display: none !important;
     }
 
+    /* Center the main navigation buttons */
+    .main-nav {
+      position: absolute !important;
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      z-index: 1100 !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .main-nav ul {
+      display: flex !important;
+      gap: 1.5rem !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none !important;
+      align-items: center !important;
+    }
+
+    /* Position auth navigation on the right */
+    .auth-nav {
+      position: absolute !important;
+      right: 20px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      z-index: 1100 !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .auth-nav ul {
+      display: flex !important;
+      gap: 0.5rem !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      list-style: none !important;
+      align-items: center !important;
+    }
+
+    /* Style the profile button */
+    .profile-container {
+      position: absolute !important;
+      right: 20px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      z-index: 1100 !important;
+    }
+
     /* CSS Classes for inline styles */
     .button-container {
       display: flex;
@@ -492,14 +541,25 @@
           <div class="slogan">Building Tomorrow's Digital Experience</div>
         </div>
       </div>
-      <nav>
-        <ul id="nav-menu" class="nav-menu-layout">
-          <li class="nav-item" data-page="previous-designs"><button class="nav-btn" onclick="window.location.href='previous_designs.html'">Previous Designs</button></li>
-          <li class="nav-item" data-page="workspace"><button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button></li>
+      <nav class="main-nav">
+        <ul>
+          <li class="nav-item active" data-page="previous-designs" onclick="window.location.href='previous_designs.html'">
+            <button class="nav-btn">Previous Designs</button>
+          </li>
+          <li class="nav-item" data-page="workspace" onclick="window.location.href='workspace.html'">
+            <button class="nav-btn">Workspace</button>
+          </li>
           <li class="nav-item" data-page="tutorial"><button class="nav-btn" onclick="openTutorial(); return false;">Tutorial</button></li>
-          <li class="nav-item" data-page="contributors" style="display: none;"><button class="nav-btn" onclick="window.location.href='contributors.html'">Members</button></li>
-          <li class="nav-item" id="auth-links" style="display: none;"><button class="nav-btn" onclick="openLogin()">Login</button></li>
-          <li class="nav-item" id="user-links" style="display: none;"><button class="nav-btn" onclick="logout()">Logout</button></li>
+        </ul>
+      </nav>
+      <nav class="auth-nav">
+        <ul>
+          <li class="nav-item" id="auth-links">
+            <button class="nav-btn" onclick="openLogin()">Login</button>
+          </li>
+          <li class="nav-item" id="user-links" style="display: none;">
+            <button class="nav-btn" onclick="logout()">Logout</button>
+          </li>
         </ul>
       </nav>
       <!-- Simple user greeting kept for compatibility with auth scripts -->

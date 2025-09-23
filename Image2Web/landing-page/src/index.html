@@ -12,6 +12,7 @@
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
   #user-links { display: none; }
+  #auth-links { display: list-item; }
     /* Widget Styles */
     .widget {
       background: #f8fafc;
@@ -99,7 +100,7 @@
     @media (min-width: 768px) {
       .main-header .header-content { justify-content: flex-start; position: relative; }
       /* pin the nav to the top-right corner of the header with higher specificity */
-      header.main-header .header-content nav { position: absolute !important; right: 20px !important; top: 8px !important; z-index: 9999; display: flex !important; }
+      header.main-header .header-content nav { position: absolute !important; right: 20px !important; top: 50% !important; transform: translateY(-50%) !important; z-index: 9999; display: flex !important; }
       header.main-header .header-content nav ul { display: flex !important; gap: 8px !important; margin: 0; padding: 0; list-style: none; align-items: center; }
       header.main-header .header-content nav li { margin: 0; }
       .main-header .logo { margin-right: 12px; }
@@ -140,7 +141,7 @@
       <nav>
         <ul id="nav-menu" class="nav-menu-layout">
           <li class="nav-item" data-page="contributors"><button class="nav-btn" onclick="window.location.href='contributors.html'">Members</button></li>
-          <li class="nav-item" id="user-links"><button class="nav-btn" onclick="logout()">Logout</button></li>
+          <li class="nav-item" id="auth-links"><button class="nav-btn" onclick="openLogin()">Login</button></li>
         </ul>
       </nav>
       <div id="user-greeting">Hi, <span id="user-name"></span></div>
