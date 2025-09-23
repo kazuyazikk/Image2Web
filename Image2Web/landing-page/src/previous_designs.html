@@ -31,24 +31,27 @@
       display: none !important;
     }
 
-    /* Center the main navigation buttons */
-    .main-nav {
+    /* Force-center nav in this page (override global right-pinned nav) */
+    header.main-header .header-content nav.main-nav {
       position: absolute !important;
       left: 50% !important;
+      right: auto !important;
       top: 50% !important;
       transform: translate(-50%, -50%) !important;
       z-index: 1100 !important;
       display: flex !important;
       align-items: center !important;
+      width: auto !important;
     }
 
-    .main-nav ul {
+    header.main-header .header-content nav.main-nav ul {
       display: flex !important;
-      gap: 1.5rem !important;
+      gap: 1.2rem !important;
       margin: 0 !important;
       padding: 0 !important;
       list-style: none !important;
       align-items: center !important;
+      justify-content: center !important;
     }
 
     /* Position auth navigation on the right */
@@ -78,6 +81,14 @@
       top: 50% !important;
       transform: translateY(-50%) !important;
       z-index: 1100 !important;
+    }
+    /* Match workspace profile button colors */
+    .profile-btn {
+      background: linear-gradient(135deg,#2c003f,#3b0060) !important;
+      color: #fff !important;
+      border: none !important;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25) !important;
+      font-weight: 700 !important;
     }
 
     /* CSS Classes for inline styles */
@@ -260,6 +271,11 @@
       margin-bottom: 2rem;
       text-align: left;
       margin-left: 3rem;
+      background: transparent !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 0 !important;
+      box-shadow: none !important;
     }
 
     .projects-grid {
