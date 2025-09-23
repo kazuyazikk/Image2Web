@@ -43,6 +43,7 @@
   --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   --glass-bg: rgba(255, 255, 255, 0.1);
   --glass-border: rgba(255, 255, 255, 0.2);
+  --title-color: #00050a; /* slightly darker, subtle blue tint for titles */
 }
 
 body {
@@ -58,9 +59,53 @@ body {
   overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
+/* Make main titles slightly darker across the site for better legibility */
+h1, h2, h3, h4, h5, h6,
+.hero-title, .workspace-title {
+  color: var(--title-color);
+}
+
+/* Active page indicator: slim underline for active nav/tab links */
+header a.active,
+.nav-item.active a,
+.tab-btn.active,
+nav ul li.active a {
+  position: relative;
+}
+header a.active::after,
+.nav-item.active a::after,
+.tab-btn.active::after,
+nav ul li.active a::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -8px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--secondary-blue), var(--primary-blue));
+  border-radius: 2px;
+}
+
+/* Do not show the active underline for the inspector/editor tabs (clean UI) */
+.output-tabs .tab-btn.active::after,
+.output-section .tab-btn.active::after,
+#preview-tab .tab-btn.active::after,
+#code-tab .tab-btn.active::after {
+  display: none !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
 main {
   background: transparent;
   min-height: 80vh;
+  margin-top: 56px; /* reduced default spacing to bring content up */
+}
+
+/* Ensure page content sits below the fixed header and has breathing room */
+main {
+  margin-top: 76px; /* mobile default - header height + small gap */
+  padding-bottom: 48px; /* standard bottom padding so pages don't feel clipped */
 }
 
 body::before {
@@ -94,10 +139,10 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  padding: 1rem 2rem;
-  background: rgba(15, 15, 35, 0.9);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
+  padding: 0.6rem 1.25rem; /* reduced padding to bring header up */
+  background: rgba(15, 15, 35, 0.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--glass-border);
   z-index: 1000;
   position: relative; /* Ensure header is a positioning context for absolute children */
@@ -105,14 +150,12 @@ header {
 }
 
 .header-content {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
+  padding: 0.6rem 1.25rem;
 }
 
 .logo {
@@ -141,7 +184,7 @@ header {
 
 .logo .brand {
   font-family: 'Russo One', sans-serif;
-  font-size: 1.8em;
+  font-size: 1.4em; /* slightly smaller for a tidier header */
   color: var(--text-primary);
   white-space: nowrap;
 }
@@ -168,6 +211,48 @@ header {
   font-weight: bold;
   color: var(--secondary-blue);
 }
+
+/* Force-hide the textual greeting everywhere (overrides inline show by JS) */
+#user-greeting { display: none !important; }
+
+/* Compact profile button + popup (small card with name, email, Home and Sign out) */
+.profile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  color: var(--text-primary);
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+}
+
+.profile-card {
+  position: absolute;
+  right: 14px;
+  top: 54px;
+  min-width: 220px;
+  background: linear-gradient(180deg, rgba(30,6,60,0.98), rgba(40,6,80,0.98));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  z-index: 1202;
+  display: none;
+}
+
+.profile-card.visible { display: block; }
+
+.profile-card .name { font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+.profile-card .email { font-size: 0.85em; color: var(--text-secondary); margin-bottom: 10px; }
+.profile-card .actions { display:flex; gap:8px; justify-content:flex-end; }
+.profile-card .actions button { padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:var(--text-primary); cursor:pointer; }
+.profile-card .actions .home { background: transparent; }
+.profile-card .actions .signout { background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue)); color:var(--button-text); border:none; }
 
 /* Hamburger menu toggle - mobile first */
 #nav-toggle {
@@ -272,7 +357,42 @@ nav ul.open {
   font-size: 2em;
   cursor: pointer;
   z-index: 1003; /* Ensure it's on top */
-  position: relative; /* In case it needs to be explicitly positioned */
+}
+
+/* Desktop: pin nav to the top-right corner and show horizontal menu */
+@media (min-width: 768px) {
+  header.main-header .header-content { justify-content: flex-start; position: relative; }
+  /* make the nav horizontal and anchored to the right of the header */
+  header.main-header .header-content nav {
+    position: absolute !important;
+    right: 20px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 1100 !important;
+    display: block !important;
+    background: transparent !important;
+    border: none !important;
+  }
+  header.main-header .header-content nav ul {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    position: static !important;
+    box-shadow: none !important;
+  }
+  header.main-header .header-content nav ul li { display: block !important; }
+  /* Ensure nav buttons are compact on desktop */
+  header.main-header .header-content .nav-item button,
+  header.main-header .header-content .nav-btn {
+    padding: 6px 12px !important;
+    font-size: 0.95rem !important;
+    border-radius: 1.1em !important;
+  }
 }
 
 /* ====================================== */
@@ -284,8 +404,8 @@ nav ul.open {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 140px 20px 100px;
-  min-height: 85vh;
+  padding: 80px 20px 80px; /* reduce top padding so hero sits higher */
+  min-height: 70vh;
   background: transparent;
   position: relative;
   overflow: hidden;
@@ -1259,14 +1379,14 @@ footer {
   }
 
   nav ul {
-    width: 320px;
-    padding: 100px 25px 25px;
-  }
+      width: 300px;
+      padding: 80px 18px 18px;
+    }
 
-  .nav-item button {
-    font-size: 1.1em;
-    padding: 14px 25px;
-  }
+    .nav-item button {
+      font-size: 0.95em; /* slightly smaller */
+      padding: 10px 18px; /* reduced padding */
+    }
 
   .hero {
     padding: 60px 30px;
@@ -1433,8 +1553,8 @@ footer {
   }
 
   .nav-item button {
-    padding: 0.5em 1.8em;
-    font-size: 1.05em;
+    padding: 0.4em 1.4em;
+    font-size: 0.95em;
     width: auto;
   }
 
@@ -1443,6 +1563,8 @@ footer {
     margin-left: 25px;
     font-size: 1.1em;
   }
+
+  main { margin-top: 88px; }
 
   .hero-title {
     font-size: 3.8em;
@@ -1506,6 +1628,8 @@ footer {
     display: none;
   }
 
+  main { margin-top: 110px; }
+
   nav ul {
     display: flex !important;
     position: static;
@@ -1527,8 +1651,8 @@ footer {
   }
 
   .nav-item button {
-    font-size: 1.1em;
-    padding: 0.4em 1.5em;
+    font-size: 0.98em;
+    padding: 0.35em 1.2em;
     width: auto;
     text-align: center;
   }
@@ -1841,5 +1965,50 @@ footer {
     background: white !important;
     box-shadow: none !important;
     border: 2px solid black !important;
+  }
+}
+
+/* Shift header nav buttons slightly to the left on tablet+desktop to improve alignment */
+@media (min-width: 768px) {
+  header .header-content nav ul {
+    justify-content: flex-start; /* align items to the left of the nav area */
+    margin-left: 12px; /* small left offset so buttons sit closer to logo */
+    gap: 22px; /* slightly tighter spacing */
+  }
+  /* slightly reduce horizontal padding on nav buttons to keep them compact */
+  header .header-content .nav-item button {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+@media (min-width: 1200px) {
+  header .header-content nav ul {
+    margin-left: 20px; /* a bit more offset on large screens */
+    gap: 28px;
+  }
+}
+
+/* Large screens: pin nav to the right (do not center) */
+@media (min-width: 1025px) {
+  header .header-content { position: relative; }
+
+  header .header-content nav {
+    position: absolute !important;
+    right: 28px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 1100 !important;
+    width: auto !important;
+  }
+
+  header .header-content nav ul {
+    position: static !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 22px !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    margin-left: 0 !important;
   }
 }
