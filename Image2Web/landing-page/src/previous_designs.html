@@ -494,28 +494,39 @@
       </div>
       <nav>
         <ul id="nav-menu" class="nav-menu-layout">
+          <li class="nav-item" data-page="previous-designs"><button class="nav-btn" onclick="window.location.href='previous_designs.html'">Previous Designs</button></li>
+          <li class="nav-item" data-page="workspace"><button class="nav-btn" onclick="window.location.href='workspace.html'">Workspace</button></li>
+          <li class="nav-item" data-page="tutorial"><button class="nav-btn" onclick="openTutorial(); return false;">Tutorial</button></li>
           <li class="nav-item" data-page="contributors" style="display: none;"><button class="nav-btn" onclick="window.location.href='contributors.html'">Members</button></li>
           <li class="nav-item" id="auth-links" style="display: none;"><button class="nav-btn" onclick="openLogin()">Login</button></li>
           <li class="nav-item" id="user-links" style="display: none;"><button class="nav-btn" onclick="logout()">Logout</button></li>
         </ul>
       </nav>
-      <div id="user-greeting">Hi, <span id="user-name"></span></div>
+      <!-- Simple user greeting kept for compatibility with auth scripts -->
+      <div id="user-greeting">
+        Hi, <span id="user-name"></span>
+        <!-- keep this ID so existing scripts that set sidebar-username still work -->
+        <span id="sidebar-username" style="display:none; visibility:hidden;">Guest</span>
+      </div>
+      <!-- compact profile button + popup -->
+      <div class="profile-container">
+        <button id="profileBtn" class="profile-btn" aria-haspopup="true" aria-expanded="false">SM</button>
+        <div id="profileCard" class="profile-card" role="menu" aria-hidden="true">
+          <div class="name" id="profileName">User</div>
+          <div class="email" id="profileEmail">user@example.com</div>
+          <div class="actions">
+            <button class="home" id="profileHome">Home</button>
+            <button class="signout" id="profileSignout">Sign out</button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
   <div class="main-wrapper">
-    <aside class="sidebar">
-              <nav class="sidebar-nav">
-          <ul>
-            <li class="active" data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
-            <li data-page="workspace"><a href="workspace.html">Workspace</a></li>
-          </ul>
-        </nav>
-      <div class="sidebar-user">
-        <p>Username: <span id="sidebar-username">Guest</span></p>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-      </div>
-    </aside>
+    <!-- sidebar removed; navigation moved to header -->
+    <!-- keep sidebar-username available for existing scripts -->
+    <span id="sidebar-username" style="display:none; visibility:hidden;">Guest</span>
 
     <main class="main-content-area" role="main">
       <section class="workspace-section-card projects-section" aria-labelledby="projects-title">
@@ -706,6 +717,8 @@
           loadLocalProjects();
         }
       });
+
+      // avatar UI removed — simple greeting is used instead
 
       function logout() {
         firebase.auth().signOut().then(() => {
@@ -1008,6 +1021,68 @@
         }
       });
     });
+    
+    // Compact profile popup wiring (populate name/email, toggle, Home and Sign out)
+    (function setupProfileCard(){
+      const btn = document.getElementById('profileBtn');
+      const card = document.getElementById('profileCard');
+      const nameEl = document.getElementById('profileName');
+      const emailEl = document.getElementById('profileEmail');
+      const homeBtn = document.getElementById('profileHome');
+      const signoutBtn = document.getElementById('profileSignout');
+
+      if (!btn || !card) return;
+
+      function setInfo(user) {
+        if (!user) return;
+        const name = user.displayName || user.email || 'User';
+        const email = user.email || '';
+        if (nameEl) nameEl.textContent = name;
+        if (emailEl) emailEl.textContent = email;
+        const initials = (name.split(' ').map(s=>s[0]).slice(0,2).join('') || 'U').toUpperCase();
+        btn.textContent = initials;
+        btn.setAttribute('title', name + '\n' + email);
+      }
+
+      try { firebase.auth().onAuthStateChanged(u => { if (u) setInfo(u); }); } catch(e){}
+
+      btn.addEventListener('click', (e) => {
+        const vis = card.classList.toggle('visible');
+        btn.setAttribute('aria-expanded', vis ? 'true' : 'false');
+        card.setAttribute('aria-hidden', vis ? 'false' : 'true');
+        e.stopPropagation();
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!btn.contains(e.target) && !card.contains(e.target)) {
+          card.classList.remove('visible');
+          btn.setAttribute('aria-expanded', 'false');
+          card.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      if (homeBtn) homeBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
+      if (signoutBtn) signoutBtn.addEventListener('click', () => { try { logout(); } catch(e){ console.warn('logout failed', e); } });
+    })();
+  </script>
+  <script>
+    // Auto-highlight header/nav links based on current path
+    (function markActiveNav(){
+      try {
+        const links = document.querySelectorAll('header a, .nav-item a, .tab-btn');
+        const path = window.location.pathname.split('/').pop();
+        links.forEach(a => {
+          try {
+            const href = a.getAttribute('href') || '';
+            if (!href) return;
+            const target = href.split('/').pop();
+            if (target && path && target === path) {
+              a.classList.add('active');
+            }
+          } catch(e){}
+        });
+      } catch(e) { /* ignore if header/nav not present */ }
+    })();
   </script>
   <button id="nav-toggle" aria-label="Open navigation" style="display:none;">
     &#9776;

@@ -11,6 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
+    /* Hide any footer on this page to keep workspace minimal */
+    footer { display: none !important; }
+
     /* Mobile-first responsive styles */
     body {
       opacity: 0;
@@ -28,7 +31,7 @@
       width: 100%;
       max-width: 100%;
       margin: 0;
-      padding: 10px 0;
+      padding: 6px 0; /* slightly less top/bottom padding so borders sit closer to top */
     }
 
     .sidebar {
@@ -104,13 +107,13 @@
 
     .main-content-area {
       flex-grow: 1;
-      padding: 20px;
+      padding: 12px; /* reduce padding to lift panels slightly */
       background: transparent;
       order: 1;
       display: flex;
       flex-direction: row;
-      gap: 20px;
-      height: calc(100vh - 120px);
+      gap: 16px;
+      height: calc(100vh - 90px); /* account for smaller header gap so content fills more of viewport */
     }
 
     /* Two Column Layout */
@@ -624,6 +627,8 @@
       }
     }
 
+    /* sliding tab removed - navigation moved to header */
+
     /* Loading spinner */
     #loading-spinner {
       display: none;
@@ -837,9 +842,8 @@
       color: var(--secondary-blue);
     }
 
-    /* Hide top header quick links on workspace page */
-    header .header-content nav ul li[data-page="workspace"],
-    header .header-content nav ul li#user-links { display: none !important; }
+  /* Hide only user-links by default; show header nav buttons including Tutorial */
+  header .header-content nav ul li#user-links { display: none !important; }
 
     /* Ensure title (logo/brand) is far left and greeting is far right */
     header .header-content {
@@ -887,9 +891,13 @@
       </div>
       <nav>
         <ul>
+          <li class="nav-item" data-page="previous-designs" onclick="window.location.href='previous_designs.html'">
+            <button class="nav-btn">Previous Designs</button>
+          </li>
           <li class="nav-item active" data-page="workspace" onclick="window.location.href='workspace.html'">
             <button class="nav-btn">Workspace</button>
           </li>
+          <li class="nav-item" data-page="tutorial"><button class="nav-btn" onclick="openTutorial(); return false;">Tutorial</button></li>
           <li class="nav-item" id="auth-links">
             <button class="nav-btn" onclick="openLogin()">Login</button>
           </li>
@@ -898,8 +906,23 @@
           </li>
         </ul>
       </nav>
+      <!-- Simple user greeting kept for compatibility with auth scripts -->
       <div id="user-greeting">
         Hi, <span id="user-name"></span>
+        <!-- keep this ID so existing scripts that set sidebar-username still work -->
+        <span id="sidebar-username" style="display:none; visibility:hidden;">Guest</span>
+      </div>
+      <!-- compact profile button + popup -->
+      <div class="profile-container">
+        <button id="profileBtn" class="profile-btn" aria-haspopup="true" aria-expanded="false">SM</button>
+        <div id="profileCard" class="profile-card" role="menu" aria-hidden="true">
+          <div class="name" id="profileName">User</div>
+          <div class="email" id="profileEmail">user@example.com</div>
+          <div class="actions">
+            <button class="home" id="profileHome">Home</button>
+            <button class="signout" id="profileSignout">Sign out</button>
+          </div>
+        </div>
       </div>
       <button id="nav-toggle" aria-label="Open navigation">&#9776;</button>
     </div>
@@ -907,19 +930,7 @@
 
   <div id="workspace-authorized-content" style="display: none;">
     <div class="main-wrapper">
-      <aside class="sidebar">
-        <nav class="sidebar-nav">
-          <ul>
-            <li data-page="previous-designs"><a href="previous_designs.html">Previous Designs</a></li>
-            <li class="active" data-page="workspace"><a href="workspace.html">Workspace</a></li>
-            <li data-page="tutorial"><a href="#" onclick="openTutorial(); return false;">Tutorial</a></li>
-          </ul>
-        </nav>
-        <div class="sidebar-user">
-          <p>Username: <span id="sidebar-username">Guest</span></p>
-          <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
-      </aside>
+      <!-- sidebar removed; navigation moved into header for a compact layout -->
 
       <main class="main-content-area">
         <!-- Left Column - Input Controls -->
@@ -1436,6 +1447,9 @@ Generated on: ${new Date().toLocaleString()}
         initAddImages();
         initSaveZip();
         initDragAndDrop();
+
+        // sliding tab removed - no initialization required
+
       const imageUpload = document.getElementById('imageUpload');
       const imagePreview = document.getElementById('imagePreview');
       const fileNameDisplay = document.getElementById('fileName');
@@ -1479,10 +1493,13 @@ Generated on: ${new Date().toLocaleString()}
           userNameSpan.textContent = '';
           sidebarUsernameSpan.textContent = 'Guest';
 
-          window.location.href = 'index.html';
+          // DO NOT auto-redirect to index.html here — keep the user on the workspace page
+          // window.location.href = 'index.html';
         }
         body.classList.add('loaded');
       });
+
+      // avatar UI removed — simple greeting is used instead
 
       // Image upload functionality
       imageUpload.addEventListener('change', function() {
@@ -1829,6 +1846,69 @@ Generated on: ${new Date().toLocaleString()}
 
   // File export functionality removed
     });
+
+  // Compact profile popup wiring (populate name/email, toggle, Home and Sign out)
+  (function setupProfileCard(){
+    const btn = document.getElementById('profileBtn');
+    const card = document.getElementById('profileCard');
+    const nameEl = document.getElementById('profileName');
+    const emailEl = document.getElementById('profileEmail');
+    const homeBtn = document.getElementById('profileHome');
+    const signoutBtn = document.getElementById('profileSignout');
+
+    if (!btn || !card) return;
+
+    function setInfo(user) {
+      if (!user) return;
+      const name = user.displayName || user.email || 'User';
+      const email = user.email || '';
+      if (nameEl) nameEl.textContent = name;
+      if (emailEl) emailEl.textContent = email;
+      // initials on the button
+      const initials = (name.split(' ').map(s=>s[0]).slice(0,2).join('') || 'U').toUpperCase();
+      btn.textContent = initials;
+      btn.setAttribute('title', name + '\n' + email);
+    }
+
+    try { firebase.auth().onAuthStateChanged(u => { if (u) setInfo(u); }); } catch(e){}
+
+    btn.addEventListener('click', (e) => {
+      const vis = card.classList.toggle('visible');
+      btn.setAttribute('aria-expanded', vis ? 'true' : 'false');
+      card.setAttribute('aria-hidden', vis ? 'false' : 'true');
+      e.stopPropagation();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!btn.contains(e.target) && !card.contains(e.target)) {
+        card.classList.remove('visible');
+        btn.setAttribute('aria-expanded', 'false');
+        card.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    if (homeBtn) homeBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
+    if (signoutBtn) signoutBtn.addEventListener('click', () => { try { logout(); } catch(e){ console.warn('logout failed', e); } });
+  })();
+  </script>
+  <script>
+    // Auto-highlight header/nav links based on current path
+    (function markActiveNav(){
+      try {
+        const links = document.querySelectorAll('header a, .nav-item a, .tab-btn');
+        const path = window.location.pathname.split('/').pop();
+        links.forEach(a => {
+          try {
+            const href = a.getAttribute('href') || '';
+            if (!href) return;
+            const target = href.split('/').pop();
+            if (target && path && target === path) {
+              a.classList.add('active');
+            }
+          } catch(e){}
+        });
+      } catch(e) { /* ignore if header/nav not present */ }
+    })();
   </script>
 </body>
 
