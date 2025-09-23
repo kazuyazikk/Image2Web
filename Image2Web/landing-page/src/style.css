@@ -139,7 +139,7 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  padding: 0.4rem 1.25rem; /* reduced padding to bring header up */
+  padding: 0.6rem 1.25rem; /* reduced padding to bring header up */
   background: rgba(15, 15, 35, 0.92);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
@@ -150,14 +150,12 @@ header {
 }
 
 .header-content {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
+  padding: 0.6rem 1.25rem;
 }
 
 .logo {
@@ -371,8 +369,7 @@ nav ul.open {
     top: 50% !important;
     transform: translateY(-50%) !important;
     z-index: 1100 !important;
-    display: flex !important;
-    align-items: center !important;
+    display: block !important;
     background: transparent !important;
     border: none !important;
   }
@@ -387,19 +384,14 @@ nav ul.open {
     background: transparent !important;
     position: static !important;
     box-shadow: none !important;
-    align-items: center !important;
   }
-  header.main-header .header-content nav ul li {
-    display: block !important;
-    margin: 0 !important;
-  }
+  header.main-header .header-content nav ul li { display: block !important; }
   /* Ensure nav buttons are compact on desktop */
   header.main-header .header-content .nav-item button,
   header.main-header .header-content .nav-btn {
-    padding: 8px 16px !important;
+    padding: 6px 12px !important;
     font-size: 0.95rem !important;
     border-radius: 1.1em !important;
-    margin: 0 !important;
   }
 }
 
@@ -2008,8 +2000,6 @@ footer {
     transform: translateY(-50%) !important;
     z-index: 1100 !important;
     width: auto !important;
-    display: flex !important;
-    align-items: center !important;
   }
 
   header .header-content nav ul {
@@ -2020,10 +2010,5 @@ footer {
     align-items: center !important;
     justify-content: flex-end !important;
     margin-left: 0 !important;
-    margin: 0 !important;
-  }
-  
-  header .header-content nav ul li {
-    margin: 0 !important;
   }
 }

@@ -237,7 +237,7 @@
     }
 
     .upload-label:hover {
-      background: linear-gradient(135deg, var(--primary-blue), var(--tertiary-blue));
+      background: linear-gradient(135deg, #CC0000, #990000);
       transform: translateY(-2px);
     }
 
@@ -851,68 +851,139 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      gap: 4rem; /* Even more space between logo and navigation */
     }
     header .header-content .logo { margin-right: auto; }
     header .header-content #user-greeting { margin-left: auto; }
 
-    /* Remove global centering/padding so logo is flush left - match previous designs page */
-    header.main-header { padding: 0.6rem 1.25rem; }
-    .main-header .header-content { margin: 0; max-width: none; }
+    /* Remove global centering/padding so logo is flush left */
+    header { padding-left: 1; padding-top: 0; }
+    header .header-content { margin: 0; max-width: none; }
 
-    /* Center the main navigation buttons */
-    .main-nav {
-      position: absolute !important;
-      left: 50% !important;
-      top: 50% !important;
-      transform: translate(-50%, -50%) !important;
-      z-index: 1100 !important;
-      display: flex !important;
-      align-items: center !important;
-    }
+    /* ----- REPLACED: header / nav / profile layout ----- */
+  /* Ensure header has a stable stacking context */
+  header.main-header { position: relative; z-index: 1200; }
 
-    .main-nav ul {
-      display: flex !important;
-      gap: 1.5rem !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      list-style: none !important;
-      align-items: center !important;
-    }
+  /* header content: use grid so logo, centered nav, and profile never overlap */
+  header.main-header .header-content {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: 12px 20px;
+    gap: 12px;
+  }
 
-    /* Position auth navigation on the right */
-    .auth-nav {
-      position: absolute !important;
-      right: 20px !important;
-      top: 50% !important;
-      transform: translateY(-50%) !important;
-      z-index: 1100 !important;
-      display: flex !important;
-      align-items: center !important;
-    }
+  /* logo stays in first column */
+  header.main-header .header-content .logo {
+    grid-column: 1;
+    position: relative;
+    z-index: 10;
+  }
 
-    .auth-nav ul {
-      display: flex !important;
-      gap: 0.5rem !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      list-style: none !important;
-      align-items: center !important;
-    }
+  /* nav lives in the center column and is centered horizontally; constrain its width so it won't reach the profile */
+  header.main-header .header-content nav {
+    grid-column: 2;
+    justify-self: center;
+    position: relative; /* keep in normal flow of grid */
+    display: block;
+    width: 100%;
+    max-width: calc(100% - 300px); /* Reserve space for logo and profile */
+    box-sizing: border-box;
+    pointer-events: auto;
+    overflow: visible;
+  }
 
-    /* Style the profile button */
-    .profile-container {
-      position: absolute !important;
-      right: 20px !important;
-      top: 50% !important;
-      transform: translateY(-50%) !important;
-      z-index: 1100 !important;
+  /* nav list stays horizontal; allow horizontal scroll on tight widths */
+  header.main-header .header-content nav ul {
+    display: flex;
+    gap: 10px;
+    margin: 0;
+    padding: 0 8px;
+    list-style: none;
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    padding-right: 12px;
+  }
+
+  /* make nav buttons compact so they fit */
+  header.main-header .header-content nav .nav-btn {
+    padding: 6px 6px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    margin: 0;
+  }
+
+  /* Profile container placed in last grid column (right) so it never overlaps centered nav */
+  .profile-container {
+    grid-column: 3;
+    justify-self: end;
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    z-index: 9999; /* ensure profile sits above content */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .profile-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg,#2c003f,#3b0060);
+    color: #fff;
+    font-weight: 700;
+    font-family: 'Inter',sans-serif;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    font-size: 0.95rem;
+  }
+
+  /* basic profile card positioning (toggle class .visible will be used by JS) */
+  .profile-card {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    width: 220px;
+    background: var(--modal-content-bg, #111);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 12px;
+    display: none;
+    box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+  }
+  .profile-card.visible { display: block; }
+
+  /* Responsive: on small screens allow nav to flow (not absolute) and remain scrollable */
+  @media (max-width: 720px) {
+    header.main-header .header-content nav {
+      position: static;
+      transform: none;
+      left: auto;
+      top: auto;
+      margin: 6px 0 0;
     }
+    header.main-header .header-content nav ul {
+      justify-content: flex-start;
+      max-width: calc(100% - 120px);
+    }
+    /* reduce profile size slightly on very small screens */
+    .profile-btn { width: 36px; height: 36px; font-size: 0.85rem; }
+
+    /* ...existing CSS ... */
   </style>
 </head>
 
 <body>
-  <header>
+  <header class="main-header">
     <div class="header-content">
       <div class="logo">
         <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="CODE4WEB logo">
@@ -939,7 +1010,7 @@
           <div class="slogan">Building Tomorrow's Digital Experience</div>
         </div>
       </div>
-      <nav class="main-nav">
+      <nav>
         <ul>
           <li class="nav-item" data-page="previous-designs" onclick="window.location.href='previous_designs.html'">
             <button class="nav-btn">Previous Designs</button>
@@ -948,24 +1019,19 @@
             <button class="nav-btn">Workspace</button>
           </li>
           <li class="nav-item" data-page="tutorial"><button class="nav-btn" onclick="openTutorial(); return false;">Tutorial</button></li>
-        </ul>
-      </nav>
-      <nav class="auth-nav">
-        <ul>
-          <li class="nav-item" id="auth-links">
-            <button class="nav-btn" onclick="openLogin()">Login</button>
-          </li>
           <li class="nav-item" id="user-links" style="display: none;">
             <button class="nav-btn" onclick="logout()">Logout</button>
           </li>
         </ul>
       </nav>
+
       <!-- Simple user greeting kept for compatibility with auth scripts -->
       <div id="user-greeting">
         Hi, <span id="user-name"></span>
         <!-- keep this ID so existing scripts that set sidebar-username still work -->
         <span id="sidebar-username" style="display:none; visibility:hidden;">Guest</span>
       </div>
+
       <!-- compact profile button + popup -->
       <div class="profile-container">
         <button id="profileBtn" class="profile-btn" aria-haspopup="true" aria-expanded="false">SM</button>
@@ -973,7 +1039,7 @@
           <div class="name" id="profileName">User</div>
           <div class="email" id="profileEmail">user@example.com</div>
           <div class="actions">
-            
+            <button class="home" id="profileHome">Home</button>
             <button class="signout" id="profileSignout">Sign out</button>
           </div>
         </div>
@@ -1519,7 +1585,7 @@ Generated on: ${new Date().toLocaleString()}
 
       // Firebase Authentication Check
       firebase.auth().onAuthStateChanged(user => {
-        const authLinks = document.getElementById('auth-links');
+        const authLinks = document.getElementById('auth-links'); // may be null (login removed)
         const userLinks = document.getElementById('user-links');
         const userGreeting = document.getElementById('user-greeting');
         const userNameSpan = document.getElementById('user-name');
@@ -1531,21 +1597,21 @@ Generated on: ${new Date().toLocaleString()}
           workspaceAuthorizedContent.style.display = 'flex';
           // access denied UI removed
 
-          authLinks.style.display = 'none';
-          userLinks.style.display = 'list-item';
-          userGreeting.style.display = 'block';
-          userNameSpan.textContent = user.displayName || user.email || 'User';
-          sidebarUsernameSpan.textContent = user.displayName || user.email || 'User';
+          if (authLinks) authLinks.style.display = 'none';
+          if (userLinks) userLinks.style.display = 'list-item';
+          if (userGreeting) userGreeting.style.display = 'block';
+          if (userNameSpan) userNameSpan.textContent = user.displayName || user.email || 'User';
+          if (sidebarUsernameSpan) sidebarUsernameSpan.textContent = user.displayName || user.email || 'User';
         } else {
           // User is logged out
           console.log("User is logged out. Access denied.");
           workspaceAuthorizedContent.style.display = 'none';
 
-          authLinks.style.display = 'list-item';
-          userLinks.style.display = 'none';
-          userGreeting.style.display = 'none';
-          userNameSpan.textContent = '';
-          sidebarUsernameSpan.textContent = 'Guest';
+          if (authLinks) authLinks.style.display = 'none'; // keep removed login hidden if present
+          if (userLinks) userLinks.style.display = 'none';
+          if (userGreeting) userGreeting.style.display = 'none';
+          if (userNameSpan) userNameSpan.textContent = '';
+          if (sidebarUsernameSpan) sidebarUsernameSpan.textContent = 'Guest';
 
           // DO NOT auto-redirect to index.html here — keep the user on the workspace page
           // window.location.href = 'index.html';
@@ -1823,9 +1889,11 @@ Generated on: ${new Date().toLocaleString()}
           const iframe = document.getElementById('inspector-preview');
           
           if (iframe) {
+           
             const doc = `<!DOCTYPE html>
 <html>
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Generated Website Preview</title>
