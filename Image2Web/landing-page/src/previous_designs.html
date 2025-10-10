@@ -15,54 +15,88 @@
     .main-header .header-content {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start; /* keep nav beside logo on the left */
       width: 100%;
+      gap: 12px; /* match workspace */
     }
-    .main-header .header-content .logo { margin-right: auto; }
-    .main-header .header-content #user-greeting { margin-left: auto; }
+    .main-header .header-content .logo { margin-right: 12px !important; }
+    .main-header .header-content #user-greeting { margin-left: 12px; }
     /* Remove global centering/padding so logo is flush left */
-    header.main-header { padding-left: 1; padding-top: 0; }
+    header.main-header { padding: 0.6rem 1.25rem !important; padding-left: 0.6rem !important; padding-top: 0; }
     .main-header .header-content { margin: 0; max-width: none; }
     
-    /* Hide Members and Logout buttons completely on previous designs page */
+    /* Hide Members and any legacy auth links to match workspace */
     .main-header .nav-item[data-page="contributors"],
-    .main-header .nav-item#auth-links,
-    .main-header .nav-item#user-links {
-      display: none !important;
-    }
+    .auth-nav { display: none !important; }
 
-    /* Force-center nav in this page (override global right-pinned nav) */
+    /* Left-align nav beside the logo */
     header.main-header .header-content nav.main-nav {
-      position: absolute !important;
-      left: 50% !important;
+      position: static !important;
+      left: auto !important;
       right: auto !important;
-      top: 50% !important;
-      transform: translate(-50%, -50%) !important;
+      top: auto !important;
+      transform: none !important;
       z-index: 1100 !important;
       display: flex !important;
       align-items: center !important;
       width: auto !important;
+      margin-left: 6px;
     }
 
     header.main-header .header-content nav.main-nav ul {
       display: flex !important;
-      gap: 1.2rem !important;
+      gap: 12px !important;
       margin: 0 !important;
       padding: 0 !important;
       list-style: none !important;
       align-items: center !important;
-      justify-content: center !important;
+      justify-content: flex-start !important;
+      flex-wrap: nowrap !important;
+      white-space: nowrap !important;
     }
 
-    /* Position auth navigation on the right */
-    .auth-nav {
-      position: absolute !important;
-      right: 20px !important;
-      top: 50% !important;
-      transform: translateY(-50%) !important;
-      z-index: 1100 !important;
-      display: flex !important;
-      align-items: center !important;
+    /* Match workspace nav button sizing */
+    header.main-header .header-content .nav-item button,
+    header.main-header .header-content .nav-btn {
+      padding: 10px 18px !important;
+      font-size: 1.06rem !important;
+      line-height: 1.1 !important;
+      border-radius: 1.4em !important;
+    }
+
+    /* Scale logo and title to match workspace */
+    .logo svg { width: 56px !important; height: 56px !important; }
+    .logo .brand { font-size: 1.4em !important; }
+    .logo .slogan { font-size: 0.7em !important; }
+    .logo .slogan { font-size: 0.7em !important; }
+
+    /* Profile button on the right like workspace */
+    .profile-container { position: absolute !important; right: 20px !important; top: 50% !important; transform: translateY(-50%) !important; }
+
+    /* Force left-aligned nav on tablet/desktop as well and push profile to far right */
+    @media (min-width: 768px) {
+      header.main-header .header-content { justify-content: flex-start !important; }
+      header.main-header .header-content nav.main-nav {
+        position: static !important;
+        right: auto !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        margin-left: 6px !important;
+      }
+      header.main-header .header-content nav.main-nav ul {
+        justify-content: flex-start !important;
+        gap: 12px !important;
+        padding: 0 !important;
+      }
+      /* Ensure the profile button is pinned at the far right */
+      header.main-header .header-content .profile-container {
+        margin-left: auto !important;
+        position: relative !important;
+        right: 0 !important;
+        top: auto !important;
+        transform: none !important;
+      }
     }
 
     .auth-nav ul {
@@ -559,23 +593,8 @@
       </div>
       <nav class="main-nav">
         <ul>
-          <li class="nav-item active" data-page="previous-designs" onclick="window.location.href='previous_designs.html'">
-            <button class="nav-btn">Previous Designs</button>
-          </li>
-          <li class="nav-item" data-page="workspace" onclick="window.location.href='workspace.html'">
-            <button class="nav-btn">Workspace</button>
-          </li>
-          <li class="nav-item" data-page="tutorial"><button class="nav-btn" onclick="openTutorial(); return false;">Tutorial</button></li>
-        </ul>
-      </nav>
-      <nav class="auth-nav">
-        <ul>
-          <li class="nav-item" id="auth-links">
-            <button class="nav-btn" onclick="openLogin()">Login</button>
-          </li>
-          <li class="nav-item" id="user-links" style="display: none;">
-            <button class="nav-btn" onclick="logout()">Logout</button>
-          </li>
+          <li class="nav-item" data-page="workspace" onclick="window.location.href='workspace.html'"><button class="nav-btn">Workspace</button></li>
+          <li class="nav-item active" data-page="previous-designs" onclick="window.location.href='previous_designs.html'"><button class="nav-btn">Previous Designs</button></li>
         </ul>
       </nav>
       <!-- Simple user greeting kept for compatibility with auth scripts -->
@@ -591,7 +610,6 @@
           <div class="name" id="profileName">User</div>
           <div class="email" id="profileEmail">user@example.com</div>
           <div class="actions">
-            <button class="home" id="profileHome">Home</button>
             <button class="signout" id="profileSignout">Sign out</button>
           </div>
         </div>
@@ -606,7 +624,7 @@
 
     <main class="main-content-area" role="main">
       <section class="workspace-section-card projects-section" aria-labelledby="projects-title">
-        <h2 id="projects-title">Your Generated Projects</h2>
+        <h2 id="projects-title">Previous Designs</h2>
         <div class="button-container">
           <button id="refreshProjectsBtn" class="primary-btn" aria-label="Refresh projects list">Refresh</button>
           <button id="exportProjectsBtn" class="primary-btn" aria-label="Export all projects as JSON file">Export JSON</button>
