@@ -1,0 +1,1 @@
+Image2Web is a web application that can turn physical hand-drawn sketch wireframes into actual HTML and CSS code! Utilizes Python, TensorFlow, and Keras for model training along with the code generation. Website is hosted on Firebase and uses Firestore for database purposes, Cloud Run is utilized to run necessary python scripts on website.
