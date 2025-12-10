@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve-test-site": "npx http-server test-site -p 3001 --silent",
+    "emulators:start": "npx firebase-tools emulators:start --only hosting,functions"
   },
   "repository": {
     "type": "git",
